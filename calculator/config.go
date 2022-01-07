@@ -21,7 +21,7 @@ type Config struct {
 }
 
 func init() {
-	file, err := ini.Load("../conf/config.ini")
+	file, err := ini.Load("E:/GoWorkPlace/src/lz/conf/config.ini")
 	if err != nil {
 		fmt.Println("配置文件读取错误，请检查文件路径: ", err)
 	}

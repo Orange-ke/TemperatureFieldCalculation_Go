@@ -2,11 +2,11 @@ package server
 
 import (
 	"flag"
+	"github.com/gorilla/websocket"
 	"log"
+	"lz/calculator"
 	"lz/model"
 	"net/http"
-
-	"github.com/gorilla/websocket"
 )
 
 type Server struct {
@@ -23,49 +23,25 @@ func NewServer(addr string, upgrader websocket.Upgrader) *Server {
 
 // serveWs handles websocket requests from the peer.
 func (s *Server) serveWs(w http.ResponseWriter, r *http.Request) {
+	hub := NewHub()
+	c := calculator.NewCalculator(0)
 	conn, err := s.upgrader.Upgrade(w, r, nil)
+	hub.conn = conn
+	hub.c = c
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	defer conn.Close()
 	var msg model.Msg
+	go hub.handleRequest()
+	go hub.handleResponse()
 	for {
 		err = conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("err: ", err)
 		}
-		switch msg.Type {
-		case "env":
-			reply := model.Msg{
-				Type: "envSet",
-				Content: "env is set",
-			}
-			err = conn.WriteJSON(&reply)
-			if err != nil {
-				log.Println("err: ", err)
-			}
-		case "start":
-			reply := model.Msg{
-				Type: "started",
-				Content: "started",
-			}
-			err = conn.WriteJSON(&reply)
-			if err != nil {
-				log.Println("err: ", err)
-			}
-		case "stop":
-			reply := model.Msg{
-				Type: "stopped",
-				Content: "stopped",
-			}
-			err = conn.WriteJSON(&reply)
-			if err != nil {
-				log.Println("err: ", err)
-			}
-		default:
-			log.Println("no such type")
-		}
+		hub.msg <- msg
 	}
 }
 
