@@ -14,8 +14,8 @@ const (
 	downLength = 500
 	arcLength  = 3000
 
-	stepX = 2
-	stepY = 2
+	stepX = 1
+	stepY = 1
 	stepZ = 10
 )
 
@@ -49,16 +49,19 @@ func (h *Hub) handleResponse() {
 				log.Println("err: ", err)
 			}
 		case reply := <-h.started:
-			h.c.CalculateConcurrently()
-			temperatureData := h.buildData()
-			data, err := json.Marshal(temperatureData)
-			if err != nil {
-				log.Println("err: ", err)
-			}
-			reply.Content = string(data)
-			err = h.conn.WriteJSON(&reply)
-			if err != nil {
-				log.Println("err: ", err)
+			for count := 0; count < 100; count++ {
+				h.c.CalculateConcurrently()
+				temperatureData := h.buildData()
+				data, err := json.Marshal(temperatureData)
+				if err != nil {
+					log.Println("err: ", err)
+				}
+				reply.Content = string(data)
+				err = h.conn.WriteJSON(&reply)
+				if err != nil {
+					log.Println("err: ", err)
+				}
+				time.Sleep(2 * time.Second)
 			}
 		case reply := <-h.stopped:
 			err := h.conn.WriteJSON(&reply)
@@ -104,6 +107,9 @@ func (h *Hub) handleRequest() {
 }
 
 type TemperatureData struct {
+	Start int `json:"start"` // 切片开始位置
+	End int `json:"end"` // 切片结束位置
+	IsFull bool `json:"is_full"` // 切片是否充满铸机
 	Up   UpSides `json:"up"`
 	Arc  ArcSides `json:"arc"`
 	Down DownSides `json:"down"`
@@ -214,8 +220,11 @@ func (h *Hub) buildData() TemperatureData {
 	}
 
 	return TemperatureData{
-		upSides,
-		arcSides,
-		downSides,
+		Start: 0,
+		End: 400,
+		IsFull: true,
+		Up: upSides,
+		Arc: arcSides,
+		Down: downSides,
 	}
 }
