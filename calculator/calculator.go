@@ -277,11 +277,11 @@ func (c *Calculator) calculatePointLT(deltaT float32, z int) {
 	var index1 = int(ThermalField[z][Width/YStep-1][1])/5 - 1
 	var index2 = int(ThermalField[z][Width/YStep-2][0])/5 - 1
 	var deltaHlt = c.GetLambda(index, index1, 0, Width/YStep-1, 1, Width/YStep-1)*
-		float32(int(ThermalField[z][Width/YStep-1][0]-ThermalField[z][Width/YStep-1][1]))/
+		float32(int(ThermalField[z][Width/YStep-1][1]-ThermalField[z][Width/YStep-1][0]))/
 		float32(XStep*(getEx(1)+getEx(0))) +
 		c.GetLambda(index, index2, 0, Width/YStep-1, 0, Width/YStep-2)*
 			float32(int(ThermalField[z][Width/YStep-2][0]-ThermalField[z][Width/YStep-1][0]))/
-			float32(YStep*(getEy(Width/YStep-1)+getEx(Width/YStep-1))) +
+			float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
 		c.Q[index]/(2*YStep)
 
 	deltaHlt = deltaHlt * (2 * deltaT / c.Density[index])
@@ -310,7 +310,7 @@ func (c *Calculator) calculatePointTA(deltaT float32, x, z int) {
 		float32(int(ThermalField[z][Width/YStep-1][x-1]-ThermalField[z][Width/YStep-1][x]))/
 		float32(XStep*(getEx(x-1)+getEx(x))) +
 		c.GetLambda(index, index2, x, Width/YStep-1, x+1, Width/YStep-1)*
-			float32(int(ThermalField[z][Width/YStep-1][x]-ThermalField[z][Width/YStep-1][x+1]))/
+			float32(int(ThermalField[z][Width/YStep-1][x+1]-ThermalField[z][Width/YStep-1][x]))/
 			float32(XStep*(getEx(x)+getEx(x+1))) +
 		c.GetLambda(index, index3, x, Width/YStep-1, x, Width/YStep-2)*
 			float32(int(ThermalField[z][Width/YStep-2][x]-ThermalField[z][Width/YStep-1][x]))/
@@ -377,7 +377,7 @@ func (c *Calculator) calculatePointRA(deltaT float32, y, z int) {
 			float32(int(ThermalField[z][y-1][Length/XStep-1]-ThermalField[z][y][Length/XStep-1]))/
 			float32(YStep*(getEy(y-1)+getEy(y))) +
 		c.GetLambda(index, index3, Length/XStep-1, y, Length/XStep-1, y+1)*
-			float32(int(ThermalField[z][y][Length/XStep-1]-ThermalField[z][y+1][Length/XStep-1]))/
+			float32(int(ThermalField[z][y+1][Length/XStep-1]-ThermalField[z][y][Length/XStep-1]))/
 			float32(YStep*(getEy(y+1)+getEy(y))) +
 		c.Q[index]/(2*XStep)
 
@@ -406,7 +406,7 @@ func (c *Calculator) calculatePointRB(deltaT float32, z int) {
 		float32(int(ThermalField[z][0][Length/XStep-2]-ThermalField[z][0][Length/XStep-1]))/
 		float32(XStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
 		c.GetLambda(index, index2, Length/XStep-1, 0, Length/XStep-1, 1)*
-			float32(int(ThermalField[z][0][Length/XStep-1]-ThermalField[z][1][Length/XStep-1]))/
+			float32(int(ThermalField[z][1][Length/XStep-1]-ThermalField[z][0][Length/XStep-1]))/
 			float32(YStep*(getEy(1)+getEy(0))) +
 		c.Q[index]/(2*XStep)
 
@@ -435,10 +435,10 @@ func (c *Calculator) calculatePointBA(deltaT float32, x, z int) {
 		float32(int(ThermalField[z][0][x-1]-ThermalField[z][0][x]))/
 		float32(XStep*(getEx(x-1)+getEx(x))) +
 		c.GetLambda(index, index2, x, 0, x+1, 0)*
-			float32(int(ThermalField[z][0][x]-ThermalField[z][0][x+1]))/
+			float32(int(ThermalField[z][0][x+1]-ThermalField[z][0][x]))/
 			float32(XStep*(getEx(x+1)+getEx(x))) +
 		c.GetLambda(index, index3, x, 0, x, 1)*
-			float32(int(ThermalField[z][0][x]-ThermalField[z][1][x]))/
+			float32(int(ThermalField[z][1][x]-ThermalField[z][0][x]))/
 			float32(YStep*(getEy(1)+getEy(0)))
 
 	deltaHba = deltaHba * (2 * deltaT / c.Density[index])
@@ -462,10 +462,10 @@ func (c *Calculator) calculatePointLB(deltaT float32, z int) {
 	var index1 = int(ThermalField[z][0][1])/5 - 1
 	var index2 = int(ThermalField[z][1][0])/5 - 1
 	var deltaHlb = c.GetLambda(index, index1, 1, 0, 0, 0)*
-		float32(int(ThermalField[z][0][0]-ThermalField[z][0][1]))/
+		float32(int(ThermalField[z][0][1]-ThermalField[z][0][0]))/
 		float32(XStep*(getEx(0)+getEx(1))) +
 		c.GetLambda(index, index2, 0, 1, 0, 0)*
-			float32(int(ThermalField[z][0][0]-ThermalField[z][1][0]))/
+			float32(int(ThermalField[z][1][0]-ThermalField[z][0][0]))/
 			float32(YStep*(getEy(1)+getEy(0)))
 
 	deltaHlb = deltaHlb * (2 * deltaT / c.Density[index])
@@ -490,13 +490,13 @@ func (c *Calculator) calculatePointLA(deltaT float32, y, z int) {
 	var index2 = int(ThermalField[z][y-1][0])/5 - 1
 	var index3 = int(ThermalField[z][y+1][0])/5 - 1
 	var deltaHla = c.GetLambda(index, index1, 1, y, 0, y)*
-		float32(int(ThermalField[z][y][0]-ThermalField[z][y][1]))/
+		float32(int(ThermalField[z][y][1]-ThermalField[z][y][0]))/
 		float32(XStep*(getEx(0)+getEx(1))) +
 		c.GetLambda(index, index2, 0, y-1, 0, y)*
 			float32(int(ThermalField[z][y-1][0]-ThermalField[z][y][0]))/
 			float32(YStep*(getEy(y)+getEy(y-1))) +
 		c.GetLambda(index, index3, 0, y+1, 0, y)*
-			float32(int(ThermalField[z][y][0]-ThermalField[z][y+1][0]))/
+			float32(int(ThermalField[z][y+1][0]-ThermalField[z][y][0]))/
 			float32(YStep*(getEy(y)+getEy(y+1)))
 
 	deltaHla = deltaHla * (2 * deltaT / c.Density[index])
@@ -525,13 +525,13 @@ func (c *Calculator) calculatePointIN(deltaT float32, x, y, z int) {
 		float32(int(ThermalField[z][y][x-1]-ThermalField[z][y][x]))/
 		float32(XStep*(getEx(x)+getEx(x-1))) +
 		c.GetLambda(index, index2, x+1, y, x, y)*
-			float32(int(ThermalField[z][y][x]-ThermalField[z][y][x+1]))/
+			float32(int(ThermalField[z][y][x+1]-ThermalField[z][y][x]))/
 			float32(XStep*(getEx(x)+getEx(x+1))) +
 		c.GetLambda(index, index3, x, y-1, x, y)*
 			float32(int(ThermalField[z][y-1][x]-ThermalField[z][y][x]))/
 			float32(YStep*(getEy(y)+getEy(y-1))) +
 		c.GetLambda(index, index4, x, y+1, x, y)*
-			float32(int(ThermalField[z][y][x]-ThermalField[z][y+1][x]))/
+			float32(int(ThermalField[z][y+1][x]-ThermalField[z][y][x]))/
 			float32(YStep*(getEy(y)+getEy(y+1)))
 
 	deltaHin = deltaHin * (2 * deltaT / c.Density[index])
