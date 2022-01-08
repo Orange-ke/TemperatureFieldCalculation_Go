@@ -9,61 +9,58 @@ import (
 	"time"
 )
 
-const (
-	upLength   = 500
-	downLength = 500
-	arcLength  = 3000
-
-	stepX = 1
-	stepY = 1
-	stepZ = 10
-)
-
 // Hub maintains the set of active clients and broadcasts messages to the clients.
 type Hub struct {
-	c    calculator.Calculator
+	c    *calculator.Calculator
 	conn *websocket.Conn
 	// request
 	msg chan model.Msg
 	// response
-	envSet  chan model.Msg
-	started chan model.Msg
-	stopped chan model.Msg
+	envSet  chan struct{}
+	started chan struct{}
+	stopped chan struct{}
 }
 
 func NewHub() *Hub {
 	return &Hub{
 		msg:     make(chan model.Msg, 10),
-		envSet:  make(chan model.Msg, 10),
-		started: make(chan model.Msg, 10),
-		stopped: make(chan model.Msg, 10),
+		envSet:  make(chan struct{}, 10),
+		started: make(chan struct{}, 10),
+		stopped: make(chan struct{}, 10),
 	}
 }
 
 func (h *Hub) handleResponse() {
 	for {
 		select {
-		case reply := <-h.envSet:
+		case <-h.envSet:
+			reply := model.Msg{
+				Type:    "envSet",
+				Content: "env is set",
+				// 可以加一些需要的参数过去
+			}
 			err := h.conn.WriteJSON(&reply)
 			if err != nil {
 				log.Println("err: ", err)
 			}
-		case reply := <-h.started:
-			for count := 0; count < 100; count++ {
-				h.c.CalculateConcurrently()
-				temperatureData := h.buildData()
-				data, err := json.Marshal(temperatureData)
-				if err != nil {
-					log.Println("err: ", err)
-				}
-				reply.Content = string(data)
-				err = h.conn.WriteJSON(&reply)
-				if err != nil {
-					log.Println("err: ", err)
-				}
-				time.Sleep(2 * time.Second)
+		case <-h.started:
+			// 从calculator里面的hub中获取是否有
+			reply := model.Msg{
+				Type:    "started",
+				Content: "Started",
 			}
-		case reply := <-h.stopped:
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+			go h.c.Run()
+			go h.pushData()
+		case <-h.stopped:
+			h.c.CalcHub.StopSignal()
+			reply := model.Msg{
+				Type:    "stopped",
+				Content: "stopped",
+			}
 			err := h.conn.WriteJSON(&reply)
 			if err != nil {
 				log.Println("err: ", err)
@@ -80,23 +77,12 @@ func (h *Hub) handleRequest() {
 		case msg := <-h.msg:
 			switch msg.Type {
 			case "env":
-				reply := model.Msg{
-					Type:    "envSet",
-					Content: "env is set",
-					// 可以加一些需要的参数过去
-				}
-				h.envSet <- reply
+				h.envSet <- struct{}{}
 			case "start":
-				reply := model.Msg{
-					Type: "started",
-				}
-				h.started <- reply
+				h.started <- struct{}{}
 			case "stop":
-				reply := model.Msg{
-					Type:    "stopped",
-					Content: "stopped",
-				}
-				h.stopped <- reply
+
+				h.stopped <- struct{}{}
 			default:
 				log.Println("no such type")
 			}
@@ -106,125 +92,26 @@ func (h *Hub) handleRequest() {
 	}
 }
 
-type TemperatureData struct {
-	Start int `json:"start"` // 切片开始位置
-	End int `json:"end"` // 切片结束位置
-	IsFull bool `json:"is_full"` // 切片是否充满铸机
-	Up   UpSides `json:"up"`
-	Arc  ArcSides `json:"arc"`
-	Down DownSides `json:"down"`
-}
-
-type UpSides struct {
-	Up    [calculator.Width / calculator.YStep / stepY][calculator.Length / calculator.XStep / stepX]float32 `json:"up"`
-	Left  [calculator.Width / calculator.YStep / stepY][upLength / stepZ]float32 `json:"left"`
-	Right [calculator.Width / calculator.YStep / stepY][upLength / stepZ]float32 `json:"right"`
-	Front [calculator.Length / calculator.XStep / stepX][upLength / stepZ]float32 `json:"front"`
-	Back  [calculator.Length / calculator.XStep / stepX][upLength / stepZ]float32 `json:"back"`
-}
-
-type ArcSides struct {
-	Left  [calculator.Width / calculator.YStep / stepY][arcLength / stepZ]float32 `json:"left"`
-	Right [calculator.Width / calculator.YStep / stepY][arcLength / stepZ]float32 `json:"right"`
-	Front [calculator.Length / calculator.XStep / stepX][arcLength / stepZ]float32 `json:"front"`
-	Back  [calculator.Length / calculator.XStep / stepX][arcLength / stepZ]float32 `json:"back"`
-}
-
-type DownSides struct {
-	Left  [calculator.Width / calculator.YStep / stepY][upLength / stepZ]float32 `json:"left"`
-	Right [calculator.Width / calculator.YStep / stepY][upLength / stepZ]float32 `json:"right"`
-	Front [calculator.Length / calculator.XStep  / stepX][upLength / stepZ]float32 `json:"front"`
-	Back  [calculator.Length / calculator.XStep  / stepX][upLength / stepZ]float32 `json:"back"`
-	Down  [calculator.Width / calculator.YStep / stepY][calculator.Length / calculator.XStep / stepX]float32 `json:"down"`
-}
-
-func (h *Hub) buildData() TemperatureData {
-	upSides := UpSides{}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := 0; x < calculator.Length/calculator.XStep; x+=stepX {
-			upSides.Up[y/stepY][x/stepX] = h.c.ThermalField[0][y][x]
-		}
+func (h *Hub) pushData() {
+	reply := model.Msg{
+		Type: "data_push",
 	}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := 0; x < upLength; x+=stepZ {
-			upSides.Left[y/stepY][x/stepZ] = h.c.ThermalField[x][y][0]
+Loop:
+	for {
+		select {
+		case <-h.c.CalcHub.Stop:
+			break Loop
+		case <-h.c.CalcHub.PeriodCalcResult:
+			temperatureData := h.c.BuildData()
+			data, err := json.Marshal(temperatureData)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+			reply.Content = string(data)
+			err = h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
 		}
-	}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := 0; x < upLength; x+=stepZ {
-			upSides.Right[y/stepY][x/stepZ] = h.c.ThermalField[x][y][calculator.Length/calculator.XStep-1]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := 0; x < upLength; x+=stepZ {
-			upSides.Front[y/stepX][x/stepZ] = h.c.ThermalField[x][calculator.Width/calculator.YStep-1][y]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := 0; x < upLength; x+=stepZ {
-			upSides.Back[y/stepX][x/stepZ] = h.c.ThermalField[x][0][y]
-		}
-	}
-
-	arcSides := ArcSides{}
-	zStart := upLength
-	zEnd := upLength + arcLength
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := zStart; x < zEnd; x+=stepZ {
-			arcSides.Left[y/stepY][(x - zStart)/stepZ] = h.c.ThermalField[x][y][0]
-		}
-	}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := zStart; x < zEnd; x+=stepZ {
-			arcSides.Right[y/stepY][(x - zStart)/stepZ] = h.c.ThermalField[x][y][calculator.Length/calculator.XStep-1]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := zStart; x < zEnd; x+=stepZ {
-			arcSides.Front[y/stepX][(x - zStart)/stepZ] = h.c.ThermalField[x][calculator.Width/calculator.YStep-1][y]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := zStart; x < zEnd; x+=stepZ {
-			arcSides.Back[y/stepX][(x - zStart)/stepZ] = h.c.ThermalField[x][0][y]
-		}
-	}
-
-	downSides := DownSides{}
-	zStart = upLength + arcLength
-	zEnd = upLength + arcLength + downLength
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := 0; x < calculator.Length/calculator.XStep; x+=stepX {
-			downSides.Down[y/stepY][x/stepX] = h.c.ThermalField[zEnd-1][y][x]
-		}
-	}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := zStart; x < zEnd; x+=stepZ {
-			downSides.Left[y/stepY][(x - zStart)/stepZ] = h.c.ThermalField[x][y][0]
-		}
-	}
-	for y := 0; y < calculator.Width/calculator.YStep; y+=stepY {
-		for x := zStart; x < zEnd; x+=stepZ {
-			downSides.Right[y/stepY][(x - zStart)/stepZ] = h.c.ThermalField[x][y][calculator.Length/calculator.XStep-1]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := zStart; x < zEnd; x+=stepZ {
-			downSides.Front[y/stepX][(x - zStart)/stepZ] = h.c.ThermalField[x][calculator.Width/calculator.YStep-1][y]
-		}
-	}
-	for y := 0; y < calculator.Length/calculator.XStep; y+=stepX {
-		for x := zStart; x < zEnd; x+=stepZ {
-			downSides.Back[y/stepX][(x - zStart)/stepZ] = h.c.ThermalField[x][0][y]
-		}
-	}
-
-	return TemperatureData{
-		Start: 0,
-		End: 400,
-		IsFull: true,
-		Up: upSides,
-		Arc: arcSides,
-		Down: downSides,
 	}
 }

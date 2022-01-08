@@ -30,17 +30,20 @@ const (
 	ArrayLength = 1550 / 5
 )
 
-type Calculator struct {
-	// 计算参数
-	EdgeWidth int
-
-	Step     int                  // 当c.EdgeWidth > 0, step = 2;
+var (
 	Density  [ArrayLength]float32 // 密度
 	Enthalpy [ArrayLength]float32 // 焓
 	Lambda   [ArrayLength]float32 // 导热系数
 	HEff     [ArrayLength]float32 // 综合换热系数, 注意：简单处理了！
 	Q        [ArrayLength]float32 // 热流密度, 注意：简单处理了
 	C        [ArrayLength]float32 // 比热容
+)
+
+type Calculator struct {
+	// 计算参数
+	EdgeWidth int
+
+	Step int // 当c.EdgeWidth > 0, step = 2;
 
 	ThermalField  [ZLength / ZStep][Width / YStep][Length / XStep]float32
 	ThermalField1 [ZLength / ZStep][Width / YStep][Length / XStep]float32
@@ -50,9 +53,15 @@ type Calculator struct {
 
 	//v int 拉速
 	v int
+
+	Start  int
+	End    int
+	IfFull int
+
+	CalcHub *CalcHub
 }
 
-func NewCalculator(edgeWidth int) Calculator {
+func NewCalculator(edgeWidth int) *Calculator {
 	// 0 <= edgeWidth <= 20
 	if edgeWidth < 0 {
 		edgeWidth = 0
@@ -83,53 +92,54 @@ func NewCalculator(edgeWidth int) Calculator {
 	var LambdaStart = float32(50.0)
 	var LambdaIter = float32(50.0-45.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.Lambda[i] = LambdaStart - float32(i)*LambdaIter
+		Lambda[i] = LambdaStart - float32(i)*LambdaIter
 	}
 
 	// 3. 密度
 	var DensityStart = float32(8.0)
 	var DensityIter = float32(8.0-7.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.Density[i] = DensityStart - float32(i)*DensityIter
+		Density[i] = DensityStart - float32(i)*DensityIter
 	}
 
 	// 4. 焓值
 	var EnthalpyStart = float32(1000.0)
 	var EnthalpyStep = float32(10000.0-1000.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.Enthalpy[i] = EnthalpyStart + float32(i)*EnthalpyStep
+		Enthalpy[i] = EnthalpyStart + float32(i)*EnthalpyStep
 	}
 
 	// 5. 综合换热系数
 	var HEffStart = float32(5.0)
 	var HEffStep = float32(20.0-15.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.HEff[i] = HEffStart + float32(i)*HEffStep
+		HEff[i] = HEffStart + float32(i)*HEffStep
 	}
 
 	// 6. 热流密度
 	var QStart = float32(12.0)
 	var QStep = float32(25.0-20.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.Q[i] = QStart + float32(i)*QStep
+		Q[i] = QStart + float32(i)*QStep
 	}
 
 	// 7. 比热容
-	var CStart = float32(33.0)
+	var CStart = float32(35.0)
 	var CStep = float32(3.6) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		calculator.C[i] = CStart + float32(i)*CStep
+		C[i] = CStart + float32(i)*CStep
 	}
 
 	calculator.EdgeWidth = edgeWidth
 	calculator.Step = 1
-	fmt.Println(calculator.EdgeWidth)
 	if calculator.EdgeWidth > 0 {
 		calculator.Step = 2
 	}
-
+	calculator.Start = 0
+	calculator.End = 4000
+	calculator.CalcHub = NewCalcHub()
 	fmt.Println("初始化时间: ", time.Since(start))
-	return calculator
+	return &calculator
 }
 
 // 获取等效步长
@@ -156,18 +166,176 @@ func (c *Calculator) GetLambda(index1, index2, x1, y1, x2, y2 int) float32 {
 	var ey1 = getEy(y1)
 	var ey2 = getEy(y2)
 	if x1 != x2 {
-		return K * c.Lambda[index1] * c.Lambda[index2] * float32(ex1+ex2) /
-			(c.Lambda[index1]*float32(ex2) + c.Lambda[index2]*float32(ex1))
+		return K * Lambda[index1] * Lambda[index2] * float32(ex1+ex2) /
+			(Lambda[index1]*float32(ex2) + Lambda[index2]*float32(ex1))
 	}
 	if y1 != y2 {
-		return K * c.Lambda[index1] * c.Lambda[index2] * float32(ey1+ey2) /
-			(c.Lambda[index1]*float32(ey2) + c.Lambda[index2]*float32(ey1))
+		return K * Lambda[index1] * Lambda[index2] * float32(ey1+ey2) /
+			(Lambda[index1]*float32(ey2) + Lambda[index2]*float32(ey1))
 	}
 	return 1.0 // input error
 }
 
-// 计算时间步长
-func (c *Calculator) GetDeltaT(z, x, y int) float32 {
+// 计算时间步长 case1 -> 左下角
+func (c *Calculator) GetDeltaTCase1(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2 int
+	index1 = int(ThermalField[z][y][x+1])/5 - 1
+	index2 = int(ThermalField[z][y+1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case2 -> 下面边
+func (c *Calculator) GetDeltaTCase2(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2, index3 int
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y][x+1])/5 - 1
+	index3 = int(ThermalField[z][y+1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case3 -> 右下角
+func (c *Calculator) GetDeltaTCase3(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2 int
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y+1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+		HEff[index]/(XStep)
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case4 -> 右面边
+func (c *Calculator) GetDeltaTCase4(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2, index3 int
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y+1][x])/5 - 1
+	index3 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+		2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+		HEff[index]/(XStep)
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case5 -> 右上角
+func (c *Calculator) GetDeltaTCase5(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2 int
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+		HEff[index]/(XStep) +
+		HEff[index]/(YStep)
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case6 -> 上面边
+func (c *Calculator) GetDeltaTCase6(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2, index3 int
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y][x+1])/5 - 1
+	index3 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+		HEff[index]/(YStep)
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case7 -> 左上角
+func (c *Calculator) GetDeltaTCase7(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2 int
+	index1 = int(ThermalField[z][y][x+1])/5 - 1
+	index2 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+		HEff[index]/(YStep)
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case8 -> 左面边
+func (c *Calculator) GetDeltaTCase8(z, x, y int) float32 {
+	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField1
+	} else {
+		ThermalField = &c.ThermalField
+	}
+	var t = ThermalField[z][y][x]
+	var index = int(t)/5 - 1
+	var index1, index2, index3 int
+	index1 = int(ThermalField[z][y][x+1])/5 - 1
+	index2 = int(ThermalField[z][y+1][x])/5 - 1
+	index3 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+		2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
+}
+
+// 计算时间步长 case9 -> 内部点
+func (c *Calculator) GetDeltaTCase9(z, x, y int) float32 {
 	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
 	if c.alternating {
 		ThermalField = &c.ThermalField1
@@ -177,84 +345,109 @@ func (c *Calculator) GetDeltaT(z, x, y int) float32 {
 	var t = ThermalField[z][y][x]
 	var index = int(t)/5 - 1
 	var index1, index2, index3, index4 int
-	var denominator = float32(1.0)
-	if x == 0 && y == 0 { // case 1
-		index1 = int(ThermalField[z][y][x+1])/5 - 1
-		index2 = int(ThermalField[z][y+1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
-	} else if x > 0 && x < Length/XStep-1 && y == 0 { // case 2
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y][x+1])/5 - 1
-		index3 = int(ThermalField[z][y+1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
-	} else if x == Length/XStep-1 && y == 0 { // case 3
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y+1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
-			c.HEff[index]/(XStep)
-	} else if x == 0 && y > 0 && y < Width/YStep-1 { // case 4
-		index1 = int(ThermalField[z][y][x+1])/5 - 1
-		index2 = int(ThermalField[z][y+1][x])/5 - 1
-		index3 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
-			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
-	} else if x > 0 && x < Length/XStep-1 && y > 0 && y < Width/YStep-1 { // case 5
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y][x+1])/5 - 1
-		index3 = int(ThermalField[z][y+1][x])/5 - 1
-		index4 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
-			2*c.GetLambda(index, index4, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
-	} else if x == Length/XStep-1 && y > 0 && y < Width/YStep-1 { // case6
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y+1][x])/5 - 1
-		index3 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
-			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
-			c.HEff[index]/(XStep)
-	} else if x == 0 && y == Width/YStep-1 { // case7
-		index1 = int(ThermalField[z][y][x+1])/5 - 1
-		index2 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
-			c.HEff[index]/(YStep)
-	} else if x > 0 && x < Length/XStep-1 && y == Width/YStep-1 { // case 8
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y][x+1])/5 - 1
-		index3 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
-			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
-			c.HEff[index]/(YStep)
-	} else if x == Length/XStep-1 && y == Width/YStep-1 { // case 9
-		index1 = int(ThermalField[z][y][x-1])/5 - 1
-		index2 = int(ThermalField[z][y-1][x])/5 - 1
-		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
-			2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
-			c.HEff[index]/(XStep) +
-			c.HEff[index]/(YStep)
-	}
-
-	return (c.Density[index] * c.Enthalpy[index]) / (t * denominator)
+	index1 = int(ThermalField[z][y][x-1])/5 - 1
+	index2 = int(ThermalField[z][y][x+1])/5 - 1
+	index3 = int(ThermalField[z][y+1][x])/5 - 1
+	index4 = int(ThermalField[z][y-1][x])/5 - 1
+	denominator := 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+		2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+		2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+		2*c.GetLambda(index, index4, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
+	return (Density[index] * Enthalpy[index]) / (t * denominator)
 }
 
-// 计算时间步长
-func (c *Calculator) calculateTimeStep() float32 {
+//func (c *Calculator) GetDeltaT(z, x, y int) float32 {
+//	var ThermalField *[ZLength / ZStep][Width / YStep][Length / XStep]float32
+//	if c.alternating {
+//		ThermalField = &c.ThermalField1
+//	} else {
+//		ThermalField = &c.ThermalField
+//	}
+//	var t = ThermalField[z][y][x]
+//	var index = int(t)/5 - 1
+//	var index1, index2, index3, index4 int
+//	var denominator = float32(1.0)
+//	if x == 0 && y == 0 { // case 1
+//		index1 = int(ThermalField[z][y][x+1])/5 - 1
+//		index2 = int(ThermalField[z][y+1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
+//	} else if x > 0 && x < Length/XStep-1 && y == 0 { // case 2
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y][x+1])/5 - 1
+//		index3 = int(ThermalField[z][y+1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1)))
+//	} else if x == Length/XStep-1 && y == 0 { // case 3
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y+1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+//			c.HEff[index]/(XStep)
+//	} else if x == 0 && y > 0 && y < Width/YStep-1 { // case 4
+//		index1 = int(ThermalField[z][y][x+1])/5 - 1
+//		index2 = int(ThermalField[z][y+1][x])/5 - 1
+//		index3 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+//			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
+//	} else if x > 0 && x < Length/XStep-1 && y > 0 && y < Width/YStep-1 { // case 5
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y][x+1])/5 - 1
+//		index3 = int(ThermalField[z][y+1][x])/5 - 1
+//		index4 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index3, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+//			2*c.GetLambda(index, index4, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1)))
+//	} else if x == Length/XStep-1 && y > 0 && y < Width/YStep-1 { // case6
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y+1][x])/5 - 1
+//		index3 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y+1)/float32(YStep*(getEy(y)+getEy(y+1))) +
+//			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+//			c.HEff[index]/(XStep)
+//	} else if x == 0 && y == Width/YStep-1 { // case7
+//		index1 = int(ThermalField[z][y][x+1])/5 - 1
+//		index2 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+//			c.HEff[index]/(YStep)
+//	} else if x > 0 && x < Length/XStep-1 && y == Width/YStep-1 { // case 8
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y][x+1])/5 - 1
+//		index3 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x+1, y)/float32(XStep*(getEx(x)+getEx(x+1))) +
+//			2*c.GetLambda(index, index3, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+//			c.HEff[index]/(YStep)
+//	} else if x == Length/XStep-1 && y == Width/YStep-1 { // case 9
+//		index1 = int(ThermalField[z][y][x-1])/5 - 1
+//		index2 = int(ThermalField[z][y-1][x])/5 - 1
+//		denominator = 2*c.GetLambda(index, index1, x, y, x-1, y)/float32(XStep*(getEx(x)+getEx(x-1))) +
+//			2*c.GetLambda(index, index2, x, y, x, y-1)/float32(YStep*(getEy(y)+getEy(y-1))) +
+//			c.HEff[index]/(XStep) +
+//			c.HEff[index]/(YStep)
+//	}
+//
+//	return (c.Density[index] * c.Enthalpy[index]) / (t * denominator)
+//}
+
+// 计算一个切片的时间步长
+func (c *Calculator) calculateTimeStepOfOneSlice(z int) float32 {
 	// 计算时间步长 - start
-	var deltaTArr = [5]float32{}
-	deltaTArr[0] = c.GetDeltaT(0, 0, Width/YStep-1)
-	deltaTArr[1] = c.GetDeltaT(0, 1, Width/YStep-1)
-	deltaTArr[2] = c.GetDeltaT(0, Length/XStep-1, Width/YStep-1)
-	deltaTArr[3] = c.GetDeltaT(0, Length/XStep-1, 1)
-	deltaTArr[4] = c.GetDeltaT(0, Length/XStep-1, 0)
+	var deltaTArr = [9]float32{}
+	deltaTArr[0] = c.GetDeltaTCase1(z, 0, 0)
+	deltaTArr[1] = c.GetDeltaTCase2(z, Length/XStep-2, 0)
+	deltaTArr[2] = c.GetDeltaTCase3(z, Length/XStep-1, 0)
+	deltaTArr[3] = c.GetDeltaTCase4(z, Length/XStep-1, Width/YStep-2)
+	deltaTArr[4] = c.GetDeltaTCase5(z, Length/XStep-1, Width/YStep-1)
+	deltaTArr[5] = c.GetDeltaTCase6(z, Length/XStep-2, Width/YStep-1)
+	deltaTArr[6] = c.GetDeltaTCase7(z, 0, Width/YStep-1)
+	deltaTArr[7] = c.GetDeltaTCase8(z, 0, Width/YStep-2)
+	deltaTArr[8] = c.GetDeltaTCase9(z, Length/XStep-2, Width/YStep-2)
 	var min = float32(1000.0) // 模拟一个很大的数
 	for _, i := range deltaTArr {
 		if min > i {
@@ -263,6 +456,21 @@ func (c *Calculator) calculateTimeStep() float32 {
 	}
 	return min
 	// 计算时间步长 - end
+}
+
+// 计算所有切片中最短的时间步长
+func (c *Calculator) calculateTimeStep() float32 {
+	start := time.Now()
+	min := float32(1000.0)
+	var t float32
+	for z := c.Start; z < c.End; z++ {
+		t = c.calculateTimeStepOfOneSlice(z)
+		if t < min {
+			min = t
+		}
+	}
+	fmt.Println(time.Since(start), min)
+	return min
 }
 
 // 计算一个left top点的温度变化
@@ -282,15 +490,15 @@ func (c *Calculator) calculatePointLT(deltaT float32, z int) {
 		c.GetLambda(index, index2, 0, Width/YStep-1, 0, Width/YStep-2)*
 			float32(int(ThermalField[z][Width/YStep-2][0]-ThermalField[z][Width/YStep-1][0]))/
 			float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		c.Q[index]/(2*YStep)
+		Q[index]/(2*YStep)
 
-	deltaHlt = deltaHlt * (2 * deltaT / c.Density[index])
+	deltaHlt = deltaHlt * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][Width/YStep-1][0] = ThermalField[z][Width/YStep-1][0] - deltaHlt/c.C[index]
+		c.ThermalField1[z][Width/YStep-1][0] = ThermalField[z][Width/YStep-1][0] - deltaHlt/C[index]
 	} else {
 		// 需要修改焓的变化到温度变化的映射关系
-		c.ThermalField[z][Width/YStep-1][0] = ThermalField[z][Width/YStep-1][0] - (deltaHlt / c.C[index])
+		c.ThermalField[z][Width/YStep-1][0] = ThermalField[z][Width/YStep-1][0] - (deltaHlt / C[index])
 	}
 }
 
@@ -315,15 +523,15 @@ func (c *Calculator) calculatePointTA(deltaT float32, x, z int) {
 		c.GetLambda(index, index3, x, Width/YStep-1, x, Width/YStep-2)*
 			float32(int(ThermalField[z][Width/YStep-2][x]-ThermalField[z][Width/YStep-1][x]))/
 			float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		c.Q[index]/(2*YStep)
+		Q[index]/(2*YStep)
 
-	deltaHta = deltaHta * (2 * deltaT / c.Density[index])
+	deltaHta = deltaHta * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][Width/YStep-1][x] = ThermalField[z][Width/YStep-1][x] - deltaHta/c.C[index]
+		c.ThermalField1[z][Width/YStep-1][x] = ThermalField[z][Width/YStep-1][x] - deltaHta/C[index]
 	} else {
 		// 需要修改焓的变化到温度变化的映射关系
-		c.ThermalField[z][Width/YStep-1][x] = ThermalField[z][Width/YStep-1][x] - deltaHta/c.C[index]
+		c.ThermalField[z][Width/YStep-1][x] = ThermalField[z][Width/YStep-1][x] - deltaHta/C[index]
 	}
 }
 
@@ -344,17 +552,15 @@ func (c *Calculator) calculatePointRT(deltaT float32, z int) {
 		c.GetLambda(index, index2, Length/XStep-1, Width/YStep-1, Length/XStep-1, Width/YStep-2)*
 			float32(int(ThermalField[z][Width/YStep-2][Length/XStep-1]-ThermalField[z][Width/YStep-1][Length/XStep-1]))/
 			float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		c.Q[index]/(2*YStep) +
-		c.Q[index]/(2*XStep)
+		Q[index]/(2*YStep) +
+		Q[index]/(2*XStep)
 
-	deltaHrt = deltaHrt * (2 * deltaT / c.Density[index])
+	deltaHrt = deltaHrt * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][Width/YStep-1][Length/XStep-1] =
-			ThermalField[z][Width/YStep-1][Length/XStep-1] - deltaHrt/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][Width/YStep-1][Length/XStep-1] = ThermalField[z][Width/YStep-1][Length/XStep-1] - deltaHrt/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][Width/YStep-1][Length/XStep-1] =
-			ThermalField[z][Width/YStep-1][Length/XStep-1] - deltaHrt/c.C[index]
+		c.ThermalField[z][Width/YStep-1][Length/XStep-1] = ThermalField[z][Width/YStep-1][Length/XStep-1] - deltaHrt/C[index]
 	}
 }
 
@@ -379,15 +585,15 @@ func (c *Calculator) calculatePointRA(deltaT float32, y, z int) {
 		c.GetLambda(index, index3, Length/XStep-1, y, Length/XStep-1, y+1)*
 			float32(int(ThermalField[z][y+1][Length/XStep-1]-ThermalField[z][y][Length/XStep-1]))/
 			float32(YStep*(getEy(y+1)+getEy(y))) +
-		c.Q[index]/(2*XStep)
+		Q[index]/(2*XStep)
 
-	deltaHra = deltaHra * (2 * deltaT / c.Density[index])
+	deltaHra = deltaHra * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][y][Length/XStep-1] = ThermalField[z][y][Length/XStep-1] - deltaHra/c.C[index]
+		c.ThermalField1[z][y][Length/XStep-1] = ThermalField[z][y][Length/XStep-1] - deltaHra/C[index]
 		// 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][y][Length/XStep-1] = ThermalField[z][y][Length/XStep-1] - deltaHra/c.C[index]
+		c.ThermalField[z][y][Length/XStep-1] = ThermalField[z][y][Length/XStep-1] - deltaHra/C[index]
 	}
 }
 
@@ -408,14 +614,14 @@ func (c *Calculator) calculatePointRB(deltaT float32, z int) {
 		c.GetLambda(index, index2, Length/XStep-1, 0, Length/XStep-1, 1)*
 			float32(int(ThermalField[z][1][Length/XStep-1]-ThermalField[z][0][Length/XStep-1]))/
 			float32(YStep*(getEy(1)+getEy(0))) +
-		c.Q[index]/(2*XStep)
+		Q[index]/(2*XStep)
 
-	deltaHrb = deltaHrb * (2 * deltaT / c.Density[index])
+	deltaHrb = deltaHrb * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][0][Width/YStep-1] = ThermalField[z][0][Width/YStep-1] - deltaHrb/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][0][Width/YStep-1] = ThermalField[z][0][Width/YStep-1] - deltaHrb/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][0][Width/YStep-1] = ThermalField[z][0][Width/YStep-1] - deltaHrb/c.C[index]
+		c.ThermalField[z][0][Width/YStep-1] = ThermalField[z][0][Width/YStep-1] - deltaHrb/C[index]
 	}
 }
 
@@ -431,6 +637,9 @@ func (c *Calculator) calculatePointBA(deltaT float32, x, z int) {
 	var index1 = int(ThermalField[z][0][x-1])/5 - 1
 	var index2 = int(ThermalField[z][0][x+1])/5 - 1
 	var index3 = int(ThermalField[z][1][x])/5 - 1
+	if int(ThermalField[z][0][x]) == 1555 || int(ThermalField[z][0][x-1]) == 1555 || int(ThermalField[z][0][x+1]) == 1555 || int(ThermalField[z][1][x]) == 1555 {
+		fmt.Println(int(ThermalField[z][0][x]), int(ThermalField[z][0][x-1]), int(ThermalField[z][0][x+1]), int(ThermalField[z][1][x]))
+	}
 	var deltaHba = c.GetLambda(index, index1, x, 0, x-1, 0)*
 		float32(int(ThermalField[z][0][x-1]-ThermalField[z][0][x]))/
 		float32(XStep*(getEx(x-1)+getEx(x))) +
@@ -441,12 +650,12 @@ func (c *Calculator) calculatePointBA(deltaT float32, x, z int) {
 			float32(int(ThermalField[z][1][x]-ThermalField[z][0][x]))/
 			float32(YStep*(getEy(1)+getEy(0)))
 
-	deltaHba = deltaHba * (2 * deltaT / c.Density[index])
+	deltaHba = deltaHba * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][0][x] = ThermalField[z][0][x] - deltaHba/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][0][x] = ThermalField[z][0][x] - deltaHba/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][0][x] = ThermalField[z][0][x] - deltaHba/c.C[index]
+		c.ThermalField[z][0][x] = ThermalField[z][0][x] - deltaHba/C[index]
 	}
 }
 
@@ -468,12 +677,12 @@ func (c *Calculator) calculatePointLB(deltaT float32, z int) {
 			float32(int(ThermalField[z][1][0]-ThermalField[z][0][0]))/
 			float32(YStep*(getEy(1)+getEy(0)))
 
-	deltaHlb = deltaHlb * (2 * deltaT / c.Density[index])
+	deltaHlb = deltaHlb * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][0][0] = ThermalField[z][0][0] - deltaHlb/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][0][0] = ThermalField[z][0][0] - deltaHlb/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][0][0] = ThermalField[z][0][0] - deltaHlb/c.C[index]
+		c.ThermalField[z][0][0] = ThermalField[z][0][0] - deltaHlb/C[index]
 	}
 }
 
@@ -499,12 +708,12 @@ func (c *Calculator) calculatePointLA(deltaT float32, y, z int) {
 			float32(int(ThermalField[z][y+1][0]-ThermalField[z][y][0]))/
 			float32(YStep*(getEy(y)+getEy(y+1)))
 
-	deltaHla = deltaHla * (2 * deltaT / c.Density[index])
+	deltaHla = deltaHla * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][y][0] = ThermalField[z][y][0] - deltaHla/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][y][0] = ThermalField[z][y][0] - deltaHla/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][y][0] = ThermalField[z][y][0] - deltaHla/c.C[index]
+		c.ThermalField[z][y][0] = ThermalField[z][y][0] - deltaHla/C[index]
 	}
 }
 
@@ -521,6 +730,9 @@ func (c *Calculator) calculatePointIN(deltaT float32, x, y, z int) {
 	var index2 = int(ThermalField[z][y][x+1])/5 - 1
 	var index3 = int(ThermalField[z][y-1][x])/5 - 1
 	var index4 = int(ThermalField[z][y+1][x])/5 - 1
+	if int(ThermalField[z][y][x]) == 1555 || int(ThermalField[z][y][x-1]) == 1555 || int(ThermalField[z][y][x+1]) == 1555 || int(ThermalField[z][y+1][x]) == 1555 {
+		fmt.Println(int(ThermalField[z][y][x]), int(ThermalField[z][y][x-1]), int(ThermalField[z][y][x+1]), int(ThermalField[z][y+1][x]))
+	}
 	var deltaHin = c.GetLambda(index, index1, x-1, y, x, y)*
 		float32(int(ThermalField[z][y][x-1]-ThermalField[z][y][x]))/
 		float32(XStep*(getEx(x)+getEx(x-1))) +
@@ -534,19 +746,18 @@ func (c *Calculator) calculatePointIN(deltaT float32, x, y, z int) {
 			float32(int(ThermalField[z][y+1][x]-ThermalField[z][y][x]))/
 			float32(YStep*(getEy(y)+getEy(y+1)))
 
-	deltaHin = deltaHin * (2 * deltaT / c.Density[index])
+	deltaHin = deltaHin * (2 * deltaT / Density[index])
 
 	if c.alternating {
-		c.ThermalField1[z][y][x] = ThermalField[z][y][x] - deltaHin/c.C[index] // 需要修改焓的变化到温度变化的映射关系
+		c.ThermalField1[z][y][x] = ThermalField[z][y][x] - deltaHin/C[index] // 需要修改焓的变化到温度变化的映射关系
 	} else {
-		c.ThermalField[z][y][x] = ThermalField[z][y][x] - deltaHin/c.C[index]
+		c.ThermalField[z][y][x] = ThermalField[z][y][x] - deltaHin/C[index]
 	}
 }
 
-func (c *Calculator) CalculateSerially() {
+func (c *Calculator) CalculateSerially(deltaT float32) {
 	var start = time.Now()
 	for count := 0; count < 4; count++ {
-		var deltaT = c.calculateTimeStep()
 		for k := 0; k < ZLength/ZStep; k++ {
 			// 先计算点，再计算外表面，再计算里面的点
 			c.calculatePointLT(deltaT, k)
@@ -581,9 +792,8 @@ func (c *Calculator) CalculateSerially() {
 	fmt.Println("串行计算时间: ", time.Since(start))
 }
 
-func (c *Calculator) calculateCase1() {
+func (c *Calculator) calculateCase1(deltaT float32) {
 	var start = time.Now()
-	var deltaT = c.calculateTimeStep()
 	var count = 0
 	for k := 0; k < ZLength/ZStep; k++ {
 		// 先计算点，再计算外表面，再计算里面的点
@@ -627,9 +837,8 @@ func (c *Calculator) calculateCase1() {
 	fmt.Println("任务1执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
-func (c *Calculator) calculateCase2() {
+func (c *Calculator) calculateCase2(deltaT float32) {
 	var start = time.Now()
-	var deltaT = c.calculateTimeStep()
 	var count = 0
 	for k := 0; k < ZLength/ZStep; k++ {
 		// 先计算点，再计算外表面，再计算里面的点
@@ -672,9 +881,8 @@ func (c *Calculator) calculateCase2() {
 	fmt.Println("任务2执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
-func (c *Calculator) calculateCase3() {
+func (c *Calculator) calculateCase3(deltaT float32) {
 	var start = time.Now()
-	var deltaT = c.calculateTimeStep()
 	var count = 0
 	for k := 0; k < ZLength/ZStep; k++ {
 		// 先计算点，再计算外表面，再计算里面的点
@@ -717,9 +925,8 @@ func (c *Calculator) calculateCase3() {
 	fmt.Println("任务3执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
-func (c *Calculator) calculateCase4() {
+func (c *Calculator) calculateCase4(deltaT float32) {
 	var start = time.Now()
-	var deltaT = c.calculateTimeStep()
 	var count = 0
 	for k := 0; k < ZLength/ZStep; k++ {
 		// 先计算点，再计算外表面，再计算里面的点
@@ -762,58 +969,86 @@ func (c *Calculator) calculateCase4() {
 	fmt.Println("任务4执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
-func (c *Calculator) CalculateConcurrently() {
+func (c *Calculator) CalculateConcurrently(deltaT float32) time.Duration {
 	var start = time.Now()
 	var wg = sync.WaitGroup{}
 	wg.Add(4)
 	go func() {
-		c.calculateCase1()
+		c.calculateCase1(deltaT)
 		wg.Done()
 	}()
 	go func() {
-		c.calculateCase2()
+		c.calculateCase2(deltaT)
 		wg.Done()
 	}()
 	go func() {
-		c.calculateCase3()
+		c.calculateCase3(deltaT)
 		wg.Done()
 	}()
 	go func() {
-		c.calculateCase4()
+		c.calculateCase4(deltaT)
 		wg.Done()
 	}()
 	wg.Wait()
 	fmt.Println("并行计算时间：", time.Since(start))
+	return time.Since(start)
 }
 
 func (c *Calculator) Calculate() {
 	// 四个核心一起计算
-	//for count := 0; count < 100; count++ {
-	//	c.CalculateConcurrently()
-	//	for i := 0; i < 100; i++ {
-	//		for j := 0; j < len(c.ThermalField[i]); j++ {
-	//			for k := 0; k < len(c.ThermalField[i][j]); k++ {
-	//				if c.ThermalField[i][j][k] != 1550 {
-	//					fmt.Print(c.ThermalField[i][j][k], " ")
-	//				}
-	//			}
-	//			fmt.Println()
-	//		}
-	//	}
-	//}
-
 	for count := 0; count < 100; count++ {
 		deltaT := c.calculateTimeStep()
-		c.calculatePointLT(deltaT, 0)
-		c.calculatePointLA(deltaT, 1, 0)
-		c.calculatePointRT(deltaT, 0)
-		c.calculatePointRA(deltaT, 1, 0)
-		c.calculatePointRB(deltaT, 0)
-		c.calculatePointBA(deltaT, 2, 0)
-		fmt.Println(c.ThermalField[0][41][269], c.ThermalField1[0][41][269])
-		c.alternating = !c.alternating
+		c.CalculateConcurrently(deltaT)
+		//for i := 0; i < 100; i++ {
+		//	for j := 0; j < len(c.ThermalField[i]); j++ {
+		//		for k := 0; k < len(c.ThermalField[i][j]); k++ {
+		//			if c.ThermalField[i][j][k] > 1550 || c.ThermalField1[i][j][k] > 1550 {
+		//				fmt.Print(c.ThermalField[i][j][k], c.ThermalField1[i][j][k])
+		//			}
+		//		}
+		//	}
+		//}
 	}
+
+	//for count := 0; count < 100; count++ {
+	//	deltaT := c.calculateTimeStep()
+	//	c.calculatePointLT(deltaT, 0)
+	//	c.calculatePointLA(deltaT, 1, 0)
+	//	c.calculatePointRT(deltaT, 0)
+	//	c.calculatePointRA(deltaT, 1, 0)
+	//	c.calculatePointRB(deltaT, 0)
+	//	c.calculatePointBA(deltaT, 2, 0)
+	//	fmt.Println(c.ThermalField[0][41][269], c.ThermalField1[0][41][269])
+	//	c.alternating = !c.alternating
+	//}
 
 	// 一个核心计算
 	//c.CalculateSerially()
+}
+
+func (c *Calculator) Run() {
+	// 先计算timeStep
+	duration := time.Second * 0
+	count := 1
+	for {
+		if count > 100 {
+			return
+		}
+		fmt.Println(count)
+	LOOP:
+		select {
+		case <-c.CalcHub.Stop:
+			break LOOP
+		default:
+			count++
+			deltaT := c.calculateTimeStep()
+			calcDuration := c.CalculateConcurrently(deltaT)
+			duration += calcDuration
+			fmt.Println(duration)
+			if duration > time.Second*4 {
+				c.CalcHub.PushSignal()
+				duration = time.Second * 0
+			}
+		}
+	}
 }
