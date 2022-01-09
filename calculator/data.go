@@ -49,31 +49,37 @@ type DownSides struct {
 }
 
 func (c *Calculator) BuildData() TemperatureData {
+	var ThermalField *[ZLength/ZStep][Width/YStep][Length/XStep]float32
+	if c.alternating {
+		ThermalField = &c.ThermalField
+	} else {
+		ThermalField = &c.ThermalField1
+	}
 	start := time.Now()
 	upSides := UpSides{}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := 0; x < Length/XStep; x += stepX {
-			upSides.Up[y/stepY][x/stepX] = c.ThermalField[0][y][x]
+			upSides.Up[y/stepY][x/stepX] = ThermalField[0][y][x]
 		}
 	}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := 0; x < upLength; x += stepZ {
-			upSides.Left[y/stepY][x/stepZ] = c.ThermalField[x][y][0]
+			upSides.Left[y/stepY][x/stepZ] = ThermalField[x][y][0]
 		}
 	}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := 0; x < upLength; x += stepZ {
-			upSides.Right[y/stepY][x/stepZ] = c.ThermalField[x][y][Length/XStep-1]
+			upSides.Right[y/stepY][x/stepZ] = ThermalField[x][y][Length/XStep-1]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := 0; x < upLength; x += stepZ {
-			upSides.Front[y/stepX][x/stepZ] = c.ThermalField[x][Width/YStep-1][y]
+			upSides.Front[y/stepX][x/stepZ] = ThermalField[x][Width/YStep-1][y]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := 0; x < upLength; x += stepZ {
-			upSides.Back[y/stepX][x/stepZ] = c.ThermalField[x][0][y]
+			upSides.Back[y/stepX][x/stepZ] = ThermalField[x][0][y]
 		}
 	}
 
@@ -82,22 +88,22 @@ func (c *Calculator) BuildData() TemperatureData {
 	zEnd := upLength + arcLength
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := zStart; x < zEnd; x += stepZ {
-			arcSides.Left[y/stepY][(x-zStart)/stepZ] = c.ThermalField[x][y][0]
+			arcSides.Left[y/stepY][(x-zStart)/stepZ] = ThermalField[x][y][0]
 		}
 	}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := zStart; x < zEnd; x += stepZ {
-			arcSides.Right[y/stepY][(x-zStart)/stepZ] = c.ThermalField[x][y][Length/XStep-1]
+			arcSides.Right[y/stepY][(x-zStart)/stepZ] = ThermalField[x][y][Length/XStep-1]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := zStart; x < zEnd; x += stepZ {
-			arcSides.Front[y/stepX][(x-zStart)/stepZ] = c.ThermalField[x][Width/YStep-1][y]
+			arcSides.Front[y/stepX][(x-zStart)/stepZ] = ThermalField[x][Width/YStep-1][y]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := zStart; x < zEnd; x += stepZ {
-			arcSides.Back[y/stepX][(x-zStart)/stepZ] = c.ThermalField[x][0][y]
+			arcSides.Back[y/stepX][(x-zStart)/stepZ] = ThermalField[x][0][y]
 		}
 	}
 
@@ -106,27 +112,27 @@ func (c *Calculator) BuildData() TemperatureData {
 	zEnd = upLength + arcLength + downLength
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := 0; x < Length/XStep; x += stepX {
-			downSides.Down[y/stepY][x/stepX] = c.ThermalField[zEnd-1][y][x]
+			downSides.Down[y/stepY][x/stepX] = ThermalField[zEnd-1][y][x]
 		}
 	}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := zStart; x < zEnd; x += stepZ {
-			downSides.Left[y/stepY][(x-zStart)/stepZ] = c.ThermalField[x][y][0]
+			downSides.Left[y/stepY][(x-zStart)/stepZ] = ThermalField[x][y][0]
 		}
 	}
 	for y := 0; y < Width/YStep; y += stepY {
 		for x := zStart; x < zEnd; x += stepZ {
-			downSides.Right[y/stepY][(x-zStart)/stepZ] = c.ThermalField[x][y][Length/XStep-1]
+			downSides.Right[y/stepY][(x-zStart)/stepZ] = ThermalField[x][y][Length/XStep-1]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := zStart; x < zEnd; x += stepZ {
-			downSides.Front[y/stepX][(x-zStart)/stepZ] = c.ThermalField[x][Width/YStep-1][y]
+			downSides.Front[y/stepX][(x-zStart)/stepZ] = ThermalField[x][Width/YStep-1][y]
 		}
 	}
 	for y := 0; y < Length/XStep; y += stepX {
 		for x := zStart; x < zEnd; x += stepZ {
-			downSides.Back[y/stepX][(x-zStart)/stepZ] = c.ThermalField[x][0][y]
+			downSides.Back[y/stepX][(x-zStart)/stepZ] = ThermalField[x][0][y]
 		}
 	}
 	fmt.Println("build data cost: ", time.Since(start))

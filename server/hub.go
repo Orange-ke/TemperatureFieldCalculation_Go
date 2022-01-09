@@ -53,6 +53,7 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.Println("err: ", err)
 			}
+			h.c.CalcHub.StartSignal()
 			go h.c.Run()
 			go h.pushData()
 		case <-h.stopped:
