@@ -24,7 +24,8 @@ func NewServer(addr string, upgrader websocket.Upgrader) *Server {
 // serveWs handles websocket requests from the peer.
 func (s *Server) serveWs(w http.ResponseWriter, r *http.Request) {
 	hub := NewHub()
-	c := calculator.NewCalculator(0)
+	//c := calculator.NewCalculator(0)
+	c := calculator.NewCalculatorWithArrDeque(0)
 	conn, err := s.upgrader.Upgrade(w, r, nil)
 	hub.conn = conn
 	hub.c = c

@@ -6,7 +6,7 @@ import (
 )
 
 func TestBuildData(t *testing.T) {
-	c := calculator.NewCalculator(0)
+	c := calculator.NewCalcHub()
 	h := NewHub()
 	h.c = c
 	h.c.BuildData()

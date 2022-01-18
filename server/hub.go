@@ -11,7 +11,7 @@ import (
 
 // Hub maintains the set of active clients and broadcasts messages to the clients.
 type Hub struct {
-	c    *calculator.Calculator
+	c    calculator.Calculator
 	conn *websocket.Conn
 	// request
 	msg chan model.Msg
@@ -53,11 +53,11 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.Println("err: ", err)
 			}
-			h.c.CalcHub.StartSignal()
+			h.c.GetCalcHub().StartSignal()
 			go h.c.Run()
 			go h.pushData()
 		case <-h.stopped:
-			h.c.CalcHub.StopSignal()
+			h.c.GetCalcHub().StopSignal()
 			reply := model.Msg{
 				Type:    "stopped",
 				Content: "stopped",
@@ -100,9 +100,9 @@ func (h *Hub) pushData() {
 Loop:
 	for {
 		select {
-		case <-h.c.CalcHub.Stop:
+		case <-h.c.GetCalcHub().Stop:
 			break Loop
-		case <-h.c.CalcHub.PeriodCalcResult:
+		case <-h.c.GetCalcHub().PeriodCalcResult:
 			temperatureData := h.c.BuildData()
 			data, err := json.Marshal(temperatureData)
 			if err != nil {
