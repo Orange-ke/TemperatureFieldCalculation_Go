@@ -87,17 +87,17 @@ func (ad *ArrDeque) Get(z, y, x int) float32 {
 	if z >= l1+l2 {
 		panic("index out of length")
 	}
-	if ad.isFull {
-		fmt.Println(z, l1, l2, "Set")
-	}
 	if ad.state == state0 {
+		//fmt.Println(z, l1, l2, "Set state0")
 		return ad.container.arr[z+ad.container.start][y][x]
 	} else if ad.state == state01 {
+		//fmt.Println(z, l1, l2, "Set state01")
 		if z < l1 {
 			return ad.container.arr[z+ad.container.start][y][x]
 		}
 		return ad.container1.arr[z-l1+ad.container1.start][y][x]
 	} else {
+		//fmt.Println(z, l1, l2, "Set state1")
 		return ad.container1.arr[z+ad.container1.start][y][x]
 	}
 }
@@ -107,18 +107,18 @@ func (ad *ArrDeque) Set(z, y, x int, number float32) {
 	if z >= l1+l2 {
 		panic("index out of length")
 	}
-	if ad.isFull {
-		fmt.Println(z, l1, l2, "Set")
-	}
 	if ad.state == state0 {
+		//fmt.Println(z, l1, l2, "Set state0")
 		ad.container.arr[z+ad.container.start][y][x] = number
 	} else if ad.state == state01 {
+		//fmt.Println(z, l1, l2, "Set state01")
 		if z < l1 {
 			ad.container.arr[z+ad.container.start][y][x] = number
 		} else {
 			ad.container1.arr[z-l1+ad.container1.start][y][x] = number
 		}
 	} else {
+		//fmt.Println(z, l1, l2, "Set state1")
 		ad.container1.arr[z+ad.container1.start][y][x] = number
 	}
 }
@@ -252,6 +252,7 @@ func (ad *ArrDeque) AddFirst(initialVal float32) {
 		//fmt.Println(ad.container.end, ad.container.start, ad.container1.end, ad.container1.start, ad.capacity, "AddFirst")
 	} else {
 		// todo 扩容
+		fmt.Println("full...")
 	}
 }
 

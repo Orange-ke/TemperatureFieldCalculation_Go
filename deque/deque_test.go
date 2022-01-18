@@ -2,7 +2,6 @@ package deque
 
 import (
 	"fmt"
-	"lz/calculator"
 	"lz/model"
 	"testing"
 	"time"
@@ -11,27 +10,46 @@ import (
 func TestArrDeque_Traverse(t *testing.T) {
 	deque := NewArrDeque(4000)
 	for i := 0; i < 4000; i++ {
-		deque.AddLast([calculator.Width / calculator.YStep][calculator.Length / calculator.XStep]float32{})
+		deque.AddFirst(1550.0)
 	}
-	start := time.Now()
-	for c := 0; c < 100; c++ {
-		deque.Traverse(func(z int, item *model.ItemType) {
-			//fmt.Printf("%p \n", item)
-			for i := 0; i < len(item); i++ {
-				for j := 0; j < len(item[0]); j++ {
-					item[i][j] += 1
-				}
-			}
-		})
-	}
+	//start := time.Now()
+	//for c := 0; c < 100; c++ {
+	//	deque.Traverse(func(z int, item *model.ItemType) {
+	//		//fmt.Printf("%p \n", item)
+	//		for i := 0; i < len(item); i++ {
+	//			for j := 0; j < len(item[0]); j++ {
+	//				item[i][j] += 1
+	//			}
+	//		}
+	//	})
+	//}
+	//
+	//fmt.Println(time.Since(start))
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.RemoveLast()
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.AddFirst(1550.0)
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.AddFirst(1550.0)
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.RemoveLast()
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.AddFirst(1550.0)
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.RemoveLast()
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
+	deque.AddFirst(1550.0)
+	fmt.Println(deque.IsFull())
+	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
 
-	fmt.Println(time.Since(start))
+	deque.Set(deque.Size() - 1, 41, 269, 1490)
+	fmt.Println(deque.Get(deque.Size() - 1, 41, 269))
 }
 
 func TestListDeque_Traverse(t *testing.T) {
-	deque := NewListDeque()
+	deque := NewListDeque(4000)
 	for i := 0; i < 4000; i++ {
-		deque.AddLast([calculator.Width / calculator.YStep][calculator.Length / calculator.XStep]float32{})
+		deque.AddLast(1550.0)
 	}
 	start := time.Now()
 	for c := 0; c < 100; c++ {

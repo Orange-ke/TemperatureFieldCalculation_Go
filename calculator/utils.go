@@ -353,6 +353,8 @@ func buildDataHelper(ThermalField *ThermalFieldStruct, temperatureData *Temperat
 			temperatureData.Down.Back[Length/XStep/2-y/stepX-1][(x-zStart)/stepZ] = ThermalField.Field[x][Width/YStep-1][y]
 		}
 	}
+
+	//fmt.Printf("up up: 长%d 宽%d")
 	fmt.Println("build data cost: ", time.Since(startTime))
 	// temperatureData
 }

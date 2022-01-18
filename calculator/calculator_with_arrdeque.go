@@ -111,21 +111,22 @@ LOOP:
 			}
 			duration += calcDuration
 			// todo 这里需要根据准确的deltaT来确定时间步长
-			c.updateSliceInfo(calcDuration)
 			if c.alternating {
 				c.Field = c.thermalField1
 			} else {
 				c.Field = c.thermalField
 			}
-			if !c.Field.IsEmpty() {
-				for i := Width/YStep - 1; i > Width/YStep-6; i-- {
-					for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
-						fmt.Print(c.Field.Get(c.Field.Size() - 1, i, j), " ")
-					}
-					fmt.Print(i)
-					fmt.Println()
-				}
-			}
+
+			c.updateSliceInfo(calcDuration)
+			//if !c.Field.IsEmpty() {
+			//	for i := Width/YStep - 1; i > Width/YStep-6; i-- {
+			//		for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
+			//			fmt.Print(c.Field.Get(c.Field.Size() - 1, i, j), " ")
+			//		}
+			//		fmt.Print(i)
+			//		fmt.Println()
+			//	}
+			//}
 			c.alternating = !c.alternating // 仅在这里修改
 			fmt.Println("计算温度场花费的时间：", duration)
 			if duration > time.Second*4 {
@@ -166,6 +167,13 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			c.thermalField1.RemoveLast()
 			c.thermalField.AddFirst(c.initialTemperature)
 			c.thermalField1.AddFirst(c.initialTemperature)
+		}
+		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
+			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
+				fmt.Print(c.Field.Get(c.Field.Size() - 1, i, j), " ")
+			}
+			fmt.Print(i)
+			fmt.Println()
 		}
 	} else {
 		fmt.Println("updateSliceInfo: 切片未满")
@@ -259,7 +267,7 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 		ThermalField.Start = 0
 		ThermalField.End = z
 	}
-
+	fmt.Println("BuildData 温度场的长度：", z)
 	if !c.Field.IsEmpty() {
 		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
 			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
