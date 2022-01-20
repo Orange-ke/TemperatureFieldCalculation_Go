@@ -26,6 +26,7 @@ func (s *Server) serveWs(w http.ResponseWriter, r *http.Request) {
 	hub := NewHub()
 	//c := calculator.NewCalculator(0)
 	c := calculator.NewCalculatorWithArrDeque(0)
+	//c := calculator.NewCalculatorWithListDeque(0)
 	conn, err := s.upgrader.Upgrade(w, r, nil)
 	hub.conn = conn
 	hub.c = c

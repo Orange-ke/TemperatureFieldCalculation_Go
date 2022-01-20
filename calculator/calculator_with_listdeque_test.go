@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewCalculatorWithArrDeque(t *testing.T) {
+func TestNewCalculatorWithListDeque(t *testing.T) {
 	c := NewCalculatorWithArrDeque(0)
 
 	for i := 0; i < 4000; i++ {
@@ -56,7 +56,8 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 	}
 }
 
-func TestCalculatorWithArrDeque_Calculate(t *testing.T) {
-	c := NewCalculatorWithArrDeque(0)
+
+func TestCalculatorWithListDeque_Calculate(t *testing.T) {
+	c := NewCalculatorWithListDeque(0)
 	c.Calculate()
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"lz/deque"
 	"lz/model"
-	"math"
 	"sync"
 	"time"
 )
@@ -36,11 +35,13 @@ type calculatorWithArrDeque struct {
 	isFull      bool // 铸机未充满
 	isSeparated bool // 两种钢种
 
+	e *executor
+
 	mu sync.Mutex // 保护push data时对温度数据的并发访问
 }
 
 func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
-	calculatorWithArrDeque := &calculatorWithArrDeque{}
+	c := &calculatorWithArrDeque{}
 	if edgeWidth < 0 {
 		edgeWidth = 0
 	}
@@ -49,26 +50,111 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 	}
 
 	start := time.Now()
-	calculatorWithArrDeque.initialTemperature = 1550.0
-	calculatorWithArrDeque.thermalField = deque.NewArrDeque(ZLength / ZStep)
-	calculatorWithArrDeque.thermalField1 = deque.NewArrDeque(ZLength / ZStep)
+	c.initialTemperature = 1550.0
+	c.thermalField = deque.NewArrDeque(ZLength / ZStep)
+	c.thermalField1 = deque.NewArrDeque(ZLength / ZStep)
 
-	calculatorWithArrDeque.Field = calculatorWithArrDeque.thermalField
+	c.Field = c.thermalField
 
-	calculatorWithArrDeque.v = int64(10 * 1.5 * 1000 / 60) // m / min
-	calculatorWithArrDeque.alternating = true
-	calculatorWithArrDeque.calcHub = NewCalcHub()
+	c.v = int64(10 * 1.5 * 1000 / 60) // m / min
+	c.alternating = true
+	c.calcHub = NewCalcHub()
 
-	calculatorWithArrDeque.edgeWidth = edgeWidth
-	calculatorWithArrDeque.step = 1
-	if calculatorWithArrDeque.edgeWidth > 0 {
-		calculatorWithArrDeque.step = 2
+	c.edgeWidth = edgeWidth
+	c.step = 1
+	if c.edgeWidth > 0 {
+		c.step = 2
 	}
 
 	initParameters()
 
+	c.e = newExecutor(4, func(t task) {
+		start := time.Now()
+		count := 0
+		c.Field.TraverseSpirally(t.start, t.end, func(z int, item *model.ItemType) {
+			left, right, top, bottom := 0, Length/XStep-1, 0, Width/YStep-1 // 每个切片迭代时需要重置
+			// 计算最外层， 逆时针
+			// 1. 三个顶点，左下方顶点仅当其外一层温度不是初始温度时才开始计算
+			//c.calculatePointLB(t.deltaT, z, item) 不用计算，因为还未产生温差
+			{
+				c.calculatePointRB(t.deltaT, z, item)
+				c.calculatePointRT(t.deltaT, z, item)
+				c.calculatePointLT(t.deltaT, z, item)
+				count += 3
+				for row := top + 1; row < bottom; row++ {
+					// [row][right]
+					c.calculatePointRA(t.deltaT, row, z, item)
+					count++
+				}
+				for column := right - 1; column > left; column-- {
+					// [bottom][column]
+					c.calculatePointTA(t.deltaT, column, z, item)
+					count++
+				}
+				right--
+				bottom--
+			}
+
+			{
+				//stop := 0 // 当出现两层的温度都是 初始温度时，则停止遍历
+				//allNotChanged := true
+				// 逆时针
+				for left <= right && top <= bottom {
+					c.calculatePointBA(t.deltaT, right, z, item)
+					if item[0][right] != c.initialTemperature {
+						//allNotChanged = false
+					}
+					count++
+					for row := top + 1; row <= bottom; row++ {
+						// [row][right]
+						c.calculatePointIN(t.deltaT, right, row, z, item)
+						if item[row][right] != c.initialTemperature {
+							//allNotChanged = false
+						}
+						count++
+					}
+					if left < right && top < bottom {
+						for column := right - 1; column > left; column-- {
+							// [bottom][column]
+							c.calculatePointIN(t.deltaT, column, bottom, z, item)
+							if item[bottom][column] == c.initialTemperature {
+								//allNotChanged = false
+							}
+							count++
+						}
+						c.calculatePointLA(t.deltaT, bottom, z, item)
+						if item[bottom][0] != c.initialTemperature {
+							//allNotChanged = false
+						}
+						count++
+					}
+					if top == bottom {
+						c.calculatePointLB(t.deltaT, z, item)
+						count++
+						for column := right - 1; column > left; column-- {
+							c.calculatePointBA(t.deltaT, column, z, item)
+							count++
+						}
+					}
+					right--
+					bottom--
+					// 如果该层与其的温度都未改变，即都是初始温度则计数
+					//if allNotChanged {
+					//	stop++
+					//	allNotChanged = true
+					//	if stop == 2 {
+					//		break
+					//	}
+					//}
+				}
+			}
+		})
+		fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end - t.start) * 11340)
+	})
+	c.e.run()
+
 	fmt.Println("初始化时间: ", time.Since(start))
-	return calculatorWithArrDeque
+	return c
 }
 
 func (c *calculatorWithArrDeque) GetCalcHub() *CalcHub {
@@ -94,20 +180,21 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 func (c *calculatorWithArrDeque) Run() {
 	// 先计算timeStep
 	duration := time.Second * 0
-	//count := 0
+	count := 0
 LOOP:
 	for {
-		//if count > 0 {
-		//	return
-		//}
+		if count > 100 {
+			return
+		}
 		select {
 		case <-c.calcHub.Stop:
 			break LOOP
 		default:
 			deltaT, _ := c.calculateTimeStep()
-			calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
-			if calcDuration < 250*time.Millisecond {
-				calcDuration = 250 * time.Millisecond
+			//calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
+			calcDuration := c.calculateConcurrentlyBySlice(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
+			if calcDuration < 25*time.Millisecond {
+				calcDuration = 25 * time.Millisecond
 			}
 			duration += calcDuration
 			// todo 这里需要根据准确的deltaT来确定时间步长
@@ -131,7 +218,7 @@ LOOP:
 			fmt.Println("计算温度场花费的时间：", duration)
 			if duration > time.Second*4 {
 				c.calcHub.PushSignal()
-				//count++
+				count++
 				duration = time.Second * 0
 			}
 		}
@@ -147,7 +234,7 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 	}
 	c.reminder = distance % 1e7 // Microseconds = 1e6 and zStep = 10
 	newSliceNum := distance / 1e7
-	add := int(newSliceNum)             // 加入的新切片数
+	add := int(newSliceNum) // 加入的新切片数
 	if c.isTail {
 		// 处理拉尾坯的阶段
 		fmt.Println("updateSliceInfo: 拉尾坯")
@@ -170,7 +257,7 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 		}
 		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
 			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
-				fmt.Print(c.Field.Get(c.Field.Size() - 1, i, j), " ")
+				fmt.Print(c.Field.Get(c.Field.Size()-1, i, j), " ")
 			}
 			fmt.Print(i)
 			fmt.Println()
@@ -196,6 +283,17 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 	fmt.Println("updateSliceInfo 目前的切片数为：", c.Field.Size())
 }
 
+// 并行计算方法2
+func (c *calculatorWithArrDeque) calculateConcurrentlyBySlice(deltaT float32) time.Duration {
+	fmt.Println("calculate start")
+	start := time.Now()
+	c.e.start <- task{start: 0, end: c.Field.Size(), deltaT: deltaT}
+	fmt.Println("task dispatched")
+	<- c.e.finish
+	fmt.Println("task finished")
+	return time.Since(start)
+}
+
 // 并行计算方法1
 func (c *calculatorWithArrDeque) calculateConcurrently(deltaT float32) time.Duration {
 	var start = time.Now()
@@ -214,11 +312,11 @@ func (c *calculatorWithArrDeque) calculateConcurrently(deltaT float32) time.Dura
 		wg.Done()
 	}()
 	go func() {
-		c.calculateCase3(deltaT)
+		c.calculateCase4(deltaT)
 		wg.Done()
 	}()
 	wg.Wait()
-	fmt.Println("并行计算时间：", time.Since(start))
+	//fmt.Println("并行计算时间：", time.Since(start))
 	return time.Since(start)
 }
 
@@ -285,11 +383,9 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 	return temperatureData
 }
 
-
-
 // 并行计算
 func (c *calculatorWithArrDeque) calculateCase1(deltaT float32) {
-	var start = time.Now()
+	//var start = time.Now()
 	var count = 0
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		// 先计算点，再计算外表面，再计算里面的点
@@ -329,7 +425,7 @@ func (c *calculatorWithArrDeque) calculateCase1(deltaT float32) {
 		}
 	})
 
-	fmt.Println("任务1执行时间: ", time.Since(start), "总共计算：", count, "个点")
+	//fmt.Println("任务1执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
 func (c *calculatorWithArrDeque) calculateCase2(deltaT float32) {
@@ -460,7 +556,6 @@ func (c *calculatorWithArrDeque) calculateCase4(deltaT float32) {
 	})
 	fmt.Println("任务4执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
-
 
 // 计算一个left top点的温度变化
 func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *model.ItemType) {
@@ -648,8 +743,8 @@ func (c *calculatorWithArrDeque) Calculate() {
 		c.thermalField1.AddFirst(c.initialTemperature)
 	}
 
-	for count := 0; count < 10; count++ {
-		fmt.Println(c.alternating)
+	start := time.Now()
+	for count := 0; count < 100; count++ {
 		deltaT, _ := c.calculateTimeStep()
 
 		c.calculateConcurrently(deltaT)
@@ -660,15 +755,17 @@ func (c *calculatorWithArrDeque) Calculate() {
 			c.Field = c.thermalField
 		}
 
-		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
-			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
-				fmt.Print(math.Floor(float64(c.Field.Get(c.Field.Size() - 1, i, j))), " ")
-			}
-			fmt.Print(i)
-			fmt.Println()
-		}
+		//for i := Width/YStep - 1; i > Width/YStep-6; i-- {
+		//	for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
+		//		fmt.Print(math.Floor(float64(c.Field.Get(c.Field.Size()-1, i, j))), " ")
+		//	}
+		//	fmt.Print(i)
+		//	fmt.Println()
+		//}
 		c.alternating = !c.alternating
 	}
+
+	fmt.Println("arr deque 总共消耗时间：", time.Since(start), "平均消耗时间: ", time.Since(start)/100)
 
 	// 一个核心计算
 	//c.CalculateSerially()

@@ -71,7 +71,7 @@ func NewArrDeque(capacity int) *ArrDeque {
 		container:  container,
 		container1: container1,
 		size:       0,
-		capacity: capacity,
+		capacity:   capacity,
 		isFull:     false,
 		isEmpty:    true,
 		state:      state0,
@@ -134,7 +134,38 @@ func (ad *ArrDeque) Traverse(f func(z int, item *model.ItemType)) {
 		f(k, &ad.container1.arr[z])
 		k++
 	}
-	fmt.Println("Traverse 切片数：", k, ad.container.start, ad.container.end, ad.container1.start, ad.container1.end)
+	//fmt.Println("Traverse 切片数：", k, ad.container.start, ad.container.end, ad.container1.start, ad.container1.end)
+}
+
+func (ad *ArrDeque) TraverseSpirally(start, end int, f func(z int, item *model.ItemType)) {
+	l1 := ad.container.end - ad.container.start
+	k := start
+	if end <= l1 {
+		for z := ad.container.start + start; z < ad.container.start+end; z++ {
+			f(k, &ad.container.arr[z])
+			k++
+		}
+		return
+	}
+	l := end - start
+	if l1 <= start {
+		start -= l1
+		for z := ad.container1.start + start; z < ad.container1.start+start+l; z++ {
+			f(k, &ad.container1.arr[z])
+			k++
+		}
+		return
+	}
+	l = ad.container.end - (ad.container.start + start)
+	for z := ad.container.start + start; z < ad.container.end; z++ {
+		f(k, &ad.container.arr[z])
+		k++
+	}
+	remainder := end - start - l
+	for z := ad.container1.start; z < ad.container1.start+remainder; z++ {
+		f(k, &ad.container1.arr[z])
+		k++
+	}
 }
 
 func (ad *ArrDeque) AddLast(initialVal float32) {

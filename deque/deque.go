@@ -24,6 +24,9 @@ type Deque interface {
 	// 正向遍历
 	Traverse(f func(z int, item *model.ItemType))
 
+	// 螺旋遍历
+	TraverseSpirally(start, end int, f func(z int, item *model.ItemType))
+
 	// 在队列结尾增加一个元素
 	AddLast(initialVal float32)
 
