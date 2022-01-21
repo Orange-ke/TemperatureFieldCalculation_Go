@@ -47,6 +47,12 @@ type originCalculator struct {
 
 	CalcHub *CalcHub
 
+	// 状态
+	isFlowing   bool // 是否有新的钢液注入
+	isTail      bool // 拉尾坯
+	isFull      bool // 铸机未充满
+	isSeparated bool // 两种钢种
+
 	Mu sync.Mutex // 保护push data时对温度数据的并发访问
 }
 
@@ -801,6 +807,10 @@ func (c *originCalculator) BuildData() *TemperatureData {
 	temperatureData.End = ThermalField.End
 	temperatureData.IsFull = ThermalField.IsFull
 	return temperatureData
+}
+
+func (c *originCalculator) SetStateTail() {
+	c.isTail = true
 }
 
 func (c *originCalculator) test() {

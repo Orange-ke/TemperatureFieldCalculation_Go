@@ -8,6 +8,12 @@ import (
 	"time"
 )
 
+const (
+	stateNotRunning = 0
+	stateRunning    = 1
+	stateSuspended  = 2
+)
+
 type calculatorWithArrDeque struct {
 	// 计算参数
 	edgeWidth int
@@ -30,10 +36,12 @@ type calculatorWithArrDeque struct {
 	calcHub *CalcHub
 
 	// 状态
-	isFlowing   bool // 是否有新的钢液注入
-	isTail      bool // 拉尾坯
-	isFull      bool // 铸机未充满
-	isSeparated bool // 两种钢种
+	runningState int  // 是否有铸坯还在铸机中
+	isTail       bool // 拉尾坯
+	isFull       bool // 铸机未充满
+
+	parameter    map[int]*parameter // 最多两种钢种，每种钢种对应一个计算参数信息
+	coolerConfig coolerConfig       // 温度相关的配置
 
 	e *executor
 
@@ -66,7 +74,7 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 		c.step = 2
 	}
 
-	initParameters()
+	c.parameter = make(map[int]*parameter, 2)
 
 	c.e = newExecutor(4, func(t task) {
 		start := time.Now()
@@ -149,16 +157,79 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 				}
 			}
 		})
-		fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end - t.start) * 11340)
+		fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
 	})
-	c.e.run()
+	c.e.run() // 启动master线程分配任务，启动worker线程执行任务
+
+	c.runningState = stateNotRunning //
 
 	fmt.Println("初始化时间: ", time.Since(start))
 	return c
 }
 
+func (c *calculatorWithArrDeque) InitParameter(steelValue int) {
+	if c.runningState == stateRunning { // 如果此时有其他钢种正在计算，只有当拉尾坯模式将前一个铸坯全部移除铸机后，isRunning状态才会变为false
+
+	} else if c.runningState == stateSuspended {
+
+	} else {
+		// 还未运行
+		parameter := parameter{}
+		c.parameter[steelValue] = &parameter
+		initParameters(steelValue, &parameter)
+	}
+}
+
+// 设置和冷却器有关的参数
+func (c *calculatorWithArrDeque) SetCoolerConfig(env model.Env) {
+	c.coolerConfig.StartTemperature = env.StartTemperature
+	c.coolerConfig.NarrowSurfaceIn = env.NarrowSurfaceIn
+	c.coolerConfig.NarrowSurfaceOut = env.NarrowSurfaceOut
+	c.coolerConfig.WideSurfaceIn = env.WideSurfaceIn
+	c.coolerConfig.WideSurfaceOut = env.WideSurfaceOut
+	c.coolerConfig.SprayTemperature = env.SprayTemperature
+	c.coolerConfig.RollerWaterTemperature = env.RollerWaterTemperature
+}
+
+// 冷却器参数单独设置
+func (c *calculatorWithArrDeque) SetStartTemperature(startTemperature float32) {
+	c.coolerConfig.StartTemperature = startTemperature
+}
+
+func (c *calculatorWithArrDeque) SetNarrowSurfaceIn(narrowSurfaceIn float32) {
+	c.coolerConfig.NarrowSurfaceIn = narrowSurfaceIn
+}
+
+func (c *calculatorWithArrDeque) SetNarrowSurfaceOut(narrowSurfaceOut float32) {
+	c.coolerConfig.NarrowSurfaceOut = narrowSurfaceOut
+}
+
+func (c *calculatorWithArrDeque) SetWideSurfaceIn(wideSurfaceIn float32) {
+	c.coolerConfig.WideSurfaceIn = wideSurfaceIn
+}
+
+func (c *calculatorWithArrDeque) SetWideSurfaceOut(wideSurfaceOut float32) {
+	c.coolerConfig.WideSurfaceOut = wideSurfaceOut
+}
+
+func (c *calculatorWithArrDeque) SetSprayTemperature(sprayTemperature float32) {
+	c.coolerConfig.SprayTemperature = sprayTemperature
+}
+
+func (c *calculatorWithArrDeque) SetRollerWaterTemperature(rollerWaterTemperature float32) {
+	c.coolerConfig.RollerWaterTemperature = rollerWaterTemperature
+}
+
+func (c *calculatorWithArrDeque) SetV(v float32) {
+	c.v = int64(10 * v * 1000 / 60)
+}
+
 func (c *calculatorWithArrDeque) GetCalcHub() *CalcHub {
 	return c.calcHub
+}
+
+func (c *calculatorWithArrDeque) SetStateTail() {
+	c.isTail = true
 }
 
 // 计算所有切片中最短的时间步长
@@ -178,23 +249,27 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 }
 
 func (c *calculatorWithArrDeque) Run() {
+	c.runningState = stateRunning
 	// 先计算timeStep
 	duration := time.Second * 0
-	count := 0
+	//count := 0
 LOOP:
 	for {
-		if count > 100 {
-			return
-		}
+		//if count > 100 {
+		//	return
+		//}
 		select {
 		case <-c.calcHub.Stop:
+			c.runningState = stateSuspended
 			break LOOP
 		default:
 			deltaT, _ := c.calculateTimeStep()
 			//calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			calcDuration := c.calculateConcurrentlyBySlice(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
-			if calcDuration < 25*time.Millisecond {
-				calcDuration = 25 * time.Millisecond
+			if calcDuration == 0 {                                 // 计算时间等于0，意味着还没有切片产生，此时可以等待产生一个切片再计算
+				oneSliceDuration := time.Millisecond * 1000 * time.Duration(ZStep/c.v) // 10 / c.v
+				time.Sleep(oneSliceDuration)
+				calcDuration = oneSliceDuration
 			}
 			duration += calcDuration
 			// todo 这里需要根据准确的deltaT来确定时间步长
@@ -218,7 +293,7 @@ LOOP:
 			fmt.Println("计算温度场花费的时间：", duration)
 			if duration > time.Second*4 {
 				c.calcHub.PushSignal()
-				count++
+				//count++
 				duration = time.Second * 0
 			}
 		}
@@ -229,6 +304,7 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 	v := c.v // m/min -> mm/s
 	var distance int64
 	distance = v*calcDuration.Microseconds() + c.reminder
+	//fmt.Println("走过的距离: ", distance, c.v, calcDuration)
 	if distance == 0 {
 		return
 	}
@@ -239,8 +315,18 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 		// 处理拉尾坯的阶段
 		fmt.Println("updateSliceInfo: 拉尾坯")
 		for i := 0; i < add; i++ {
-			c.thermalField.RemoveLast()
-			c.thermalField1.RemoveLast()
+			if c.Field.IsFull() {
+				c.thermalField.RemoveLast()
+				c.thermalField.AddFirst(-1) // 使用-1代表该切片是空的
+				c.thermalField1.RemoveLast()
+				c.thermalField1.AddFirst(-1)
+				// 当没有温度不为空的切片时，需要退出
+				// 需要结合有没有新的钢种注入
+				// 遍历时需要跳过为空的切片
+			} else {
+				c.thermalField.AddFirst(-1)
+				c.thermalField1.AddFirst(-1)
+			}
 		}
 		// todo 处理不再进入新切片的情况，也需要考虑再次进入新切片时如何重新开始计算
 		return
@@ -289,7 +375,7 @@ func (c *calculatorWithArrDeque) calculateConcurrentlyBySlice(deltaT float32) ti
 	start := time.Now()
 	c.e.start <- task{start: 0, end: c.Field.Size(), deltaT: deltaT}
 	fmt.Println("task dispatched")
-	<- c.e.finish
+	<-c.e.finish
 	fmt.Println("task finished")
 	return time.Since(start)
 }

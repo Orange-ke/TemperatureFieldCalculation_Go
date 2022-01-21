@@ -284,6 +284,10 @@ func (c *calculatorWithListDeque) BuildData() *TemperatureData {
 	return temperatureData
 }
 
+func (c *calculatorWithListDeque) SetStateTail() {
+	c.isTail = true
+}
+
 // 并行计算
 func (c *calculatorWithListDeque) calculateCase1(deltaT float32) {
 	//var start = time.Now()
