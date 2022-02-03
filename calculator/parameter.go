@@ -14,7 +14,7 @@ func initParameters(steelValue int, parameter *parameter) {
 	// 1. 初始化网格划分的各个节点的初始温度
 	// 在 calculator 中实现
 	// todo 根据 参数中的 钢种从 jmatpro 接口获取对应的物性参数
-	fmt.Println(steelValue)
+	fmt.Println("钢种编号:", steelValue)
 
 	// 2. 导热系数，200℃ 到 1600℃，随温度的上升而下降
 	var LambdaStart = float32(500.0)
@@ -46,7 +46,7 @@ func initParameters(steelValue int, parameter *parameter) {
 
 	// 6. 热流密度
 	var QStart = float32(4000.0)
-	var QStep = float32(5000.0) / ArrayLength
+	var QStep = float32(4000.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
 		parameter.Q[i] = QStart + float32(i)*QStep
 	}

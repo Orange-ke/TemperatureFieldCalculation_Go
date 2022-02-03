@@ -17,10 +17,10 @@ type Hub struct {
 	// request
 	msg chan model.Msg
 	// response
-	envSet    chan model.Env // todo 后续需要构造实际的结构体
+	envSet    chan model.Env
 	started   chan struct{}
 	stopped   chan struct{}
-	tailStart chan struct{}
+	tailStart chan struct{} // 拉尾坯
 }
 
 func NewHub() *Hub {
@@ -36,14 +36,15 @@ func NewHub() *Hub {
 func (h *Hub) handleResponse() {
 	for {
 		select {
-		case env := <-h.envSet:
+		case env := <-h.envSet: // 设置计算环境
 			if h.c == nil {
 				//c := calculator.NewCalculator(0)
-				h.c = calculator.NewCalculatorWithArrDeque(0)
 				//c := calculator.NewCalculatorWithListDeque(0)
+				h.c = calculator.NewCalculatorWithArrDeque(0)
 			}
-
-			h.c.InitParameter(env.SteelValue)
+			h.c.SetCoolerConfig(env)          // 设置冷却参数
+			h.c.SetV(env.DragSpeed)           // 设置拉速
+			h.c.InitParameter(env.SteelValue) // 设置钢种物性参数
 			reply := model.Msg{
 				Type:    "env_set",
 				Content: "env is set",
@@ -52,7 +53,7 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.Println("err: ", err)
 			}
-		case <-h.started:
+		case <-h.started: // 开始计算
 			// 从calculator里面的hub中获取是否有
 			h.c.GetCalcHub().StartSignal()
 			reply := model.Msg{
@@ -65,7 +66,7 @@ func (h *Hub) handleResponse() {
 			}
 			go h.c.Run()    // 不断计算
 			go h.pushData() // 获取推送的计算结果到前端
-		case <-h.stopped:
+		case <-h.stopped: // 停止计算
 			h.c.GetCalcHub().StopSignal()
 			reply := model.Msg{
 				Type:    "stopped",
@@ -75,7 +76,7 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.Println("err: ", err)
 			}
-		case <-h.tailStart:
+		case <-h.tailStart: // 拉尾坯
 			h.c.SetStateTail()
 			reply := model.Msg{
 				Type:    "tail_start",
@@ -98,12 +99,12 @@ func (h *Hub) handleRequest() {
 		case msg := <-h.msg:
 			switch msg.Type {
 			case "env":
-				env := model.Env{}
+				var env model.Env
 				err := json.Unmarshal([]byte(msg.Content), &env)
 				if err != nil {
 					log.Println("err: ", err)
 				}
-				fmt.Println(env)
+				fmt.Println("获取到env参数：", env)
 				h.envSet <- env
 			case "start":
 				h.started <- struct{}{}

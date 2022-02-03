@@ -9,16 +9,24 @@ import (
 )
 
 const (
-	stateNotRunning = 0
-	stateRunning    = 1
-	stateSuspended  = 2
+	stateNotRunning          = 0
+	stateRunning             = 1
+	stateSuspended           = 2
+	stateRunningWithTwoSteel = 3 // 存在两种钢种
+
+	zone0 = 0 // 结晶区
+	zone1 = 1 // 二冷区
+)
+
+var (
+	oneSliceDuration time.Duration
 )
 
 type calculatorWithArrDeque struct {
 	// 计算参数
 	edgeWidth int
 
-	step int // 当c.EdgeWidth > 0, step = 2;
+	step int // 当 c.EdgeWidth > 0, step = 2;
 
 	initialTemperature float32 // 初始温度
 
@@ -29,7 +37,7 @@ type calculatorWithArrDeque struct {
 	// 每计算一个 ▲t 进行一次异或运算
 	alternating bool
 
-	//v int 拉速
+	// v int 拉速
 	v        int64
 	reminder int64
 
@@ -40,12 +48,14 @@ type calculatorWithArrDeque struct {
 	isTail       bool // 拉尾坯
 	isFull       bool // 铸机未充满
 
-	parameter    map[int]*parameter // 最多两种钢种，每种钢种对应一个计算参数信息
-	coolerConfig coolerConfig       // 温度相关的配置
+	coolerConfig coolerConfig // 温度相关的配置
+	r            int          // 结晶区与二冷区分界
+	parameter1   *parameter   // 第一种钢种的物性参数
+	parameter2   *parameter   // 第二种钢种的物性参数
 
 	e *executor
 
-	mu sync.Mutex // 保护push data时对温度数据的并发访问
+	mu sync.Mutex // 保护 push data时对温度数据的并发访问
 }
 
 func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
@@ -59,12 +69,13 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 
 	start := time.Now()
 	c.initialTemperature = 1550.0
-	c.thermalField = deque.NewArrDeque(ZLength / ZStep)
-	c.thermalField1 = deque.NewArrDeque(ZLength / ZStep)
+	c.thermalField = deque.NewArrDeque(model.ZLength / model.ZStep)
+	c.thermalField1 = deque.NewArrDeque(model.ZLength / model.ZStep)
 
 	c.Field = c.thermalField
 
-	c.v = int64(10 * 1.5 * 1000 / 60) // m / min
+	c.v = int64(10 * 1.5 * 1000 / 60)                                           // m / min，默认速度1.5
+	oneSliceDuration = time.Millisecond * 1000 * time.Duration(model.ZStep/c.v) // 10 / c.v
 	c.alternating = true
 	c.calcHub = NewCalcHub()
 
@@ -74,29 +85,34 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 		c.step = 2
 	}
 
-	c.parameter = make(map[int]*parameter, 2)
-
 	c.e = newExecutor(4, func(t task) {
 		start := time.Now()
 		count := 0
+		var parameter *parameter
 		c.Field.TraverseSpirally(t.start, t.end, func(z int, item *model.ItemType) {
-			left, right, top, bottom := 0, Length/XStep-1, 0, Width/YStep-1 // 每个切片迭代时需要重置
+			// 跳过为空的切片， 即值为-1
+			if item[0][0] == -1 {
+				return
+			}
+			left, right, top, bottom := 0, model.Length/model.XStep-1, 0, model.Width/model.YStep-1 // 每个切片迭代时需要重置
+			// parameter set
+			parameter = c.getParameter(z)
 			// 计算最外层， 逆时针
 			// 1. 三个顶点，左下方顶点仅当其外一层温度不是初始温度时才开始计算
 			//c.calculatePointLB(t.deltaT, z, item) 不用计算，因为还未产生温差
 			{
-				c.calculatePointRB(t.deltaT, z, item)
-				c.calculatePointRT(t.deltaT, z, item)
-				c.calculatePointLT(t.deltaT, z, item)
+				c.calculatePointRB(t.deltaT, z, item, parameter)
+				c.calculatePointRT(t.deltaT, z, item, parameter)
+				c.calculatePointLT(t.deltaT, z, item, parameter)
 				count += 3
 				for row := top + 1; row < bottom; row++ {
 					// [row][right]
-					c.calculatePointRA(t.deltaT, row, z, item)
+					c.calculatePointRA(t.deltaT, row, z, item, parameter)
 					count++
 				}
 				for column := right - 1; column > left; column-- {
 					// [bottom][column]
-					c.calculatePointTA(t.deltaT, column, z, item)
+					c.calculatePointTA(t.deltaT, column, z, item, parameter)
 					count++
 				}
 				right--
@@ -108,14 +124,14 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 				//allNotChanged := true
 				// 逆时针
 				for left <= right && top <= bottom {
-					c.calculatePointBA(t.deltaT, right, z, item)
+					c.calculatePointBA(t.deltaT, right, z, item, parameter)
 					if item[0][right] != c.initialTemperature {
 						//allNotChanged = false
 					}
 					count++
 					for row := top + 1; row <= bottom; row++ {
 						// [row][right]
-						c.calculatePointIN(t.deltaT, right, row, z, item)
+						c.calculatePointIN(t.deltaT, right, row, z, item, parameter)
 						if item[row][right] != c.initialTemperature {
 							//allNotChanged = false
 						}
@@ -124,23 +140,23 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 					if left < right && top < bottom {
 						for column := right - 1; column > left; column-- {
 							// [bottom][column]
-							c.calculatePointIN(t.deltaT, column, bottom, z, item)
+							c.calculatePointIN(t.deltaT, column, bottom, z, item, parameter)
 							if item[bottom][column] == c.initialTemperature {
 								//allNotChanged = false
 							}
 							count++
 						}
-						c.calculatePointLA(t.deltaT, bottom, z, item)
+						c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
 						if item[bottom][0] != c.initialTemperature {
 							//allNotChanged = false
 						}
 						count++
 					}
 					if top == bottom {
-						c.calculatePointLB(t.deltaT, z, item)
+						c.calculatePointLB(t.deltaT, z, item, parameter)
 						count++
 						for column := right - 1; column > left; column-- {
-							c.calculatePointBA(t.deltaT, column, z, item)
+							c.calculatePointBA(t.deltaT, column, z, item, parameter)
 							count++
 						}
 					}
@@ -161,7 +177,7 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 	})
 	c.e.run() // 启动master线程分配任务，启动worker线程执行任务
 
-	c.runningState = stateNotRunning //
+	c.runningState = stateNotRunning // 未开始运行，只是完成初始化
 
 	fmt.Println("初始化时间: ", time.Since(start))
 	return c
@@ -169,14 +185,13 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 
 func (c *calculatorWithArrDeque) InitParameter(steelValue int) {
 	if c.runningState == stateRunning { // 如果此时有其他钢种正在计算，只有当拉尾坯模式将前一个铸坯全部移除铸机后，isRunning状态才会变为false
-
+		// todo
 	} else if c.runningState == stateSuspended {
-
+		// todo
 	} else {
 		// 还未运行
-		parameter := parameter{}
-		c.parameter[steelValue] = &parameter
-		initParameters(steelValue, &parameter)
+		c.parameter1 = &parameter{} // 初始化
+		initParameters(steelValue, c.parameter1)
 	}
 }
 
@@ -189,6 +204,12 @@ func (c *calculatorWithArrDeque) SetCoolerConfig(env model.Env) {
 	c.coolerConfig.WideSurfaceOut = env.WideSurfaceOut
 	c.coolerConfig.SprayTemperature = env.SprayTemperature
 	c.coolerConfig.RollerWaterTemperature = env.RollerWaterTemperature
+	fmt.Println("设置冷却参数：", c.coolerConfig)
+}
+
+func (c *calculatorWithArrDeque) SetV(v float32) {
+	c.v = int64(v * 1000 / 60)
+	fmt.Println("设置拉速：", c.v, v)
 }
 
 // 冷却器参数单独设置
@@ -220,10 +241,6 @@ func (c *calculatorWithArrDeque) SetRollerWaterTemperature(rollerWaterTemperatur
 	c.coolerConfig.RollerWaterTemperature = rollerWaterTemperature
 }
 
-func (c *calculatorWithArrDeque) SetV(v float32) {
-	c.v = int64(10 * v * 1000 / 60)
-}
-
 func (c *calculatorWithArrDeque) GetCalcHub() *CalcHub {
 	return c.calcHub
 }
@@ -232,13 +249,48 @@ func (c *calculatorWithArrDeque) SetStateTail() {
 	c.isTail = true
 }
 
+func (c *calculatorWithArrDeque) whichZone(z int) int {
+	z = z * model.ZStep / stepZ // stepZ代表Z方向的缩放比例
+	if z <= upLength {          // upLength 代表结晶器的长度 R
+		return zone0
+	} else {
+		// todo 不同的区域返回不同的代号
+		return zone1
+	}
+}
+
+func (c *calculatorWithArrDeque) getParameter(z int) *parameter {
+	var parameter *parameter
+	if c.runningState == stateRunning {
+		parameter = c.parameter1
+		if c.whichZone(z) == zone0 {
+			parameter.GetHeff = c.getHeffLessThanR
+			parameter.GetQ = c.getQLessThanR
+		} else if c.whichZone(z) == zone1 {
+			parameter.GetHeff = c.getHeffGreaterThanR
+			parameter.GetQ = c.getQGreaterThanR
+		}
+	} else if c.runningState == stateRunningWithTwoSteel { // 处理两种钢种的情况
+		// todo
+		parameter = c.parameter2
+	}
+	return parameter
+}
+
 // 计算所有切片中最短的时间步长
 func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	start := time.Now()
 	min := float32(1000.0)
 	var t float32
+	var parameter *parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
-		t = calculateTimeStepOfOneSlice(item)
+		// 跳过为空的切片
+		if item[0][0] == -1 {
+			return
+		}
+		// 根据 z 来确定 parameter c.getParameter(z)
+		parameter = c.getParameter(z)
+		t = calculateTimeStepOfOneSlice(item, parameter)
 		if t < min {
 			min = t
 		}
@@ -267,7 +319,6 @@ LOOP:
 			//calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			calcDuration := c.calculateConcurrentlyBySlice(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			if calcDuration == 0 {                                 // 计算时间等于0，意味着还没有切片产生，此时可以等待产生一个切片再计算
-				oneSliceDuration := time.Millisecond * 1000 * time.Duration(ZStep/c.v) // 10 / c.v
 				time.Sleep(oneSliceDuration)
 				calcDuration = oneSliceDuration
 			}
@@ -280,15 +331,15 @@ LOOP:
 			}
 
 			c.updateSliceInfo(calcDuration)
-			//if !c.Field.IsEmpty() {
-			//	for i := Width/YStep - 1; i > Width/YStep-6; i-- {
-			//		for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
-			//			fmt.Print(c.Field.Get(c.Field.Size() - 1, i, j), " ")
-			//		}
-			//		fmt.Print(i)
-			//		fmt.Println()
-			//	}
-			//}
+			if !c.Field.IsEmpty() {
+				for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
+					for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
+						fmt.Print(c.Field.Get(c.Field.Size()-1, i, j), " ")
+					}
+					fmt.Print(i)
+					fmt.Println()
+				}
+			}
 			c.alternating = !c.alternating // 仅在这里修改
 			fmt.Println("计算温度场花费的时间：", duration)
 			if duration > time.Second*4 {
@@ -340,13 +391,6 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			c.thermalField1.RemoveLast()
 			c.thermalField.AddFirst(c.initialTemperature)
 			c.thermalField1.AddFirst(c.initialTemperature)
-		}
-		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
-			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
-				fmt.Print(c.Field.Get(c.Field.Size()-1, i, j), " ")
-			}
-			fmt.Print(i)
-			fmt.Println()
 		}
 	} else {
 		fmt.Println("updateSliceInfo: 切片未满")
@@ -445,16 +489,20 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 
 	if c.isFull {
 		ThermalField.Start = 0
-		ThermalField.End = ZLength / ZStep
+		ThermalField.End = model.ZLength / model.ZStep
 		ThermalField.IsFull = true
 	} else {
 		ThermalField.Start = 0
 		ThermalField.End = z
 	}
+
+	if c.isTail {
+		ThermalField.IsTail = true
+	}
 	fmt.Println("BuildData 温度场的长度：", z)
 	if !c.Field.IsEmpty() {
-		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
-			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
+		for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
+			for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
 				fmt.Print(Field[z-1][i][j], " ")
 			}
 			fmt.Print(i, "build data")
@@ -466,6 +514,7 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 	temperatureData.Start = ThermalField.Start
 	temperatureData.End = ThermalField.End
 	temperatureData.IsFull = ThermalField.IsFull
+	temperatureData.IsTail = ThermalField.IsTail
 	return temperatureData
 }
 
@@ -473,39 +522,42 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 func (c *calculatorWithArrDeque) calculateCase1(deltaT float32) {
 	//var start = time.Now()
 	var count = 0
+	var parameter *parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		// parameter set
+		parameter = c.getParameter(z)
 		// 先计算点，再计算外表面，再计算里面的点
-		c.calculatePointLT(deltaT, z, item)
+		c.calculatePointLT(deltaT, z, item, parameter)
 		count++
-		for i := 1; i < Length/XStep/2; i++ {
-			c.calculatePointTA(deltaT, i, z, item)
+		for i := 1; i < model.Length/model.XStep/2; i++ {
+			c.calculatePointTA(deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1; j++ {
-			c.calculatePointLA(deltaT, j, z, item)
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1; j++ {
+			c.calculatePointLA(deltaT, j, z, item, parameter)
 			count++
 		}
-		for j := Width/YStep - 1 - c.edgeWidth; j < Width/YStep-1; j++ {
+		for j := model.Width/model.YStep - 1 - c.edgeWidth; j < model.Width/model.YStep-1; j++ {
 			for i := 1; i < 1+c.edgeWidth; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1-c.edgeWidth; j++ {
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-c.edgeWidth; j++ {
 			for i := 1; i < 1+c.edgeWidth; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width/YStep - 1 - c.edgeWidth; j < Width/YStep-1; j++ {
-			for i := 1 + c.edgeWidth; i < Length/XStep/2; i = i + 1 {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width/model.YStep - 1 - c.edgeWidth; j < model.Width/model.YStep-1; j++ {
+			for i := 1 + c.edgeWidth; i < model.Length/model.XStep/2; i = i + 1 {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1-c.edgeWidth; j = j + c.step {
-			for i := 1 + c.edgeWidth; i < Length/XStep/2; i = i + c.step {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-c.edgeWidth; j = j + c.step {
+			for i := 1 + c.edgeWidth; i < model.Length/model.XStep/2; i = i + c.step {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
@@ -517,39 +569,42 @@ func (c *calculatorWithArrDeque) calculateCase1(deltaT float32) {
 func (c *calculatorWithArrDeque) calculateCase2(deltaT float32) {
 	var start = time.Now()
 	var count = 0
+	var parameter *parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		// parameter set
+		parameter = c.getParameter(z)
 		// 先计算点，再计算外表面，再计算里面的点
-		c.calculatePointRT(deltaT, z, item)
+		c.calculatePointRT(deltaT, z, item, parameter)
 		count++
-		for i := Length / XStep / 2; i < Length/XStep-1; i++ {
-			c.calculatePointTA(deltaT, i, z, item)
+		for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1; i++ {
+			c.calculatePointTA(deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1; j++ {
-			c.calculatePointRA(deltaT, j, z, item)
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1; j++ {
+			c.calculatePointRA(deltaT, j, z, item, parameter)
 			count++
 		}
-		for j := Width/YStep - 1 - c.edgeWidth; j < Width/YStep-1; j++ {
-			for i := Length/XStep - 1 - c.edgeWidth; i < Length/XStep-1; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width/model.YStep - 1 - c.edgeWidth; j < model.Width/model.YStep-1; j++ {
+			for i := model.Length/model.XStep - 1 - c.edgeWidth; i < model.Length/model.XStep-1; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1-c.edgeWidth; j++ {
-			for i := Length/XStep - 1 - c.edgeWidth; i < Length/XStep-1; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-c.edgeWidth; j++ {
+			for i := model.Length/model.XStep - 1 - c.edgeWidth; i < model.Length/model.XStep-1; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width/YStep - 1 - c.edgeWidth; j < Width/YStep-1; j++ {
-			for i := Length / XStep / 2; i < Length/XStep-1-c.edgeWidth; i = i + 1 {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width/model.YStep - 1 - c.edgeWidth; j < model.Width/model.YStep-1; j++ {
+			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-c.edgeWidth; i = i + 1 {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := Width / YStep / 2; j < Width/YStep-1-c.edgeWidth; j = j + c.step {
-			for i := Length / XStep / 2; i < Length/XStep-1-c.edgeWidth; i = i + c.step {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-c.edgeWidth; j = j + c.step {
+			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-c.edgeWidth; i = i + c.step {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
@@ -560,39 +615,42 @@ func (c *calculatorWithArrDeque) calculateCase2(deltaT float32) {
 func (c *calculatorWithArrDeque) calculateCase3(deltaT float32) {
 	var start = time.Now()
 	var count = 0
+	var parameter *parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		// parameter set
+		parameter = c.getParameter(z)
 		// 先计算点，再计算外表面，再计算里面的点
-		c.calculatePointRB(deltaT, z, item)
+		c.calculatePointRB(deltaT, z, item, parameter)
 		count++
-		for i := Length / XStep / 2; i < Length/XStep-1; i++ {
-			c.calculatePointBA(deltaT, i, z, item)
+		for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1; i++ {
+			c.calculatePointBA(deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := 1; j < Width/YStep/2; j++ {
-			c.calculatePointRA(deltaT, j, z, item)
+		for j := 1; j < model.Width/model.YStep/2; j++ {
+			c.calculatePointRA(deltaT, j, z, item, parameter)
 			count++
 		}
 		for j := 1; j < 1+c.edgeWidth; j++ {
-			for i := Length/XStep - 1 - c.edgeWidth; i < Length/XStep-1; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+			for i := model.Length/model.XStep - 1 - c.edgeWidth; i < model.Length/model.XStep-1; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + c.edgeWidth; j < Width/YStep/2; j++ {
-			for i := Length/XStep - 1 - c.edgeWidth; i < Length/XStep-1; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := 1 + c.edgeWidth; j < model.Width/model.YStep/2; j++ {
+			for i := model.Length/model.XStep - 1 - c.edgeWidth; i < model.Length/model.XStep-1; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
 		for j := 1; j < 1+c.edgeWidth; j++ {
-			for i := Length / XStep / 2; i < Length/XStep-1-c.edgeWidth; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-c.edgeWidth; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + c.edgeWidth; j < Width/YStep/2; j = j + c.step {
-			for i := Length / XStep / 2; i < Length/XStep-1-c.edgeWidth; i = i + c.step {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := 1 + c.edgeWidth; j < model.Width/model.YStep/2; j = j + c.step {
+			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-c.edgeWidth; i = i + c.step {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
@@ -603,39 +661,42 @@ func (c *calculatorWithArrDeque) calculateCase3(deltaT float32) {
 func (c *calculatorWithArrDeque) calculateCase4(deltaT float32) {
 	var start = time.Now()
 	var count = 0
+	var parameter *parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		// parameter set
+		parameter = c.getParameter(z)
 		// 先计算点，再计算外表面，再计算里面的点
-		c.calculatePointLB(deltaT, z, item)
+		c.calculatePointLB(deltaT, z, item, parameter)
 		count++
-		for i := 1; i < Length/XStep/2; i++ {
-			c.calculatePointBA(deltaT, i, z, item)
+		for i := 1; i < model.Length/model.XStep/2; i++ {
+			c.calculatePointBA(deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := 1; j < Width/YStep/2; j++ {
-			c.calculatePointLA(deltaT, j, z, item)
+		for j := 1; j < model.Width/model.YStep/2; j++ {
+			c.calculatePointLA(deltaT, j, z, item, parameter)
 			count++
 		}
 		for j := 1; j < 1+c.edgeWidth; j++ {
 			for i := 1; i < 1+c.edgeWidth; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + c.edgeWidth; j < Width/YStep/2; j++ {
+		for j := 1 + c.edgeWidth; j < model.Width/model.YStep/2; j++ {
 			for i := 1; i < 1+c.edgeWidth; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
 		for j := 1; j < 1+c.edgeWidth; j++ {
-			for i := 1 + c.edgeWidth; i < Length/XStep/2; i++ {
-				c.calculatePointIN(deltaT, i, j, z, item)
+			for i := 1 + c.edgeWidth; i < model.Length/model.XStep/2; i++ {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + c.edgeWidth; j < Width/YStep/2; j = j + c.step {
-			for i := 1 + c.edgeWidth; i < Length/XStep/2; i = i + c.step {
-				c.calculatePointIN(deltaT, i, j, z, item)
+		for j := 1 + c.edgeWidth; j < model.Width/model.YStep/2; j = j + c.step {
+			for i := 1 + c.edgeWidth; i < model.Length/model.XStep/2; i = i + c.step {
+				c.calculatePointIN(deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
@@ -644,185 +705,185 @@ func (c *calculatorWithArrDeque) calculateCase4(deltaT float32) {
 }
 
 // 计算一个left top点的温度变化
-func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *model.ItemType) {
-	var index = int(slice[Width/YStep-1][0])/5 - 1
-	var index1 = int(slice[Width/YStep-1][1])/5 - 1
-	var index2 = int(slice[Width/YStep-2][0])/5 - 1
-	var deltaHlt = getLambda(index, index1, 0, Width/YStep-1, 1, Width/YStep-1)*(slice[Width/YStep-1][0]-slice[Width/YStep-1][1])/float32(XStep*(getEx(1)+getEx(0))) +
-		getLambda(index, index2, 0, Width/YStep-1, 0, Width/YStep-2)*(slice[Width/YStep-1][0]-slice[Width/YStep-2][0])/float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		Q[index]/(2*YStep)
+func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[model.Width/model.YStep-1][0]) - 1
+	var index1 = int(slice[model.Width/model.YStep-1][1]) - 1
+	var index2 = int(slice[model.Width/model.YStep-2][0]) - 1
+	var deltaHlt = getLambda(index, index1, 0, model.Width/model.YStep-1, 1, model.Width/model.YStep-1, parameter)*(slice[model.Width/model.YStep-1][0]-slice[model.Width/model.YStep-1][1])/float32(model.XStep*(getEx(1)+getEx(0))) +
+		getLambda(index, index2, 0, model.Width/model.YStep-1, 0, model.Width/model.YStep-2, parameter)*(slice[model.Width/model.YStep-1][0]-slice[model.Width/model.YStep-2][0])/float32(model.YStep*(getEy(model.Width/model.YStep-2)+getEy(model.Width/model.YStep-1))) +
+		parameter.GetQ(slice[model.Width/model.YStep-1][0], parameter)/(2*model.YStep)
 
-	deltaHlt = deltaHlt * (2 * deltaT / Density[index])
-	//fmt.Println(Thermalslice[Width/YStep-1][0]-Thermalslice[Width/YStep-1][1], Thermalslice[Width/YStep-1][0]-Thermalslice[Width/YStep-2][0], Q[index], deltaHlt/C[index], "左上角")
+	deltaHlt = deltaHlt * (2 * deltaT / parameter.Density[index])
+	//fmt.Println(Thermalslice[model.Width/model.YStep-1][0]-Thermalslice[model.Width/model.YStep-1][1], Thermalslice[model.Width/model.YStep-1][0]-Thermalslice[model.Width/model.YStep-2][0], Q[index], deltaHlt/C[index], "左上角")
 
 	if c.alternating {
-		c.thermalField1.Set(z, Width/YStep-1, 0, slice[Width/YStep-1][0]-deltaHlt/C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index])
 	} else {
 		// 需要修改焓的变化到温度变化k映射关系
-		c.thermalField.Set(z, Width/YStep-1, 0, slice[Width/YStep-1][0]-deltaHlt/C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index])
 	}
 }
 
 // 计算上表面点温度变化
-func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slice *model.ItemType) {
-	var index = int(slice[Width/YStep-1][x])/5 - 1
-	var index1 = int(slice[Width/YStep-1][x-1])/5 - 1
-	var index2 = int(slice[Width/YStep-1][x+1])/5 - 1
-	var index3 = int(slice[Width/YStep-2][x])/5 - 1
-	var deltaHta = getLambda(index, index1, x, Width/YStep-1, x-1, Width/YStep-1)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x-1])/float32(XStep*(getEx(x-1)+getEx(x))) +
-		getLambda(index, index2, x, Width/YStep-1, x+1, Width/YStep-1)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x+1])/float32(XStep*(getEx(x)+getEx(x+1))) +
-		getLambda(index, index3, x, Width/YStep-1, x, Width/YStep-2)*(slice[Width/YStep-1][x]-slice[Width/YStep-2][x])/float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		Q[index]/(2*YStep)
+func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[model.Width/model.YStep-1][x]) - 1
+	var index1 = int(slice[model.Width/model.YStep-1][x-1]) - 1
+	var index2 = int(slice[model.Width/model.YStep-1][x+1]) - 1
+	var index3 = int(slice[model.Width/model.YStep-2][x]) - 1
+	var deltaHta = getLambda(index, index1, x, model.Width/model.YStep-1, x-1, model.Width/model.YStep-1, parameter)*(slice[model.Width/model.YStep-1][x]-slice[model.Width/model.YStep-1][x-1])/float32(model.XStep*(getEx(x-1)+getEx(x))) +
+		getLambda(index, index2, x, model.Width/model.YStep-1, x+1, model.Width/model.YStep-1, parameter)*(slice[model.Width/model.YStep-1][x]-slice[model.Width/model.YStep-1][x+1])/float32(model.XStep*(getEx(x)+getEx(x+1))) +
+		getLambda(index, index3, x, model.Width/model.YStep-1, x, model.Width/model.YStep-2, parameter)*(slice[model.Width/model.YStep-1][x]-slice[model.Width/model.YStep-2][x])/float32(model.YStep*(getEy(model.Width/model.YStep-2)+getEy(model.Width/model.YStep-1))) +
+		parameter.GetQ(slice[model.Width/model.YStep-1][x], parameter)/(2*model.YStep)
 
-	deltaHta = deltaHta * (2 * deltaT / Density[index])
-	//fmt.Println(Thermalslice[Width/YStep-1][x]-Thermalslice[Width/YStep-1][x-1], Thermalslice[Width/YStep-1][x]-Thermalslice[Width/YStep-1][x+1], Thermalslice[Width/YStep-1][x]-Thermalslice[Width/YStep-2][x], Q[index], deltaHta/C[index], "上表面")
+	deltaHta = deltaHta * (2 * deltaT / parameter.Density[index])
+	//fmt.Println(Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-1][x-1], Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-1][x+1], Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-2][x], Q[index], deltaHta/C[index], "上表面")
 
 	if c.alternating {
-		c.thermalField1.Set(z, Width/YStep-1, x, slice[Width/YStep-1][x]-deltaHta/C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index])
 	} else {
 		// 需要修改焓的变化到温度变化k映射关系
-		c.thermalField.Set(z, Width/YStep-1, x, slice[Width/YStep-1][x]-deltaHta/C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index])
 	}
 }
 
 // 计算right top点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *model.ItemType) {
-	var index = int(slice[Width/YStep-1][Length/XStep-1])/5 - 1
-	var index1 = int(slice[Width/YStep-1][Length/XStep-2])/5 - 1
-	var index2 = int(slice[Width/YStep-2][Length/XStep-1])/5 - 1
-	var deltaHrt = getLambda(index, index1, Length/XStep-1, Width/YStep-1, Length/XStep-2, Width/YStep-1)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-1][Length/XStep-2])/float32(XStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, Width/YStep-1, Length/XStep-1, Width/YStep-2)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-2][Length/XStep-1])/float32(YStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
-		Q[index]/(2*YStep) +
-		Q[index]/(2*XStep)
+func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[model.Width/model.YStep-1][model.Length/model.XStep-1]) - 1
+	var index1 = int(slice[model.Width/model.YStep-1][model.Length/model.XStep-2]) - 1
+	var index2 = int(slice[model.Width/model.YStep-2][model.Length/model.XStep-1]) - 1
+	var deltaHrt = getLambda(index, index1, model.Length/model.XStep-1, model.Width/model.YStep-1, model.Length/model.XStep-2, model.Width/model.YStep-1, parameter)*(slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-slice[model.Width/model.YStep-1][model.Length/model.XStep-2])/float32(model.XStep*(getEx(model.Length/model.XStep-2)+getEx(model.Length/model.XStep-1))) +
+		getLambda(index, index2, model.Length/model.XStep-1, model.Width/model.YStep-1, model.Length/model.XStep-1, model.Width/model.YStep-2, parameter)*(slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-slice[model.Width/model.YStep-2][model.Length/model.XStep-1])/float32(model.YStep*(getEy(model.Width/model.YStep-2)+getEy(model.Width/model.YStep-1))) +
+		parameter.GetQ(slice[model.Width/model.YStep-1][model.Length/model.XStep-1], parameter)/(2*model.YStep) +
+		parameter.GetQ(slice[model.Width/model.YStep-1][model.Length/model.XStep-1], parameter)/(2*model.XStep)
 
-	deltaHrt = deltaHrt * (2 * deltaT / Density[index])
-	//fmt.Println(Thermalslice[Width/YStep-1][Length/XStep-1]-Thermalslice[Width/YStep-1][Length/XStep-2], Thermalslice[Width/YStep-1][Length/XStep-1]-Thermalslice[Width/YStep-2][Length/XStep-1], Q[index], deltaHrt/C[index],  "右上角")
-
+	deltaHrt = deltaHrt * (2 * deltaT / parameter.Density[index])
+	//fmt.Println(Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-1]-Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-2], Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-1]-Thermalslice[model.Width/model.YStep-2][model.Length/model.XStep-1], Q[index], deltaHrt/C[index],  "右上角")
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, Width/YStep-1, Length/XStep-1, slice[Width/YStep-1][Length/XStep-1]-deltaHrt/C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, Width/YStep-1, Length/XStep-1, slice[Width/YStep-1][Length/XStep-1]-deltaHrt/C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index])
 	}
 }
 
 // 计算右表面点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slice *model.ItemType) {
-	var index = int(slice[y][Length/XStep-1])/5 - 1
-	var index1 = int(slice[y][Length/XStep-2])/5 - 1
-	var index2 = int(slice[y-1][Length/XStep-1])/5 - 1
-	var index3 = int(slice[y+1][Length/XStep-1])/5 - 1
-	var deltaHra = getLambda(index, index1, Length/XStep-1, y, Length/XStep-2, y)*(slice[y][Length/XStep-1]-slice[y][Length/XStep-2])/float32(XStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, y, Length/XStep-1, y-1)*(slice[y][Length/XStep-1]-slice[y-1][Length/XStep-1])/float32(YStep*(getEy(y-1)+getEy(y))) +
-		getLambda(index, index3, Length/XStep-1, y, Length/XStep-1, y+1)*(slice[y][Length/XStep-1]-slice[y+1][Length/XStep-1])/float32(YStep*(getEy(y+1)+getEy(y))) +
-		Q[index]/(2*XStep)
+func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[y][model.Length/model.XStep-1]) - 1
+	var index1 = int(slice[y][model.Length/model.XStep-2]) - 1
+	var index2 = int(slice[y-1][model.Length/model.XStep-1]) - 1
+	var index3 = int(slice[y+1][model.Length/model.XStep-1]) - 1
+	var deltaHra = getLambda(index, index1, model.Length/model.XStep-1, y, model.Length/model.XStep-2, y, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y][model.Length/model.XStep-2])/float32(model.XStep*(getEx(model.Length/model.XStep-2)+getEx(model.Length/model.XStep-1))) +
+		getLambda(index, index2, model.Length/model.XStep-1, y, model.Length/model.XStep-1, y-1, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y-1][model.Length/model.XStep-1])/float32(model.YStep*(getEy(y-1)+getEy(y))) +
+		getLambda(index, index3, model.Length/model.XStep-1, y, model.Length/model.XStep-1, y+1, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y+1][model.Length/model.XStep-1])/float32(model.YStep*(getEy(y+1)+getEy(y))) +
+		parameter.GetQ(slice[y][model.Length/model.XStep-1], parameter)/(2*model.XStep)
 
-	deltaHra = deltaHra * (2 * deltaT / Density[index])
-	//fmt.Println(Thermalslice[y][Length/XStep-1]-Thermalslice[y][Length/XStep-2], Thermalslice[y][Length/XStep-1]-Thermalslice[y-1][Length/XStep-1], Thermalslice[y][Length/XStep-1]-Thermalslice[y+1][Length/XStep-1], Q[index], deltaHra/C[index], "右表面")
+	deltaHra = deltaHra * (2 * deltaT / parameter.Density[index])
+	//fmt.Println(Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y][model.Length/model.XStep-2], Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y-1][model.Length/model.XStep-1], Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y+1][model.Length/model.XStep-1], Q[index], deltaHra/C[index], "右表面")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系
-		c.thermalField1.Set(z, y, Length/XStep-1, slice[y][Length/XStep-1]-deltaHra/C[index])
+		c.thermalField1.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, y, Length/XStep-1, slice[y][Length/XStep-1]-deltaHra/C[index])
+		c.thermalField.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index])
 	}
 }
 
 // 计算right bottom点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *model.ItemType) {
-	var index = int(slice[0][Length/XStep-1])/5 - 1
-	var index1 = int(slice[0][Length/XStep-2])/5 - 1
-	var index2 = int(slice[1][Length/XStep-1])/5 - 1
-	var deltaHrb = getLambda(index, index1, Length/XStep-1, 0, Length/XStep-2, 0)*(slice[0][Length/XStep-1]-slice[0][Length/XStep-2])/float32(XStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, 0, Length/XStep-1, 1)*(slice[0][Length/XStep-1]-slice[1][Length/XStep-1])/float32(YStep*(getEy(1)+getEy(0))) +
-		Q[index]/(2*XStep)
+func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[0][model.Length/model.XStep-1]) - 1
+	var index1 = int(slice[0][model.Length/model.XStep-2]) - 1
+	var index2 = int(slice[1][model.Length/model.XStep-1]) - 1
+	var deltaHrb = getLambda(index, index1, model.Length/model.XStep-1, 0, model.Length/model.XStep-2, 0, parameter)*(slice[0][model.Length/model.XStep-1]-slice[0][model.Length/model.XStep-2])/float32(model.XStep*(getEx(model.Length/model.XStep-2)+getEx(model.Length/model.XStep-1))) +
+		getLambda(index, index2, model.Length/model.XStep-1, 0, model.Length/model.XStep-1, 1, parameter)*(slice[0][model.Length/model.XStep-1]-slice[1][model.Length/model.XStep-1])/float32(model.YStep*(getEy(1)+getEy(0))) +
+		parameter.GetQ(slice[0][model.Length/model.XStep-1], parameter)/(2*model.XStep)
 
-	deltaHrb = deltaHrb * (2 * deltaT / Density[index])
-	//fmt.Println(Thermalslice[0][Length/XStep-1]-Thermalslice[0][Length/XStep-2], Thermalslice[0][Length/XStep-1]-Thermalslice[1][Length/XStep-1], Q[index],deltaHrb/C[index], "右下角")
+	deltaHrb = deltaHrb * (2 * deltaT / parameter.Density[index])
+	//fmt.Println(Thermalslice[0][model.Length/model.XStep-1]-Thermalslice[0][model.Length/model.XStep-2], Thermalslice[0][model.Length/model.XStep-1]-Thermalslice[1][model.Length/model.XStep-1], Q[index],deltaHrb/C[index], "右下角")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系
-		c.thermalField1.Set(z, 0, Length/XStep-1, slice[0][Length/XStep-1]-deltaHrb/C[index])
+		c.thermalField1.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, 0, Length/XStep-1, slice[0][Length/XStep-1]-deltaHrb/C[index])
+		c.thermalField.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index])
 	}
 }
 
 // 计算下表面点的温度变化
-func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slice *model.ItemType) {
-	var index = int(slice[0][x])/5 - 1
-	var index1 = int(slice[0][x-1])/5 - 1
-	var index2 = int(slice[0][x+1])/5 - 1
-	var index3 = int(slice[1][x])/5 - 1
-	var deltaHba = getLambda(index, index1, x, 0, x-1, 0)*(slice[0][x]-slice[0][x-1])/float32(XStep*(getEx(x-1)+getEx(x))) +
-		getLambda(index, index2, x, 0, x+1, 0)*(slice[0][x]-slice[0][x+1])/float32(XStep*(getEx(x+1)+getEx(x))) +
-		getLambda(index, index3, x, 0, x, 1)*(slice[0][x]-slice[1][x])/float32(YStep*(getEy(1)+getEy(0)))
+func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[0][x]) - 1
+	var index1 = int(slice[0][x-1]) - 1
+	var index2 = int(slice[0][x+1]) - 1
+	var index3 = int(slice[1][x]) - 1
+	var deltaHba = getLambda(index, index1, x, 0, x-1, 0, parameter)*(slice[0][x]-slice[0][x-1])/float32(model.XStep*(getEx(x-1)+getEx(x))) +
+		getLambda(index, index2, x, 0, x+1, 0, parameter)*(slice[0][x]-slice[0][x+1])/float32(model.XStep*(getEx(x+1)+getEx(x))) +
+		getLambda(index, index3, x, 0, x, 1, parameter)*(slice[0][x]-slice[1][x])/float32(model.YStep*(getEy(1)+getEy(0)))
 
-	deltaHba = deltaHba * (2 * deltaT / Density[index])
+	deltaHba = deltaHba * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[0][x]-Thermalslice[0][x-1], Thermalslice[0][x]-Thermalslice[0][x+1], Thermalslice[0][x]-Thermalslice[1][x],deltaHba/C[index], "下表面")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, 0, x, slice[0][x]-deltaHba/C[index])
+		c.thermalField1.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, 0, x, slice[0][x]-deltaHba/C[index])
+		c.thermalField.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index])
 	}
 }
 
 // 计算left bottom点的温度变化
-func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *model.ItemType) {
-	var index = int(slice[0][0])/5 - 1
-	var index1 = int(slice[0][1])/5 - 1
-	var index2 = int(slice[1][0])/5 - 1
-	var deltaHlb = getLambda(index, index1, 1, 0, 0, 0)*(slice[0][0]-slice[0][1])/float32(XStep*(getEx(0)+getEx(1))) +
-		getLambda(index, index2, 0, 1, 0, 0)*(slice[0][0]-slice[1][0])/float32(YStep*(getEy(1)+getEy(0)))
+func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[0][0]) - 1
+	var index1 = int(slice[0][1]) - 1
+	var index2 = int(slice[1][0]) - 1
+	var deltaHlb = getLambda(index, index1, 1, 0, 0, 0, parameter)*(slice[0][0]-slice[0][1])/float32(model.XStep*(getEx(0)+getEx(1))) +
+		getLambda(index, index2, 0, 1, 0, 0, parameter)*(slice[0][0]-slice[1][0])/float32(model.YStep*(getEy(1)+getEy(0)))
 
-	deltaHlb = deltaHlb * (2 * deltaT / Density[index])
+	deltaHlb = deltaHlb * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[0][0]-Thermalslice[0][1], Thermalslice[0][0]-Thermalslice[1][0],deltaHlb/C[index], "左下角")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, 0, 0, slice[0][0]-deltaHlb/C[index])
+		c.thermalField1.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, 0, 0, slice[0][0]-deltaHlb/C[index])
+		c.thermalField.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index])
 	}
 }
 
 // 计算左表面点温度的变化
-func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slice *model.ItemType) {
-	var index = int(slice[y][0])/5 - 1
-	var index1 = int(slice[y][1])/5 - 1
-	var index2 = int(slice[y-1][0])/5 - 1
-	var index3 = int(slice[y+1][0])/5 - 1
-	var deltaHla = getLambda(index, index1, 1, y, 0, y)*(slice[y][0]-slice[y][1])/float32(XStep*(getEx(0)+getEx(1))) +
-		getLambda(index, index2, 0, y-1, 0, y)*(slice[y][0]-slice[y-1][0])/float32(YStep*(getEy(y)+getEy(y-1))) +
-		getLambda(index, index3, 0, y+1, 0, y)*(slice[y][0]-slice[y+1][0])/float32(YStep*(getEy(y)+getEy(y+1)))
-	deltaHla = deltaHla * (2 * deltaT / Density[index])
+func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[y][0]) - 1
+	var index1 = int(slice[y][1]) - 1
+	var index2 = int(slice[y-1][0]) - 1
+	var index3 = int(slice[y+1][0]) - 1
+	var deltaHla = getLambda(index, index1, 1, y, 0, y, parameter)*(slice[y][0]-slice[y][1])/float32(model.XStep*(getEx(0)+getEx(1))) +
+		getLambda(index, index2, 0, y-1, 0, y, parameter)*(slice[y][0]-slice[y-1][0])/float32(model.YStep*(getEy(y)+getEy(y-1))) +
+		getLambda(index, index3, 0, y+1, 0, y, parameter)*(slice[y][0]-slice[y+1][0])/float32(model.YStep*(getEy(y)+getEy(y+1)))
+	deltaHla = deltaHla * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[y][0]-Thermalslice[y][1], Thermalslice[y][0]-Thermalslice[y-1][0], Thermalslice[y][0]-Thermalslice[y+1][0], deltaHla/C[index], "左表面")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, y, 0, slice[y][0]-deltaHla/C[index])
+		c.thermalField1.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, y, 0, slice[y][0]-deltaHla/C[index])
+		c.thermalField.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index])
 	}
 }
 
 // 计算内部点的温度变化
-func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, slice *model.ItemType) {
-	var index = int(slice[y][x])/5 - 1
-	var index1 = int(slice[y][x-1])/5 - 1
-	var index2 = int(slice[y][x+1])/5 - 1
-	var index3 = int(slice[y-1][x])/5 - 1
-	var index4 = int(slice[y+1][x])/5 - 1
-	var deltaHin = getLambda(index, index1, x-1, y, x, y)*(slice[y][x]-slice[y][x-1])/float32(XStep*(getEx(x)+getEx(x-1))) +
-		getLambda(index, index2, x+1, y, x, y)*(slice[y][x]-slice[y][x+1])/float32(XStep*(getEx(x)+getEx(x+1))) +
-		getLambda(index, index3, x, y-1, x, y)*(slice[y][x]-slice[y-1][x])/float32(YStep*(getEy(y)+getEy(y-1))) +
-		getLambda(index, index4, x, y+1, x, y)*(slice[y][x]-slice[y+1][x])/float32(YStep*(getEy(y)+getEy(y+1)))
-	deltaHin = deltaHin * (2 * deltaT / Density[index])
+func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, slice *model.ItemType, parameter *parameter) {
+	var index = int(slice[y][x]) - 1
+	var index1 = int(slice[y][x-1]) - 1
+	var index2 = int(slice[y][x+1]) - 1
+	var index3 = int(slice[y-1][x]) - 1
+	var index4 = int(slice[y+1][x]) - 1
+	var deltaHin = getLambda(index, index1, x-1, y, x, y, parameter)*(slice[y][x]-slice[y][x-1])/float32(model.XStep*(getEx(x)+getEx(x-1))) +
+		getLambda(index, index2, x+1, y, x, y, parameter)*(slice[y][x]-slice[y][x+1])/float32(model.XStep*(getEx(x)+getEx(x+1))) +
+		getLambda(index, index3, x, y-1, x, y, parameter)*(slice[y][x]-slice[y-1][x])/float32(model.YStep*(getEy(y)+getEy(y-1))) +
+		getLambda(index, index4, x, y+1, x, y, parameter)*(slice[y][x]-slice[y+1][x])/float32(model.YStep*(getEy(y)+getEy(y+1)))
+	deltaHin = deltaHin * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[y][x]-Thermalslice[y][x-1], Thermalslice[y][x]-Thermalslice[y][x+1], Thermalslice[y][x]-Thermalslice[y-1][x], Thermalslice[y][x]-Thermalslice[y+1][x], deltaHin/C[index], deltaHin/C[index], "内部点")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, y, x, slice[y][x]-deltaHin/C[index])
+		c.thermalField1.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index])
 	} else {
-		c.thermalField.Set(z, y, x, slice[y][x]-deltaHin/C[index])
+		c.thermalField.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index])
 	}
 }
 
+// 测试用
 func (c *calculatorWithArrDeque) Calculate() {
 	for z := 0; z < 4000; z++ {
 		c.thermalField.AddFirst(c.initialTemperature)
