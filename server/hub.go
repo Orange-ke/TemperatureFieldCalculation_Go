@@ -7,6 +7,7 @@ import (
 	"log"
 	"lz/calculator"
 	"lz/model"
+	"strconv"
 	"time"
 )
 
@@ -17,19 +18,31 @@ type Hub struct {
 	// request
 	msg chan model.Msg
 	// response
-	envSet    chan model.Env
-	started   chan struct{}
-	stopped   chan struct{}
-	tailStart chan struct{} // 拉尾坯
+	envSet                chan model.Env
+	changeInitialTemp     chan float32
+	changeNarrowSurface   chan model.NarrowSurface
+	changeWideSurface     chan model.WideSurface
+	changeSprayTemp       chan float32
+	changeRollerWaterTemp chan float32
+	changeV               chan float32
+	started               chan struct{}
+	stopped               chan struct{}
+	tailStart             chan struct{} // 拉尾坯
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		msg:       make(chan model.Msg, 10),
-		envSet:    make(chan model.Env, 10),
-		started:   make(chan struct{}, 10),
-		stopped:   make(chan struct{}, 10),
-		tailStart: make(chan struct{}, 10),
+		msg:                   make(chan model.Msg, 10),
+		envSet:                make(chan model.Env, 10),
+		changeInitialTemp:     make(chan float32, 10),
+		changeNarrowSurface:   make(chan model.NarrowSurface, 10),
+		changeWideSurface:     make(chan model.WideSurface, 10),
+		changeSprayTemp:       make(chan float32, 10),
+		changeRollerWaterTemp: make(chan float32, 10),
+		changeV:               make(chan float32, 10),
+		started:               make(chan struct{}, 10),
+		stopped:               make(chan struct{}, 10),
+		tailStart:             make(chan struct{}, 10),
 	}
 }
 
@@ -48,6 +61,68 @@ func (h *Hub) handleResponse() {
 			reply := model.Msg{
 				Type:    "env_set",
 				Content: "env is set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case temp := <-h.changeInitialTemp:
+			h.c.SetStartTemperature(temp)
+			reply := model.Msg{
+				Type:    "initial_temp_set",
+				Content: "initial_temp_set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case narrowSurface := <-h.changeNarrowSurface:
+			h.c.SetNarrowSurfaceIn(narrowSurface.In)
+			h.c.SetNarrowSurfaceOut(narrowSurface.Out)
+			reply := model.Msg{
+				Type:    "narrow_surface_temp_set",
+				Content: "narrow_surface_temp_set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case wideSurface := <-h.changeWideSurface:
+			h.c.SetWideSurfaceIn(wideSurface.In)
+			h.c.SetWideSurfaceOut(wideSurface.Out)
+			reply := model.Msg{
+				Type:    "wide_surface_temp_set",
+				Content: "wide_surface_temp_set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case temp := <-h.changeSprayTemp:
+			h.c.SetSprayTemperature(temp)
+			reply := model.Msg{
+				Type:    "spray_water_temp_set",
+				Content: "spray_water_temp_set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case temp := <-h.changeRollerWaterTemp:
+			h.c.SetRollerWaterTemperature(temp)
+			reply := model.Msg{
+				Type:    "roller_water_temp_set",
+				Content: "roller_water_temp_set",
+			}
+			err := h.conn.WriteJSON(&reply)
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case v := <-h.changeV:
+			h.c.SetV(v)
+			reply := model.Msg{
+				Type:    "v_set",
+				Content: "v_set",
 			}
 			err := h.conn.WriteJSON(&reply)
 			if err != nil {
@@ -103,9 +178,60 @@ func (h *Hub) handleRequest() {
 				err := json.Unmarshal([]byte(msg.Content), &env)
 				if err != nil {
 					log.Println("err: ", err)
+					return
 				}
 				fmt.Println("获取到env参数：", env)
 				h.envSet <- env
+			case "change_initial_temp":
+				temp, err := strconv.ParseFloat(msg.Content, 10)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到初始温度参数：", temp)
+				h.changeInitialTemp <- float32(temp)
+			case "change_narrow_surface":
+				var narrowSurface model.NarrowSurface
+				err := json.Unmarshal([]byte(msg.Content), &narrowSurface)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到窄面温度参数：", narrowSurface)
+				h.changeNarrowSurface <- narrowSurface
+			case "change_wide_surface":
+				var wideSurface model.WideSurface
+				err := json.Unmarshal([]byte(msg.Content), &wideSurface)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到宽面温度参数：", wideSurface)
+				h.changeWideSurface <- wideSurface
+			case "change_spray_temp":
+				temp, err := strconv.ParseFloat(msg.Content, 10)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到二冷区喷淋温度：", temp)
+				h.changeSprayTemp <- float32(temp)
+			case "change_roller_water_temp":
+				temp, err := strconv.ParseFloat(msg.Content, 10)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到二冷区棍子温度：", temp)
+				h.changeRollerWaterTemp <- float32(temp)
+			case "change_v":
+				v, err := strconv.ParseFloat(msg.Content, 10)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				fmt.Println("获取到拉速参数：", v)
+				h.changeV <- float32(v)
 			case "start":
 				h.started <- struct{}{}
 			case "stop":

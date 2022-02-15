@@ -53,7 +53,7 @@ func (ld *ListDeque) Get(z, y, x int) float32 {
 	return iter.val[y][x]
 }
 
-func (ld *ListDeque) Set(z, y, x int, number float32) {
+func (ld *ListDeque) Set(z, y, x int, number float32, bottom float32) {
 	if z > ld.size {
 		panic("index out of length")
 	}
@@ -61,6 +61,9 @@ func (ld *ListDeque) Set(z, y, x int, number float32) {
 	iter = ld.head.next
 	for i := 0; i < z; i++ {
 		iter = iter.next
+	}
+	if number <= bottom {
+		number = bottom
 	}
 	iter.val[y][x] = number
 }

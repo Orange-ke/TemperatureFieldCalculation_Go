@@ -106,6 +106,7 @@ func getDeltaTCase5(x, y int, slice *model.ItemType, parameter *parameter) float
 		2*getLambda(index, index2, x, y, x, y-1, parameter)/float32(model.YStep*(getEy(y)+getEy(y-1))) +
 		parameter.GetHeff(t, parameter)/(model.XStep) +
 		parameter.GetHeff(t, parameter)/(model.YStep)
+	//fmt.Println("getDeltaTCase5: ", 2*getLambda(index, index1, x, y, x-1, y, parameter)/float32(model.XStep*(getEx(x)+getEx(x-1))), 2*getLambda(index, index2, x, y, x, y-1, parameter)/float32(model.YStep*(getEy(y)+getEy(y-1))), parameter.GetHeff(t, parameter)/(model.XStep), parameter.GetHeff(t, parameter)/(model.YStep))
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
@@ -180,8 +181,12 @@ func calculateTimeStepOfOneSlice(slice *model.ItemType, parameter *parameter) fl
 	deltaTArr[6] = getDeltaTCase7(0, model.Width/model.YStep-1, slice, parameter)
 	deltaTArr[7] = getDeltaTCase8(0, model.Width/model.YStep-2, slice, parameter)
 	deltaTArr[8] = getDeltaTCase9(model.Length/model.XStep-2, model.Width/model.YStep-2, slice, parameter)
+	//fmt.Println("时间步长结果：", deltaTArr)
 	var min = float32(1000.0) // 模拟一个很大的数
 	for _, i := range deltaTArr {
+		if i <= 0.25 { // todo 需要处理边界情况
+			i = 0.25
+		}
 		if min > i {
 			min = i
 		}
@@ -323,15 +328,17 @@ func (c *calculatorWithArrDeque) getHeffLessThanR(T float32, parameter *paramete
 	return parameter.Q[int(T)] / (T - c.coolerConfig.NarrowSurfaceIn)
 }
 
-func (c *calculatorWithArrDeque) getQLessThanR(T float32, parameter *parameter) float32 {
-	return parameter.Q[int(T)]
-}
-
 // s > r
 func (c *calculatorWithArrDeque) getHeffGreaterThanR(T float32, parameter *parameter) float32 {
 	return parameter.HEff[int(T)]
 }
 
+// s <= r
+func (c *calculatorWithArrDeque) getQLessThanR(T float32, parameter *parameter) float32 {
+	return parameter.Q[int(T)]
+}
+
+// s > r
 func (c *calculatorWithArrDeque) getQGreaterThanR(T float32, parameter *parameter) float32 {
 	return parameter.HEff[int(T)] * (T - c.coolerConfig.SprayTemperature)
 }

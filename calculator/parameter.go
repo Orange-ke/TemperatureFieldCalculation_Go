@@ -17,10 +17,10 @@ func initParameters(steelValue int, parameter *parameter) {
 	fmt.Println("钢种编号:", steelValue)
 
 	// 2. 导热系数，200℃ 到 1600℃，随温度的上升而下降
-	var LambdaStart = float32(500.0)
-	var LambdaIter = float32(50.0-45.0) / ArrayLength
+	var LambdaStart = float32(24.0)
+	var LambdaIter = float32(50.0-40.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
-		parameter.Lambda[i] = LambdaStart - float32(i)*LambdaIter
+		parameter.Lambda[i] = LambdaStart + float32(i)*LambdaIter
 	}
 
 	// 3. 密度
@@ -31,8 +31,8 @@ func initParameters(steelValue int, parameter *parameter) {
 	}
 
 	// 4. 焓值
-	var EnthalpyStart = float32(1000.0)
-	var EnthalpyStep = float32(100) / ArrayLength
+	var EnthalpyStart = float32(10.0)
+	var EnthalpyStep = float32(1320) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
 		parameter.Enthalpy[i] = EnthalpyStart + float32(i)*EnthalpyStep
 	}
@@ -45,15 +45,15 @@ func initParameters(steelValue int, parameter *parameter) {
 	}
 
 	// 6. 热流密度
-	var QStart = float32(4000.0)
-	var QStep = float32(4000.0) / ArrayLength
+	var QStart = float32(1000.0)
+	var QStep = float32(2000.0) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
 		parameter.Q[i] = QStart + float32(i)*QStep
 	}
 
 	// 7. 比热容
-	var CStart = float32(10.0)
-	var CStep = float32(1.0) / ArrayLength
+	var CStart = float32(0.4)
+	var CStep = float32(0.4) / ArrayLength
 	for i := 0; i < ArrayLength; i++ {
 		parameter.C[i] = CStart + float32(i)*CStep
 	}

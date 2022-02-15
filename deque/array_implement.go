@@ -102,10 +102,13 @@ func (ad *ArrDeque) Get(z, y, x int) float32 {
 	}
 }
 
-func (ad *ArrDeque) Set(z, y, x int, number float32) {
+func (ad *ArrDeque) Set(z, y, x int, number float32, bottom float32) {
 	l1, l2 := ad.container.end-ad.container.start, ad.container1.end-ad.container1.start
 	if z >= l1+l2 {
 		panic("index out of length")
+	}
+	if number < bottom {
+		number = bottom
 	}
 	if ad.state == state0 {
 		//fmt.Println(z, l1, l2, "Set state0")

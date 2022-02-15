@@ -15,6 +15,16 @@ type Env struct {
 	Speed2Water            Speed2Water `json:"speed_2_water"`
 }
 
+type NarrowSurface struct {
+	In float32 `json:"in"`
+	Out float32 `json:"out"`
+}
+
+type WideSurface struct {
+	In float32 `json:"in"`
+	Out float32 `json:"out"`
+}
+
 type Speed2Water struct {
 	Top    float32 `json:"top"`
 	Bottom float32 `json:"bottom"`

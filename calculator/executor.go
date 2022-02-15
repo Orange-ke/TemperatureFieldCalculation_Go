@@ -1,7 +1,6 @@
 package calculator
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -43,7 +42,7 @@ func (e *executor) run() {
 		for {
 			select {
 			case tasks := <-e.start:
-				fmt.Println("master 分配任务: ", tasks)
+				//fmt.Println("master 分配任务: ", tasks)
 				if tasks.end - tasks.start == 0 {
 					e.finish <- struct{}{}
 					break
@@ -113,10 +112,10 @@ func (e *executor) run() {
 			for {
 				select {
 				case t := <-e.dispatchChan:
-					fmt.Println("worker ", i, "获取到任务: ", t)
+					//fmt.Println("worker ", i, "获取到任务: ", t)
 					e.f(t)
 					e.doneSoFar <- struct{}{}
-					fmt.Println("worker ", i, "完成任务: ", t)
+					//fmt.Println("worker ", i, "完成任务: ", t)
 				default:
 					time.Sleep(1 * time.Millisecond)
 				}

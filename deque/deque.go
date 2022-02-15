@@ -19,7 +19,7 @@ type Deque interface {
 	Get(z, y, x int) float32
 
 	// 设定队列中对应下标的数值
-	Set(z, y, x int, number float32)
+	Set(z, y, x int, number float32, bottom float32)
 
 	// 正向遍历
 	Traverse(f func(z int, item *model.ItemType))

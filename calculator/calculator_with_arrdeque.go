@@ -53,6 +53,8 @@ type calculatorWithArrDeque struct {
 	parameter1   *parameter   // 第一种钢种的物性参数
 	parameter2   *parameter   // 第二种钢种的物性参数
 
+	temperatureBottom float32 // 温度的下限
+
 	e *executor
 
 	mu sync.Mutex // 保护 push data时对温度数据的并发访问
@@ -68,14 +70,13 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 	}
 
 	start := time.Now()
-	c.initialTemperature = 1550.0
+	c.coolerConfig.StartTemperature = 1550.0 // 默认值
 	c.thermalField = deque.NewArrDeque(model.ZLength / model.ZStep)
 	c.thermalField1 = deque.NewArrDeque(model.ZLength / model.ZStep)
 
 	c.Field = c.thermalField
 
-	c.v = int64(10 * 1.5 * 1000 / 60)                                           // m / min，默认速度1.5
-	oneSliceDuration = time.Millisecond * 1000 * time.Duration(model.ZStep/c.v) // 10 / c.v
+	c.v = int64(10 * 1.5 * 1000 / 60) // m / min，默认速度1.5
 	c.alternating = true
 	c.calcHub = NewCalcHub()
 
@@ -125,14 +126,14 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 				// 逆时针
 				for left <= right && top <= bottom {
 					c.calculatePointBA(t.deltaT, right, z, item, parameter)
-					if item[0][right] != c.initialTemperature {
+					if item[0][right] != c.coolerConfig.StartTemperature {
 						//allNotChanged = false
 					}
 					count++
 					for row := top + 1; row <= bottom; row++ {
 						// [row][right]
 						c.calculatePointIN(t.deltaT, right, row, z, item, parameter)
-						if item[row][right] != c.initialTemperature {
+						if item[row][right] != c.coolerConfig.StartTemperature {
 							//allNotChanged = false
 						}
 						count++
@@ -141,13 +142,13 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 						for column := right - 1; column > left; column-- {
 							// [bottom][column]
 							c.calculatePointIN(t.deltaT, column, bottom, z, item, parameter)
-							if item[bottom][column] == c.initialTemperature {
+							if item[bottom][column] == c.coolerConfig.StartTemperature {
 								//allNotChanged = false
 							}
 							count++
 						}
 						c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
-						if item[bottom][0] != c.initialTemperature {
+						if item[bottom][0] != c.coolerConfig.StartTemperature {
 							//allNotChanged = false
 						}
 						count++
@@ -209,7 +210,9 @@ func (c *calculatorWithArrDeque) SetCoolerConfig(env model.Env) {
 
 func (c *calculatorWithArrDeque) SetV(v float32) {
 	c.v = int64(v * 1000 / 60)
+	oneSliceDuration = time.Millisecond * time.Duration(1000*float32(model.ZStep)/float32(c.v)) // 10 / c.v
 	fmt.Println("设置拉速：", c.v, v)
+	fmt.Println("设置oneSliceDuration：", oneSliceDuration)
 }
 
 // 冷却器参数单独设置
@@ -266,9 +269,11 @@ func (c *calculatorWithArrDeque) getParameter(z int) *parameter {
 		if c.whichZone(z) == zone0 {
 			parameter.GetHeff = c.getHeffLessThanR
 			parameter.GetQ = c.getQLessThanR
+			c.temperatureBottom = c.coolerConfig.NarrowSurfaceIn
 		} else if c.whichZone(z) == zone1 {
 			parameter.GetHeff = c.getHeffGreaterThanR
 			parameter.GetQ = c.getQGreaterThanR
+			c.temperatureBottom = c.coolerConfig.SprayTemperature
 		}
 	} else if c.runningState == stateRunningWithTwoSteel { // 处理两种钢种的情况
 		// todo
@@ -316,6 +321,7 @@ LOOP:
 			break LOOP
 		default:
 			deltaT, _ := c.calculateTimeStep()
+			fmt.Println("deltaT: ", deltaT)
 			//calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			calcDuration := c.calculateConcurrentlyBySlice(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			if calcDuration == 0 {                                 // 计算时间等于0，意味着还没有切片产生，此时可以等待产生一个切片再计算
@@ -389,8 +395,8 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 		for i := 0; i < add; i++ {
 			c.thermalField.RemoveLast()
 			c.thermalField1.RemoveLast()
-			c.thermalField.AddFirst(c.initialTemperature)
-			c.thermalField1.AddFirst(c.initialTemperature)
+			c.thermalField.AddFirst(c.coolerConfig.StartTemperature)
+			c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
 		}
 	} else {
 		fmt.Println("updateSliceInfo: 切片未满")
@@ -399,11 +405,11 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			if c.Field.IsFull() {
 				c.thermalField.RemoveLast()
 				c.thermalField1.RemoveLast()
-				c.thermalField.AddFirst(c.initialTemperature)
-				c.thermalField1.AddFirst(c.initialTemperature)
+				c.thermalField.AddFirst(c.coolerConfig.StartTemperature)
+				c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
 			} else {
-				c.thermalField.AddFirst(c.initialTemperature)
-				c.thermalField1.AddFirst(c.initialTemperature)
+				c.thermalField.AddFirst(c.coolerConfig.StartTemperature)
+				c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
 			}
 		}
 		if c.Field.IsFull() {
@@ -415,12 +421,12 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 
 // 并行计算方法2
 func (c *calculatorWithArrDeque) calculateConcurrentlyBySlice(deltaT float32) time.Duration {
-	fmt.Println("calculate start")
+	//fmt.Println("calculate start")
 	start := time.Now()
 	c.e.start <- task{start: 0, end: c.Field.Size(), deltaT: deltaT}
-	fmt.Println("task dispatched")
+	//fmt.Println("task dispatched")
 	<-c.e.finish
-	fmt.Println("task finished")
+	//fmt.Println("task finished")
 	return time.Since(start)
 }
 
@@ -717,10 +723,10 @@ func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *
 	//fmt.Println(Thermalslice[model.Width/model.YStep-1][0]-Thermalslice[model.Width/model.YStep-1][1], Thermalslice[model.Width/model.YStep-1][0]-Thermalslice[model.Width/model.YStep-2][0], Q[index], deltaHlt/C[index], "左上角")
 
 	if c.alternating {
-		c.thermalField1.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index], c.temperatureBottom)
 	} else {
 		// 需要修改焓的变化到温度变化k映射关系
-		c.thermalField.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, 0, slice[model.Width/model.YStep-1][0]-deltaHlt/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -736,13 +742,13 @@ func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slic
 		parameter.GetQ(slice[model.Width/model.YStep-1][x], parameter)/(2*model.YStep)
 
 	deltaHta = deltaHta * (2 * deltaT / parameter.Density[index])
-	//fmt.Println(Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-1][x-1], Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-1][x+1], Thermalslice[model.Width/model.YStep-1][x]-Thermalslice[model.Width/model.YStep-2][x], Q[index], deltaHta/C[index], "上表面")
+	//fmt.Println(deltaHta, "上表面")
 
 	if c.alternating {
-		c.thermalField1.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index], c.temperatureBottom)
 	} else {
 		// 需要修改焓的变化到温度变化k映射关系
-		c.thermalField.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, x, slice[model.Width/model.YStep-1][x]-deltaHta/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -759,9 +765,9 @@ func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *
 	deltaHrt = deltaHrt * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-1]-Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-2], Thermalslice[model.Width/model.YStep-1][model.Length/model.XStep-1]-Thermalslice[model.Width/model.YStep-2][model.Length/model.XStep-1], Q[index], deltaHrt/C[index],  "右上角")
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index])
+		c.thermalField1.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index])
+		c.thermalField.Set(z, model.Width/model.YStep-1, model.Length/model.XStep-1, slice[model.Width/model.YStep-1][model.Length/model.XStep-1]-deltaHrt/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -777,12 +783,16 @@ func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slic
 		parameter.GetQ(slice[y][model.Length/model.XStep-1], parameter)/(2*model.XStep)
 
 	deltaHra = deltaHra * (2 * deltaT / parameter.Density[index])
-	//fmt.Println(Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y][model.Length/model.XStep-2], Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y-1][model.Length/model.XStep-1], Thermalslice[y][model.Length/model.XStep-1]-Thermalslice[y+1][model.Length/model.XStep-1], Q[index], deltaHra/C[index], "右表面")
+	//fmt.Println(deltaHra, "右表面")
+	//fmt.Println(getLambda(index, index1, model.Length/model.XStep-1, y, model.Length/model.XStep-2, y, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y][model.Length/model.XStep-2])/float32(model.XStep*(getEx(model.Length/model.XStep-2)+getEx(model.Length/model.XStep-1))))
+	//fmt.Println(getLambda(index, index2, model.Length/model.XStep-1, y, model.Length/model.XStep-1, y-1, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y-1][model.Length/model.XStep-1])/float32(model.YStep*(getEy(y-1)+getEy(y))))
+	//fmt.Println(getLambda(index, index3, model.Length/model.XStep-1, y, model.Length/model.XStep-1, y+1, parameter)*(slice[y][model.Length/model.XStep-1]-slice[y+1][model.Length/model.XStep-1])/float32(model.YStep*(getEy(y+1)+getEy(y))))
+	//fmt.Println(parameter.GetQ(slice[y][model.Length/model.XStep-1], parameter)/(2*model.XStep))
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系
-		c.thermalField1.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index])
+		c.thermalField1.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index])
+		c.thermalField.Set(z, y, model.Length/model.XStep-1, slice[y][model.Length/model.XStep-1]-deltaHra/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -799,9 +809,9 @@ func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *
 	//fmt.Println(Thermalslice[0][model.Length/model.XStep-1]-Thermalslice[0][model.Length/model.XStep-2], Thermalslice[0][model.Length/model.XStep-1]-Thermalslice[1][model.Length/model.XStep-1], Q[index],deltaHrb/C[index], "右下角")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系
-		c.thermalField1.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index])
+		c.thermalField1.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index])
+		c.thermalField.Set(z, 0, model.Length/model.XStep-1, slice[0][model.Length/model.XStep-1]-deltaHrb/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -819,9 +829,9 @@ func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slic
 	//fmt.Println(Thermalslice[0][x]-Thermalslice[0][x-1], Thermalslice[0][x]-Thermalslice[0][x+1], Thermalslice[0][x]-Thermalslice[1][x],deltaHba/C[index], "下表面")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index])
+		c.thermalField1.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index])
+		c.thermalField.Set(z, 0, x, slice[0][x]-deltaHba/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -837,9 +847,9 @@ func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *
 	//fmt.Println(Thermalslice[0][0]-Thermalslice[0][1], Thermalslice[0][0]-Thermalslice[1][0],deltaHlb/C[index], "左下角")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index])
+		c.thermalField1.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index])
+		c.thermalField.Set(z, 0, 0, slice[0][0]-deltaHlb/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -853,12 +863,12 @@ func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slic
 		getLambda(index, index2, 0, y-1, 0, y, parameter)*(slice[y][0]-slice[y-1][0])/float32(model.YStep*(getEy(y)+getEy(y-1))) +
 		getLambda(index, index3, 0, y+1, 0, y, parameter)*(slice[y][0]-slice[y+1][0])/float32(model.YStep*(getEy(y)+getEy(y+1)))
 	deltaHla = deltaHla * (2 * deltaT / parameter.Density[index])
-	//fmt.Println(Thermalslice[y][0]-Thermalslice[y][1], Thermalslice[y][0]-Thermalslice[y-1][0], Thermalslice[y][0]-Thermalslice[y+1][0], deltaHla/C[index], "左表面")
+	//fmt.Println(deltaHla, "左表面")
 
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index])
+		c.thermalField1.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index])
+		c.thermalField.Set(z, y, 0, slice[y][0]-deltaHla/parameter.C[index], c.temperatureBottom)
 	}
 }
 
@@ -875,19 +885,24 @@ func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, s
 		getLambda(index, index4, x, y+1, x, y, parameter)*(slice[y][x]-slice[y+1][x])/float32(model.YStep*(getEy(y)+getEy(y+1)))
 	deltaHin = deltaHin * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(Thermalslice[y][x]-Thermalslice[y][x-1], Thermalslice[y][x]-Thermalslice[y][x+1], Thermalslice[y][x]-Thermalslice[y-1][x], Thermalslice[y][x]-Thermalslice[y+1][x], deltaHin/C[index], deltaHin/C[index], "内部点")
-
+	//if x == model.Length / model.XStep - 4 && y == model.Width / model.YStep - 4 {
+	//	fmt.Println(getLambda(index, index1, x-1, y, x, y, parameter)*(slice[y][x]-slice[y][x-1])/float32(model.XStep*(getEx(x)+getEx(x-1))), getLambda(index, index1, x-1, y, x, y, parameter), slice[y][x]-slice[y][x-1], float32(model.XStep*(getEx(x)+getEx(x-1))))
+	//	fmt.Println(getLambda(index, index2, x+1, y, x, y, parameter)*(slice[y][x]-slice[y][x+1])/float32(model.XStep*(getEx(x)+getEx(x+1))), getLambda(index, index2, x+1, y, x, y, parameter), slice[y][x]-slice[y][x+1], float32(model.XStep*(getEx(x)+getEx(x+1))))
+	//	fmt.Println(getLambda(index, index3, x, y-1, x, y, parameter)*(slice[y][x]-slice[y-1][x])/float32(model.YStep*(getEy(y)+getEy(y-1))), getLambda(index, index3, x, y-1, x, y, parameter), slice[y][x]-slice[y-1][x], float32(model.YStep*(getEy(y)+getEy(y-1))))
+	//	fmt.Println(getLambda(index, index4, x, y+1, x, y, parameter)*(slice[y][x]-slice[y+1][x])/float32(model.YStep*(getEy(y)+getEy(y+1))), getLambda(index, index4, x, y+1, x, y, parameter), slice[y][x]-slice[y+1][x], float32(model.YStep*(getEy(y)+getEy(y+1))))
+	//}
 	if c.alternating { // 需要修改焓的变化到温度变化的映射关系)
-		c.thermalField1.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index])
+		c.thermalField1.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index], c.temperatureBottom)
 	} else {
-		c.thermalField.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index])
+		c.thermalField.Set(z, y, x, slice[y][x]-deltaHin/parameter.C[index], c.temperatureBottom)
 	}
 }
 
 // 测试用
 func (c *calculatorWithArrDeque) Calculate() {
 	for z := 0; z < 4000; z++ {
-		c.thermalField.AddFirst(c.initialTemperature)
-		c.thermalField1.AddFirst(c.initialTemperature)
+		c.thermalField.AddFirst(c.coolerConfig.StartTemperature)
+		c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
 	}
 
 	start := time.Now()
