@@ -102,6 +102,26 @@ func (ad *ArrDeque) Get(z, y, x int) float32 {
 	}
 }
 
+func (ad *ArrDeque) GetSlice(z int) *model.ItemType {
+	l1, l2 := ad.container.end-ad.container.start, ad.container1.end-ad.container1.start
+	if z >= l1+l2 {
+		panic("index out of length")
+	}
+	if ad.state == state0 {
+		//fmt.Println(z, l1, l2, "Set state0")
+		return &ad.container.arr[z+ad.container.start]
+	} else if ad.state == state01 {
+		//fmt.Println(z, l1, l2, "Set state01")
+		if z < l1 {
+			return &ad.container.arr[z+ad.container.start]
+		}
+		return &ad.container1.arr[z-l1+ad.container1.start]
+	} else {
+		//fmt.Println(z, l1, l2, "Set state1")
+		return &ad.container1.arr[z+ad.container1.start]
+	}
+}
+
 func (ad *ArrDeque) Set(z, y, x int, number float32, bottom float32) {
 	l1, l2 := ad.container.end-ad.container.start, ad.container1.end-ad.container1.start
 	if z >= l1+l2 {

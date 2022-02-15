@@ -87,7 +87,7 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 	}
 
 	c.e = newExecutor(4, func(t task) {
-		start := time.Now()
+		//start := time.Now()
 		count := 0
 		var parameter *parameter
 		c.Field.TraverseSpirally(t.start, t.end, func(z int, item *model.ItemType) {
@@ -174,7 +174,7 @@ func NewCalculatorWithArrDeque(edgeWidth int) *calculatorWithArrDeque {
 				}
 			}
 		})
-		fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
+		//fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
 	})
 	c.e.run() // 启动master线程分配任务，启动worker线程执行任务
 
@@ -305,6 +305,51 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	return min, time.Since(start)
 }
 
+func (c *calculatorWithArrDeque) SliceDetailRun() {
+LOOP:
+	for {
+		select {
+		case <-c.calcHub.StopPushSliceDataSignalForRun:
+			fmt.Println("stop slice detail running")
+			c.calcHub.StopSuccessForRun <- struct{}{}
+			break LOOP
+		default:
+			c.calcHub.PushSliceDetailSignal()
+		}
+	}
+}
+
+func (c *calculatorWithArrDeque) BuildSliceData(index int) *[model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32 {
+	res := [model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32{}
+	originData := c.Field.GetSlice(c.Field.Size() - 1 - index)
+	// 从右上角的四分之一还原整个二维数组
+	for i := 0; i < model.Width/model.YStep; i++ {
+		for j := 0; j < model.Length/model.XStep; j++ {
+			res[i][j] = originData[model.Width/model.YStep-1-i][model.Length/model.XStep-1-j]
+		}
+	}
+	for i := 0; i < model.Width/model.YStep; i++ {
+		for j := model.Length / model.XStep; j < model.Length/model.XStep*2; j++ {
+			res[i][j] = originData[model.Width/model.YStep-1-i][j-model.Length/model.XStep]
+		}
+	}
+	for i := model.Width / model.YStep; i < model.Width/model.YStep*2; i++ {
+		for j := model.Length / model.XStep; j < model.Length/model.XStep*2; j++ {
+			res[i][j] = originData[i-model.Width/model.YStep][j-model.Length/model.XStep]
+		}
+	}
+	for i := model.Width / model.YStep; i < model.Width/model.YStep*2; i++ {
+		for j := 0; j < model.Length/model.XStep; j++ {
+			res[i][j] = originData[i-model.Width/model.YStep][model.Length/model.XStep-1-j]
+		}
+	}
+	return &res
+}
+
+func (c *calculatorWithArrDeque) GetFieldSize() int {
+	return c.Field.Size()
+}
+
 func (c *calculatorWithArrDeque) Run() {
 	c.runningState = stateRunning
 	// 先计算timeStep
@@ -321,7 +366,7 @@ LOOP:
 			break LOOP
 		default:
 			deltaT, _ := c.calculateTimeStep()
-			fmt.Println("deltaT: ", deltaT)
+			//fmt.Println("deltaT: ", deltaT)
 			//calcDuration := c.calculateConcurrently(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			calcDuration := c.calculateConcurrentlyBySlice(deltaT) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 			if calcDuration == 0 {                                 // 计算时间等于0，意味着还没有切片产生，此时可以等待产生一个切片再计算
@@ -337,17 +382,17 @@ LOOP:
 			}
 
 			c.updateSliceInfo(calcDuration)
-			if !c.Field.IsEmpty() {
-				for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
-					for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
-						fmt.Print(c.Field.Get(c.Field.Size()-1, i, j), " ")
-					}
-					fmt.Print(i)
-					fmt.Println()
-				}
-			}
+			//if !c.Field.IsEmpty() {
+			//	for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
+			//		for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
+			//			fmt.Print(c.Field.Get(c.Field.Size()-1, i, j), " ")
+			//		}
+			//		fmt.Print(i)
+			//		fmt.Println()
+			//	}
+			//}
 			c.alternating = !c.alternating // 仅在这里修改
-			fmt.Println("计算温度场花费的时间：", duration)
+			//fmt.Println("计算温度场花费的时间：", duration)
 			if duration > time.Second*4 {
 				c.calcHub.PushSignal()
 				//count++
@@ -399,8 +444,8 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
 		}
 	} else {
-		fmt.Println("updateSliceInfo: 切片未满")
-		fmt.Println("updateSliceInfo: 新增切片数: ", add)
+		//fmt.Println("updateSliceInfo: 切片未满")
+		//fmt.Println("updateSliceInfo: 新增切片数: ", add)
 		for i := 0; i < add; i++ {
 			if c.Field.IsFull() {
 				c.thermalField.RemoveLast()
@@ -416,7 +461,7 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			c.isFull = true
 		}
 	}
-	fmt.Println("updateSliceInfo 目前的切片数为：", c.Field.Size())
+	//fmt.Println("updateSliceInfo 目前的切片数为：", c.Field.Size())
 }
 
 // 并行计算方法2
@@ -505,16 +550,16 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureData {
 	if c.isTail {
 		ThermalField.IsTail = true
 	}
-	fmt.Println("BuildData 温度场的长度：", z)
-	if !c.Field.IsEmpty() {
-		for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
-			for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
-				fmt.Print(Field[z-1][i][j], " ")
-			}
-			fmt.Print(i, "build data")
-			fmt.Println()
-		}
-	}
+	//fmt.Println("BuildData 温度场的长度：", z)
+	//if !c.Field.IsEmpty() {
+	//	for i := model.Width/model.YStep - 1; i > model.Width/model.YStep-6; i-- {
+	//		for j := model.Length/model.XStep - 5; j <= model.Length/model.XStep-1; j++ {
+	//			fmt.Print(Field[z-1][i][j], " ")
+	//		}
+	//		fmt.Print(i, "build data")
+	//		fmt.Println()
+	//	}
+	//}
 
 	buildDataHelper(ThermalField, temperatureData)
 	temperatureData.Start = ThermalField.Start

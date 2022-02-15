@@ -19,7 +19,8 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		deltaT, _ := c.calculateTimeStep()
 		c.Field.Traverse(func(z int, item *model.ItemType) {
-			c.calculatePointRT(deltaT, z, item)
+			parameter := c.getParameter(z)
+			c.calculatePointRT(deltaT, z, item, parameter)
 		})
 
 		if c.alternating {
@@ -35,7 +36,8 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		deltaT, _ := c.calculateTimeStep()
 		c.Field.Traverse(func(z int, item *model.ItemType) {
-			c.calculatePointRT(deltaT, z, item)
+			parameter := c.getParameter(z)
+			c.calculatePointRT(deltaT, z, item, parameter)
 		})
 
 		for k := 0; k < 100; k++ {

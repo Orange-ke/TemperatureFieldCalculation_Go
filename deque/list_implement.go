@@ -53,6 +53,18 @@ func (ld *ListDeque) Get(z, y, x int) float32 {
 	return iter.val[y][x]
 }
 
+func (ld *ListDeque) GetSlice(z int) *model.ItemType {
+	if z > ld.size {
+		panic("index out of length")
+	}
+	iter := &node{}
+	iter = ld.head.next
+	for i := 0; i < z; i++ {
+		iter = iter.next
+	}
+	return iter.val
+}
+
 func (ld *ListDeque) Set(z, y, x int, number float32, bottom float32) {
 	if z > ld.size {
 		panic("index out of length")

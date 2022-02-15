@@ -8,6 +8,7 @@ import (
 	"lz/calculator"
 	"lz/model"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -28,6 +29,10 @@ type Hub struct {
 	started               chan struct{}
 	stopped               chan struct{}
 	tailStart             chan struct{} // 拉尾坯
+	startPushSliceDetail  chan int
+	stopPushSliceDetail   chan struct{}
+
+	mu sync.Mutex
 }
 
 func NewHub() *Hub {
@@ -43,6 +48,8 @@ func NewHub() *Hub {
 		started:               make(chan struct{}, 10),
 		stopped:               make(chan struct{}, 10),
 		tailStart:             make(chan struct{}, 10),
+		startPushSliceDetail:  make(chan int, 10),
+		stopPushSliceDetail:   make(chan struct{}, 10),
 	}
 }
 
@@ -62,7 +69,9 @@ func (h *Hub) handleResponse() {
 				Type:    "env_set",
 				Content: "env is set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -72,7 +81,9 @@ func (h *Hub) handleResponse() {
 				Type:    "initial_temp_set",
 				Content: "initial_temp_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -83,7 +94,9 @@ func (h *Hub) handleResponse() {
 				Type:    "narrow_surface_temp_set",
 				Content: "narrow_surface_temp_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -94,7 +107,9 @@ func (h *Hub) handleResponse() {
 				Type:    "wide_surface_temp_set",
 				Content: "wide_surface_temp_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -104,7 +119,9 @@ func (h *Hub) handleResponse() {
 				Type:    "spray_water_temp_set",
 				Content: "spray_water_temp_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -114,7 +131,9 @@ func (h *Hub) handleResponse() {
 				Type:    "roller_water_temp_set",
 				Content: "roller_water_temp_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -124,30 +143,36 @@ func (h *Hub) handleResponse() {
 				Type:    "v_set",
 				Content: "v_set",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
 		case <-h.started: // 开始计算
 			// 从calculator里面的hub中获取是否有
 			h.c.GetCalcHub().StartSignal()
+			go h.c.Run()    // 不断计算
+			go h.pushData() // 获取推送的计算结果到前端
 			reply := model.Msg{
 				Type:    "started",
 				Content: "Started",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
-			go h.c.Run()    // 不断计算
-			go h.pushData() // 获取推送的计算结果到前端
 		case <-h.stopped: // 停止计算
 			h.c.GetCalcHub().StopSignal()
 			reply := model.Msg{
 				Type:    "stopped",
 				Content: "stopped",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -157,7 +182,43 @@ func (h *Hub) handleResponse() {
 				Type:    "tail_start",
 				Content: "started to tail",
 			}
+			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case index := <-h.startPushSliceDetail:
+			fmt.Println("startPushSliceDetail")
+			if h.c.GetCalcHub().PushSliceDetailRunning {
+				h.c.GetCalcHub().StopPushSliceDetail()
+			}
+			h.c.GetCalcHub().PushSliceDetailRunning = true
+			go h.c.SliceDetailRun()
+			go h.pushSliceDetail(index)
+			reply := model.Msg{
+				Type:    "start_push_slice_detail_success",
+				Content: "start_push_slice_detail_success",
+			}
+			h.mu.Lock()
+			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.Println("err: ", err)
+			}
+		case <-h.stopPushSliceDetail:
+			fmt.Println("stopPushSliceDetail")
+			if h.c.GetCalcHub().PushSliceDetailRunning {
+				h.c.GetCalcHub().StopPushSliceDetail()
+				h.c.GetCalcHub().PushSliceDetailRunning = false
+			}
+			reply := model.Msg{
+				Type:    "stop_push_slice_detail_success",
+				Content: "stop_push_slice_detail_success",
+			}
+			h.mu.Lock()
+			err := h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
@@ -238,6 +299,19 @@ func (h *Hub) handleRequest() {
 				h.stopped <- struct{}{}
 			case "tail":
 				h.tailStart <- struct{}{}
+			case "start_push_slice_detail":
+				index, err := strconv.ParseInt(msg.Content, 10, 64)
+				if err != nil {
+					log.Println("err: ", err)
+					return
+				}
+				if index < 0 || int(index) >= h.c.GetFieldSize() {
+					return
+				}
+				fmt.Println("获取到切片下标参数：", index)
+				h.startPushSliceDetail <- int(index)
+			case "stop_push_slice_detail":
+				h.stopPushSliceDetail <- struct{}{}
 			default:
 				log.Println("no such type")
 			}
@@ -251,22 +325,59 @@ func (h *Hub) pushData() {
 	reply := model.Msg{
 		Type: "data_push",
 	}
-Loop:
+LOOP:
 	for {
 		select {
 		case <-h.c.GetCalcHub().Stop:
-			break Loop
+			break LOOP
 		case <-h.c.GetCalcHub().PeriodCalcResult:
 			temperatureData := h.c.BuildData()
 			data, err := json.Marshal(temperatureData)
 			if err != nil {
 				log.Println("err: ", err)
+				return
 			}
 			reply.Content = string(data)
+			h.mu.Lock()
 			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
 			if err != nil {
 				log.Println("err: ", err)
 			}
 		}
+	}
+}
+
+func (h *Hub) pushSliceDetail(index int) {
+	reply := model.Msg{
+		Type: "slice_detail",
+	}
+LOOP:
+	for {
+		select {
+		case <-h.c.GetCalcHub().StopPushSliceDataSignalForPush:
+			fmt.Println("stop push slice detail data")
+			h.c.GetCalcHub().StopSuccessForPush <- struct{}{}
+			break LOOP
+		case <-h.c.GetCalcHub().PeriodPushSliceData:
+			h.pushSliceData(reply, index)
+		}
+	}
+
+}
+
+func (h *Hub) pushSliceData(reply model.Msg, index int) {
+	sliceData := h.c.BuildSliceData(index)
+	data, err := json.Marshal(sliceData)
+	if err != nil {
+		log.Println("err: ", err)
+		return
+	}
+	reply.Content = string(data)
+	h.mu.Lock()
+	err = h.conn.WriteJSON(&reply)
+	h.mu.Unlock()
+	if err != nil {
+		log.Println("err: ", err)
 	}
 }

@@ -105,7 +105,7 @@ func TestArrDeque_Funcs(t *testing.T) {
 	fmt.Println(deque.IsFull())
 	fmt.Println(deque.container.start, deque.container.end, deque.container1.start, deque.container1.end, deque.container.isFull, deque.container1.isFull, deque.isFull, deque.state)
 
-	deque.Set(deque.Size() - 1, 41, 269, 1490)
+	deque.Set(deque.Size() - 1, 41, 269, 1490, 0)
 	fmt.Println(deque.Get(deque.Size() - 1, 41, 269))
 }
 

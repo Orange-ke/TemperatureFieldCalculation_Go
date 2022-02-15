@@ -1,9 +1,7 @@
 package calculator
 
 import (
-	"fmt"
 	"lz/model"
-	"time"
 )
 
 // 获取等效步长
@@ -206,7 +204,7 @@ func buildDataHelper(ThermalField *ThermalFieldStruct, temperatureData *Temperat
 			return
 		}
 	}
-	startTime := time.Now()
+	//startTime := time.Now()
 	// up
 	for y := model.Width/model.YStep - 1; y >= 0; y -= stepY {
 		for x := model.Length/model.XStep - 1; x >= 0; x -= stepX {
@@ -318,7 +316,7 @@ func buildDataHelper(ThermalField *ThermalFieldStruct, temperatureData *Temperat
 	}
 
 	//fmt.Printf("up up: 长%d 宽%d")
-	fmt.Println("build data cost: ", time.Since(startTime))
+	//fmt.Println("build data cost: ", time.Since(startTime))
 	// temperatureData
 }
 

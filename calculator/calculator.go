@@ -7,6 +7,8 @@ import "lz/model"
 type Calculator interface {
 	// 构建data
 	BuildData() *TemperatureData
+	// 构建slice data
+	BuildSliceData(index int) *[model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32
 
 	// 获取CalcHub
 	GetCalcHub() *CalcHub
@@ -27,7 +29,12 @@ type Calculator interface {
 
 	// 运行
 	Run()
+	// 推送切片数据
+	SliceDetailRun()
 
 	// 设置拉尾坯
 	SetStateTail()
+
+	// 获取温度场数组的大小
+	GetFieldSize() int
 }

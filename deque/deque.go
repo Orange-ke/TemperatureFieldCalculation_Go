@@ -18,6 +18,9 @@ type Deque interface {
 	// 获取队列中对应下标的数值
 	Get(z, y, x int) float32
 
+	// 获取某个切片
+	GetSlice(z int) *model.ItemType
+
 	// 设定队列中对应下标的数值
 	Set(z, y, x int, number float32, bottom float32)
 
