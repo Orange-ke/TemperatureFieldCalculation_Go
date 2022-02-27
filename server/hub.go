@@ -54,6 +54,9 @@ func NewHub() *Hub {
 }
 
 func (h *Hub) handleResponse() {
+	defer func() {
+		fmt.Println("停止handleResponse")
+	}()
 	for {
 		select {
 		case env := <-h.envSet: // 设置计算环境
@@ -230,6 +233,9 @@ func (h *Hub) handleResponse() {
 
 func (h *Hub) handleRequest() {
 	// 可以在此对请求进行预处理
+	defer func() {
+		fmt.Println("停止handleRequest")
+	}()
 	for {
 		select {
 		case msg := <-h.msg:
@@ -294,23 +300,29 @@ func (h *Hub) handleRequest() {
 				fmt.Println("获取到拉速参数：", v)
 				h.changeV <- float32(v)
 			case "start":
+				fmt.Println("开始计算三维温度场")
 				h.started <- struct{}{}
 			case "stop":
+				fmt.Println("停止计算三维温度场")
 				h.stopped <- struct{}{}
 			case "tail":
 				h.tailStart <- struct{}{}
 			case "start_push_slice_detail":
+				fmt.Println("开始计算切片详情")
 				index, err := strconv.ParseInt(msg.Content, 10, 64)
 				if err != nil {
 					log.Println("err: ", err)
 					return
 				}
 				if index < 0 || int(index) >= h.c.GetFieldSize() {
-					return
+					log.Println("切片下标越界")
+					break
 				}
 				fmt.Println("获取到切片下标参数：", index)
 				h.startPushSliceDetail <- int(index)
+				fmt.Println("开始计算切片详情信号发送完毕")
 			case "stop_push_slice_detail":
+				fmt.Println("获取到停止推送切片数据的信号")
 				h.stopPushSliceDetail <- struct{}{}
 			default:
 				log.Println("no such type")

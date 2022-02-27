@@ -8,7 +8,7 @@ type Calculator interface {
 	// 构建data
 	BuildData() *TemperatureData
 	// 构建slice data
-	BuildSliceData(index int) *[model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32
+	BuildSliceData(index int) *SlicePushDataStruct
 
 	// 获取CalcHub
 	GetCalcHub() *CalcHub
@@ -16,7 +16,7 @@ type Calculator interface {
 	// 初始化计算参数
 	InitParameter(steelValue int)
 
-	// 设置化冷却器参数
+	// 设置冷却器参数
 	SetCoolerConfig(env model.Env)
 	SetStartTemperature(startTemperature float32)
 	SetNarrowSurfaceIn(narrowSurfaceIn float32)

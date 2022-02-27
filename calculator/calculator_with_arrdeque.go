@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"lz/deque"
 	"lz/model"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -47,6 +48,9 @@ type calculatorWithArrDeque struct {
 	runningState int  // 是否有铸坯还在铸机中
 	isTail       bool // 拉尾坯
 	isFull       bool // 铸机未充满
+
+	start int
+	end   int
 
 	coolerConfig coolerConfig // 温度相关的配置
 	r            int          // 结晶区与二冷区分界
@@ -252,6 +256,14 @@ func (c *calculatorWithArrDeque) SetStateTail() {
 	c.isTail = true
 }
 
+func (c *calculatorWithArrDeque) getFieldStart() int {
+	return c.start
+}
+
+func (c *calculatorWithArrDeque) getFieldEnd() int {
+	return c.end
+}
+
 func (c *calculatorWithArrDeque) whichZone(z int) int {
 	z = z * model.ZStep / stepZ // stepZ代表Z方向的缩放比例
 	if z <= upLength {          // upLength 代表结晶器的长度 R
@@ -315,34 +327,43 @@ LOOP:
 			break LOOP
 		default:
 			c.calcHub.PushSliceDetailSignal()
+			time.Sleep(1 * time.Second)
 		}
 	}
 }
 
-func (c *calculatorWithArrDeque) BuildSliceData(index int) *[model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32 {
-	res := [model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32{}
-	originData := c.Field.GetSlice(c.Field.Size() - 1 - index)
+func (c *calculatorWithArrDeque) BuildSliceData(index int) *SlicePushDataStruct {
+	res := SlicePushDataStruct{Marks: make(map[int]string)}
+	slice := [model.Width / model.YStep * 2][model.Length / model.XStep * 2]float32{}
+	originData := c.Field.GetSlice(index)
 	// 从右上角的四分之一还原整个二维数组
 	for i := 0; i < model.Width/model.YStep; i++ {
 		for j := 0; j < model.Length/model.XStep; j++ {
-			res[i][j] = originData[model.Width/model.YStep-1-i][model.Length/model.XStep-1-j]
+			slice[i][j] = originData[model.Width/model.YStep-1-i][model.Length/model.XStep-1-j]
 		}
 	}
 	for i := 0; i < model.Width/model.YStep; i++ {
 		for j := model.Length / model.XStep; j < model.Length/model.XStep*2; j++ {
-			res[i][j] = originData[model.Width/model.YStep-1-i][j-model.Length/model.XStep]
+			slice[i][j] = originData[model.Width/model.YStep-1-i][j-model.Length/model.XStep]
 		}
 	}
 	for i := model.Width / model.YStep; i < model.Width/model.YStep*2; i++ {
 		for j := model.Length / model.XStep; j < model.Length/model.XStep*2; j++ {
-			res[i][j] = originData[i-model.Width/model.YStep][j-model.Length/model.XStep]
+			slice[i][j] = originData[i-model.Width/model.YStep][j-model.Length/model.XStep]
 		}
 	}
 	for i := model.Width / model.YStep; i < model.Width/model.YStep*2; i++ {
 		for j := 0; j < model.Length/model.XStep; j++ {
-			res[i][j] = originData[i-model.Width/model.YStep][model.Length/model.XStep-1-j]
+			slice[i][j] = originData[i-model.Width/model.YStep][model.Length/model.XStep-1-j]
 		}
 	}
+	res.Slice = &slice
+	res.Start = c.getFieldStart()
+	res.End = model.ZLength / model.ZStep
+	res.Current = c.getFieldEnd()
+	res.Marks[0] = "结晶器"
+	res.Marks[res.End] = strconv.Itoa(res.End)
+	res.Marks[upLength] = "二冷区"
 	return &res
 }
 
@@ -429,6 +450,9 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 				c.thermalField.AddFirst(-1)
 				c.thermalField1.AddFirst(-1)
 			}
+			if c.start < c.end {
+				c.start++
+			}
 		}
 		// todo 处理不再进入新切片的情况，也需要考虑再次进入新切片时如何重新开始计算
 		return
@@ -455,6 +479,9 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 			} else {
 				c.thermalField.AddFirst(c.coolerConfig.StartTemperature)
 				c.thermalField1.AddFirst(c.coolerConfig.StartTemperature)
+			}
+			if c.end < model.ZLength/model.ZStep {
+				c.end++
 			}
 		}
 		if c.Field.IsFull() {

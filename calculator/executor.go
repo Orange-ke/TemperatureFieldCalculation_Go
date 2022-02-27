@@ -90,7 +90,6 @@ func (e *executor) run() {
 					}
 				}
 
-
 				for i := 0; i < remainder; i++ {
 					e.dispatchChan <- task{start: start, end: start + 1, deltaT: tasks.deltaT}
 					start++

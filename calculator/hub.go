@@ -3,22 +3,24 @@ package calculator
 import "fmt"
 
 type CalcHub struct {
+	// 温度场推送
 	Stop             chan struct{}
 	PeriodCalcResult chan struct{}
-
+	// 切片横截面温度数据推送
 	PushSliceDetailRunning         bool
 	StopPushSliceDataSignalForRun  chan struct{}
 	StopPushSliceDataSignalForPush chan struct{}
 	StopSuccessForRun              chan struct{}
 	StopSuccessForPush             chan struct{}
 	PeriodPushSliceData            chan struct{}
+	// 切片纵截面
 }
 
 func NewCalcHub() *CalcHub {
 	return &CalcHub{
 		PeriodCalcResult:    make(chan struct{}),
-		PeriodPushSliceData: make(chan struct{}),
 
+		PeriodPushSliceData: make(chan struct{}),
 		StopPushSliceDataSignalForRun:  make(chan struct{}, 10),
 		StopPushSliceDataSignalForPush: make(chan struct{}, 10),
 		StopSuccessForRun:              make(chan struct{}, 10),
@@ -47,8 +49,9 @@ func (ch *CalcHub) PushSliceDetailSignal() {
 func (ch *CalcHub) StopPushSliceDetail() {
 	fmt.Println("start to stop push slice detail")
 	ch.StopPushSliceDataSignalForRun <- struct{}{}
-	<- ch.StopSuccessForRun
+	<-ch.StopSuccessForRun
+	fmt.Println("stop running slice detail success")
 	ch.StopPushSliceDataSignalForPush <- struct{}{}
-	<- ch.StopSuccessForPush
+	<-ch.StopSuccessForPush
 	fmt.Println("stop push slice detail success")
 }
