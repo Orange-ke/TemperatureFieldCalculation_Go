@@ -40,6 +40,8 @@ type Hub struct {
 	startPushSliceDetail  chan int
 	stopPushSliceDetail   chan struct{}
 
+	generate chan struct{}
+
 	mu sync.Mutex
 }
 
@@ -59,6 +61,8 @@ func NewHub() *Hub {
 		tailStart:             make(chan struct{}, 10),
 		startPushSliceDetail:  make(chan int, 10),
 		stopPushSliceDetail:   make(chan struct{}, 10),
+
+		generate: make(chan struct{}, 10),
 	}
 }
 
@@ -74,8 +78,8 @@ func (h *Hub) handleResponse() {
 				//c := calculator.NewCalculatorWithListDeque(0)
 				h.c = calculator.NewCalculatorWithArrDeque()
 			}
-			h.c.GetCastingMachine().SetCoolerConfig(env)          // 设置冷却参数
-			h.c.GetCastingMachine().SetV(env.DragSpeed)           // 设置拉速
+			h.c.GetCastingMachine().SetCoolerConfig(env)           // 设置冷却参数
+			h.c.GetCastingMachine().SetV(env.DragSpeed)            // 设置拉速
 			h.c.InitSteel(env.SteelValue, h.c.GetCastingMachine()) // 设置钢种物性参数
 			reply := model.Msg{
 				Type:    "env_set",
@@ -234,6 +238,26 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("回复消息失败")
 			}
+		case <- h.generate:
+			reply := model.Msg{
+				Type: "data_generate",
+			}
+			h.c = calculator.NewCalculatorForGenerate()
+			log.Info("初始化计算器")
+			temperatureData := h.c.GenerateResult()
+			log.Info("生成数据")
+			data, err := json.Marshal(temperatureData)
+			if err != nil {
+				log.WithField("err", err).Error("温度场推送数据json解析失败")
+				return
+			}
+			reply.Content = string(data)
+			h.mu.Lock()
+			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.WithField("err", err).Error("发送温度场推送消息失败")
+			}
 		default:
 			time.Sleep(10 * time.Millisecond)
 		}
@@ -333,6 +357,9 @@ func (h *Hub) handleRequest() {
 			case "stop_push_slice_detail":
 				log.Info("获取到停止推送切片数据的信号")
 				h.stopPushSliceDetail <- struct{}{}
+			case "generate":
+				log.Info("获取到生成数据的信号")
+				h.generate <- struct{}{}
 			default:
 				log.Warn("no such type")
 			}
@@ -384,7 +411,6 @@ LOOP:
 			h.pushSliceData(reply, index)
 		}
 	}
-
 }
 
 func (h *Hub) pushSliceData(reply model.Msg, index int) {

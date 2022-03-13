@@ -30,4 +30,6 @@ type Calculator interface {
 
 	// 获取温度场数组的大小
 	GetFieldSize() int
+
+	GenerateResult() *TemperatureFieldData
 }

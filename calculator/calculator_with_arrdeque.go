@@ -530,3 +530,47 @@ func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, s
 		c.thermalField.Set(z, y, x, slice[y][x]-deltaHin*parameter.Enthalpy2Temp, parameter.TemperatureBottom)
 	}
 }
+
+// 测试用
+func NewCalculatorForGenerate() *calculatorWithArrDeque {
+	c := &calculatorWithArrDeque{}
+	// 初始化数据结构
+	c.thermalField = deque.NewArrDeque(ZLength / ZStep)
+	c.thermalField1 = deque.NewArrDeque(ZLength / ZStep)
+	c.Field = c.thermalField
+	return c
+}
+
+func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
+	zMax := ZLength / ZStep
+	yMax := Width / YStep
+	xMax := Length / XStep
+	var minus float32
+	initialTemp := float32(1500.0)
+	var slice *casting_machine.ItemType
+	var scale = float32(0.93)
+	for i := 0; i < zMax; i++ {
+		c.Field.AddFirst(initialTemp)
+	}
+	for i := c.Field.Size() - 1; i >= 0; i-- {
+		slice = c.Field.GetSlice(i)
+		// 从右向左减少
+		for y := yMax - 1; y >= 0; y-- {
+			minus = 564.864 - 564.864 * float32(c.Field.Size() - 1 - i) / float32(c.Field.Size() - 1)
+			for x := xMax - 1; x >= 0; x-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+
+		// 从上到下减少
+		for x := xMax - 1; x >= 0; x-- {
+			minus = 564.864 - 564.864 * float32(c.Field.Size() - 1 - i) / float32(c.Field.Size() - 1)
+			for y := yMax - 1; y >= 0; y-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+	}
+	return c.BuildData()
+}

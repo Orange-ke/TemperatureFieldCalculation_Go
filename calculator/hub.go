@@ -60,16 +60,16 @@ func (ch *CalcHub) StopPushSliceDetail() {
 }
 
 // 横切面周期性推送任务
-func (c *CalcHub) SliceDetailRun() {
+func (ch *CalcHub) SliceDetailRun() {
 LOOP:
 	for {
 		select {
-		case <-c.StopPushSliceDataSignalForRun:
+		case <-ch.StopPushSliceDataSignalForRun:
 			fmt.Println("stop slice detail running")
-			c.StopSuccessForRun <- struct{}{}
+			ch.StopSuccessForRun <- struct{}{}
 			break LOOP
 		default:
-			c.PushSliceDetailSignal()
+			ch.PushSliceDetailSignal()
 			time.Sleep(1 * time.Second)
 		}
 	}
