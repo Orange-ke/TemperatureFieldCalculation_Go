@@ -1,6 +1,9 @@
 package calculator
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type CalcHub struct {
 	// 温度场推送
@@ -18,9 +21,9 @@ type CalcHub struct {
 
 func NewCalcHub() *CalcHub {
 	return &CalcHub{
-		PeriodCalcResult:    make(chan struct{}),
+		PeriodCalcResult: make(chan struct{}),
 
-		PeriodPushSliceData: make(chan struct{}),
+		PeriodPushSliceData:            make(chan struct{}),
 		StopPushSliceDataSignalForRun:  make(chan struct{}, 10),
 		StopPushSliceDataSignalForPush: make(chan struct{}, 10),
 		StopSuccessForRun:              make(chan struct{}, 10),
@@ -55,3 +58,21 @@ func (ch *CalcHub) StopPushSliceDetail() {
 	<-ch.StopSuccessForPush
 	fmt.Println("stop push slice detail success")
 }
+
+// 横切面周期性推送任务
+func (c *CalcHub) SliceDetailRun() {
+LOOP:
+	for {
+		select {
+		case <-c.StopPushSliceDataSignalForRun:
+			fmt.Println("stop slice detail running")
+			c.StopSuccessForRun <- struct{}{}
+			break LOOP
+		default:
+			c.PushSliceDetailSignal()
+			time.Sleep(1 * time.Second)
+		}
+	}
+}
+
+// 纵切面周期性推送任务

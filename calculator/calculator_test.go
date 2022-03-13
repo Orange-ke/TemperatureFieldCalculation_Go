@@ -5,12 +5,12 @@ import (
 )
 
 func TestCalculator(t *testing.T) {
-	calculator := NewCalculatorWithArrDeque(0)
-	calculator.Calculate()
+	//calculator := NewCalculatorWithArrDeque()
+	//getLambda()
 }
 
 func TestCalculateTimeStep(t *testing.T) {
-	calculator := NewCalculatorWithArrDeque(0)
+	calculator := NewCalculatorWithArrDeque()
 	calculator.calculateTimeStep()
 }
 

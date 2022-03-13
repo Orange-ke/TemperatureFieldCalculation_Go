@@ -37,6 +37,7 @@ func (s *Server) serveWs(w http.ResponseWriter, r *http.Request) {
 		err = conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println("err: ", err)
+			continue
 		}
 		hub.msg <- msg
 	}
