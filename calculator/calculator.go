@@ -32,4 +32,6 @@ type Calculator interface {
 	GetFieldSize() int
 
 	GenerateResult() *TemperatureFieldData
+
+	GenerateSLiceInfo(index int) *SliceInfo
 }

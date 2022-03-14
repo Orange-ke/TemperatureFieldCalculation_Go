@@ -542,21 +542,22 @@ func NewCalculatorForGenerate() *calculatorWithArrDeque {
 }
 
 func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
-	zMax := ZLength / ZStep
+	//zMax := ZLength / ZStep
 	yMax := Width / YStep
 	xMax := Length / XStep
 	var minus float32
 	initialTemp := float32(1500.0)
 	var slice *casting_machine.ItemType
-	var scale = float32(0.93)
-	for i := 0; i < zMax; i++ {
+	var scale = float32(0.948)
+	var base1 = float32(564.864)
+	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
-	for i := c.Field.Size() - 1; i >= 0; i-- {
+	for i := 4000 - 1; i >= 0; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
 		for y := yMax - 1; y >= 0; y-- {
-			minus = 564.864 - 564.864 * float32(c.Field.Size() - 1 - i) / float32(c.Field.Size() - 1)
+			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for x := xMax - 1; x >= 0; x-- {
 				minus *= scale
 				slice[y][x] -= minus
@@ -565,7 +566,29 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 
 		// 从上到下减少
 		for x := xMax - 1; x >= 0; x-- {
-			minus = 564.864 - 564.864 * float32(c.Field.Size() - 1 - i) / float32(c.Field.Size() - 1)
+			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
+			for y := yMax - 1; y >= 0; y-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+	}
+
+	var base2 = float32(223.4)
+	for i := 0; i < casting_machine.UpLength; i++ {
+		slice = c.Field.GetSlice(i)
+		// 从右向左减少
+		for y := yMax - 1; y >= 0; y-- {
+			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			for x := xMax - 1; x >= 0; x-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+
+		// 从上到下减少
+		for x := xMax - 1; x >= 0; x-- {
+			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
 			for y := yMax - 1; y >= 0; y-- {
 				minus *= scale
 				slice[y][x] -= minus
@@ -573,4 +596,74 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 		}
 	}
 	return c.BuildData()
+}
+
+type SliceInfo struct {
+	HorizontalSolidThickness  int                                                                                                             `json:"horizontal_solid_thickness"`
+	VerticalSolidThickness    int                                                                                                             `json:"vertical_solid_thickness"`
+	HorizontalLiquidThickness int                                                                                                             `json:"horizontal_liquid_thickness"`
+	VerticalLiquidThickness   int                                                                                                             `json:"vertical_liquid_thickness"`
+	Slice                     *[casting_machine.Width / casting_machine.YStep * 2][casting_machine.Length / casting_machine.XStep * 2]float32 `json:"slice"`
+}
+
+func (c *calculatorWithArrDeque) GenerateSLiceInfo(index int) *SliceInfo {
+	return c.buildSliceGenerateData(index)
+}
+
+func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
+	solidTemp := float32(1445.69)
+	liquidTemp := float32(1506.77)
+	sliceInfo := &SliceInfo{}
+	slice := [casting_machine.Width / casting_machine.YStep * 2][casting_machine.Length / casting_machine.XStep * 2]float32{}
+	originData := c.Field.GetSlice(index)
+	// 从右上角的四分之一还原整个二维数组
+	for i := 0; i < casting_machine.Width/casting_machine.YStep; i++ {
+		for j := 0; j < casting_machine.Length/casting_machine.XStep; j++ {
+			slice[i][j] = originData[casting_machine.Width/casting_machine.YStep-1-i][casting_machine.Length/casting_machine.XStep-1-j]
+		}
+	}
+	for i := 0; i < casting_machine.Width/casting_machine.YStep; i++ {
+		for j := casting_machine.Length / casting_machine.XStep; j < casting_machine.Length/casting_machine.XStep*2; j++ {
+			slice[i][j] = originData[casting_machine.Width/casting_machine.YStep-1-i][j-casting_machine.Length/casting_machine.XStep]
+		}
+	}
+	for i := casting_machine.Width / casting_machine.YStep; i < casting_machine.Width/casting_machine.YStep*2; i++ {
+		for j := casting_machine.Length / casting_machine.XStep; j < casting_machine.Length/casting_machine.XStep*2; j++ {
+			slice[i][j] = originData[i-casting_machine.Width/casting_machine.YStep][j-casting_machine.Length/casting_machine.XStep]
+		}
+	}
+	for i := casting_machine.Width / casting_machine.YStep; i < casting_machine.Width/casting_machine.YStep*2; i++ {
+		for j := 0; j < casting_machine.Length/casting_machine.XStep; j++ {
+			slice[i][j] = originData[i-casting_machine.Width/casting_machine.YStep][casting_machine.Length/casting_machine.XStep-1-j]
+		}
+	}
+	sliceInfo.Slice = &slice
+	length := Length/XStep - 1
+	width := Width/YStep - 1
+	for i := length; i >= 0; i-- {
+		if originData[0][i] >= solidTemp {
+			sliceInfo.HorizontalSolidThickness = XStep * (length - i)
+			break
+		}
+	}
+	for i := length; i >= 0; i-- {
+		if originData[0][i] >= liquidTemp {
+			sliceInfo.HorizontalLiquidThickness = XStep * (length - i)
+			break
+		}
+	}
+
+	for j := width; j >= 0; j-- {
+		if originData[j][0] >= solidTemp {
+			sliceInfo.VerticalSolidThickness = YStep * (width - j)
+			break
+		}
+	}
+	for j := width; j >= 0; j-- {
+		if originData[j][0] >= liquidTemp {
+			sliceInfo.VerticalLiquidThickness = YStep * (width - j)
+			break
+		}
+	}
+	return sliceInfo
 }
