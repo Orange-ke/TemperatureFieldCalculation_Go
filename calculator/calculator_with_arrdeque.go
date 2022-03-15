@@ -546,10 +546,10 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 	yMax := Width / YStep
 	xMax := Length / XStep
 	var minus float32
-	initialTemp := float32(1500.0)
+	initialTemp := float32(1600.0)
 	var slice *casting_machine.ItemType
-	var scale = float32(0.948)
-	var base1 = float32(564.864)
+	var scale = float32(0.9665)
+	var base1 = float32(664.864)
 	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
@@ -574,7 +574,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 		}
 	}
 
-	var base2 = float32(223.4)
+	var base2 = float32(1048.4)
 	for i := 0; i < casting_machine.UpLength; i++ {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
@@ -641,27 +641,25 @@ func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
 	length := Length/XStep - 1
 	width := Width/YStep - 1
 	for i := length; i >= 0; i-- {
-		if originData[0][i] >= solidTemp {
-			sliceInfo.HorizontalSolidThickness = XStep * (length - i)
-			break
+		if originData[0][i] <= solidTemp {
+			sliceInfo.HorizontalSolidThickness = XStep * (length - i + 1)
 		}
 	}
 	for i := length; i >= 0; i-- {
 		if originData[0][i] >= liquidTemp {
-			sliceInfo.HorizontalLiquidThickness = XStep * (length - i)
+			sliceInfo.HorizontalLiquidThickness = XStep * (length - i + 1)
 			break
 		}
 	}
 
 	for j := width; j >= 0; j-- {
-		if originData[j][0] >= solidTemp {
-			sliceInfo.VerticalSolidThickness = YStep * (width - j)
-			break
+		if originData[j][0] <= solidTemp {
+			sliceInfo.VerticalSolidThickness = YStep * (width - j + 1)
 		}
 	}
 	for j := width; j >= 0; j-- {
 		if originData[j][0] >= liquidTemp {
-			sliceInfo.VerticalLiquidThickness = YStep * (width - j)
+			sliceInfo.VerticalLiquidThickness = YStep * (width - j + 1)
 			break
 		}
 	}

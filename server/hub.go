@@ -40,7 +40,8 @@ type Hub struct {
 	startPushSliceDetail  chan int
 	stopPushSliceDetail   chan struct{}
 
-	generate chan struct{}
+	generate      chan struct{}
+	generateSlice chan int
 
 	mu sync.Mutex
 }
@@ -63,6 +64,7 @@ func NewHub() *Hub {
 		stopPushSliceDetail:   make(chan struct{}, 10),
 
 		generate: make(chan struct{}, 10),
+		generateSlice: make(chan int, 10),
 	}
 }
 
@@ -238,7 +240,7 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("回复消息失败")
 			}
-		case <- h.generate:
+		case <-h.generate:
 			reply := model.Msg{
 				Type: "data_generate",
 			}
@@ -258,7 +260,23 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场推送消息失败")
 			}
-
+		case index := <-h.generateSlice:
+			reply := model.Msg{
+				Type: "slice_generated",
+			}
+			sliceData := h.c.GenerateSLiceInfo(index)
+			data, err := json.Marshal(sliceData)
+			if err != nil {
+				log.WithField("err", err).Error("温度场切片推送数据json解析失败")
+				return
+			}
+			reply.Content = string(data)
+			h.mu.Lock()
+			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.WithField("err", err).Error("发送温度场切片推送消息失败")
+			}
 		default:
 			time.Sleep(10 * time.Millisecond)
 		}
@@ -361,6 +379,19 @@ func (h *Hub) handleRequest() {
 			case "generate":
 				log.Info("获取到生成数据的信号")
 				h.generate <- struct{}{}
+			case "generate_slice":
+				log.Info("获取到生成切片数据的信号")
+				index, err := strconv.ParseInt(msg.Content, 10, 64)
+				log.Info("获取到切片下标：", index)
+				if err != nil {
+					log.WithField("err", err).Error("切片下标不是整数")
+					return
+				}
+				if index < 0 || int(index) >= h.c.GetFieldSize() {
+					log.Warn("切片下标越界")
+					break
+				}
+				h.generateSlice <- int(index)
 			default:
 				log.Warn("no such type")
 			}
