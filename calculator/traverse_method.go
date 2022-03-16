@@ -19,9 +19,8 @@ func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque
 		// parameter set
 		parameter = c.getParameter(z)
 		// 计算最外层， 逆时针
-		// 1. 三个顶点，左下方顶点仅当其外一层温度不是初始温度时才开始计算
-		//c.calculatePointLB(t.deltaT, z, item) 不用计算，因为还未产生温差
 		{
+			// 1. 三个顶点，左下方顶点仅当其外一层温度不是初始温度时才开始计算
 			c.calculatePointRB(t.deltaT, z, item, parameter)
 			c.calculatePointRT(t.deltaT, z, item, parameter)
 			c.calculatePointLT(t.deltaT, z, item, parameter)
@@ -41,60 +40,62 @@ func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque
 		}
 
 		{
-			//stop := 0 // 当出现两层的温度都是 初始温度时，则停止遍历
-			//allNotChanged := true
-			// 逆时针
+			// 逆时针螺旋遍历
 			for left <= right && top <= bottom {
-				c.calculatePointBA(t.deltaT, right, z, item, parameter)
-				//if item[0][right] != c.castingMachine.CoolerConfig.StartTemperature {
-				//	allNotChanged = false
-				//}
-				count++
+				if item[0][right] != item[0][right+1] ||
+					item[0][right] != item[0][right-1] ||
+					item[0][right] != item[1][right] {
+					c.calculatePointBA(t.deltaT, right, z, item, parameter)
+					count++
+				}
 				for row := top + 1; row <= bottom; row++ {
 					// [row][right]
-					c.calculatePointIN(t.deltaT, right, row, z, item, parameter)
-					//if item[row][right] != c.castingMachine.CoolerConfig.StartTemperature {
-					//	allNotChanged = false
-					//}
-					count++
+					if item[row][right] != item[row][right+1] ||
+						item[row][right] != item[row][right-1] ||
+						item[row][right] != item[row+1][right] ||
+						item[row][right] != item[row-1][right] {
+						c.calculatePointIN(t.deltaT, right, row, z, item, parameter)
+						count++
+					}
 				}
 				if left < right && top < bottom {
 					for column := right - 1; column > left; column-- {
 						// [bottom][column]
-						c.calculatePointIN(t.deltaT, column, bottom, z, item, parameter)
-						//if item[bottom][column] == c.castingMachine.CoolerConfig.StartTemperature {
-						//	allNotChanged = false
-						//}
-						count++
+						if item[bottom][column] != item[bottom][column+1] ||
+							item[bottom][column] != item[bottom][column-1] ||
+							item[bottom][column] != item[bottom+1][column] ||
+							item[bottom][column] != item[bottom-1][column] {
+							c.calculatePointIN(t.deltaT, column, bottom, z, item, parameter)
+							count++
+						}
+						if item[bottom][0] == item[bottom+1][0] ||
+							item[bottom][0] == item[bottom-1][0] ||
+							item[bottom][0] == item[bottom][1] {
+							c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
+							count++
+						}
 					}
-					c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
-					//if item[bottom][0] != c.castingMachine.CoolerConfig.StartTemperature {
-					//	allNotChanged = false
-					//}
-					count++
 				}
 				if top == bottom {
-					c.calculatePointLB(t.deltaT, z, item, parameter)
-					count++
-					for column := right - 1; column > left; column-- {
-						c.calculatePointBA(t.deltaT, column, z, item, parameter)
+					if item[0][0] != item[0][1] || item[0][0] != item[1][0] {
+						c.calculatePointLB(t.deltaT, z, item, parameter)
 						count++
+					}
+					for column := right - 1; column > left; column-- {
+						if item[0][column] != item[0][column+1] ||
+							item[0][column] != item[0][column-1] ||
+							item[0][column] != item[1][column] {
+							c.calculatePointBA(t.deltaT, column, z, item, parameter)
+							count++
+						}
 					}
 				}
 				right--
 				bottom--
-				// 如果该层与其的温度都未改变，即都是初始温度则计数
-				//if allNotChanged {
-				//	stop++
-				//	allNotChanged = true
-				//	if stop == 2 {
-				//		break
-				//	}
-				//}
 			}
 		}
+		//fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
 	})
-	//fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
 }
 
 // 分块遍历

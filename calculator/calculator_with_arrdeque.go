@@ -66,7 +66,7 @@ func NewCalculatorWithArrDeque(e executor) *calculatorWithArrDeque {
 	// 初始化推送消息通道
 	c.calcHub = NewCalcHub()
 	if e == nil {
-		c.e = newExecutorBaseOnSlice(4)
+		c.e = newExecutorBaseOnSlice(8)
 	} else {
 		c.e = e
 	}
