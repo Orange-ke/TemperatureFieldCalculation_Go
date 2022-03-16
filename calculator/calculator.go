@@ -1,7 +1,5 @@
 package calculator
 
-import "lz/casting_machine"
-
 // calculator 的接口定义
 
 type Calculator interface {
@@ -14,13 +12,13 @@ type Calculator interface {
 	GetCalcHub() *CalcHub
 
 	// 初始化钢种
-	InitSteel(steelValue int, castingMachine *casting_machine.CastingMachine)
+	InitSteel(steelValue int, castingMachine *CastingMachine)
 
 	// 初始化铸机
 	InitCastingMachine(castingMachineNumber int)
 
 	// 获取钢种
-	GetCastingMachine() *casting_machine.CastingMachine
+	GetCastingMachine() *CastingMachine
 
 	// 运行
 	Run()

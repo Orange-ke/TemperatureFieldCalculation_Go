@@ -7,11 +7,11 @@ import (
 )
 
 func TestNewCalculatorWithArrDeque(t *testing.T) {
-	c := NewCalculatorWithArrDeque(0)
+	c := NewCalculatorWithArrDeque(nil)
 
 	for i := 0; i < 4000; i++ {
-		c.thermalField.AddFirst(c.initialTemperature - 200.0 + float32(i) * 0.025)
-		c.thermalField1.AddFirst(c.initialTemperature - 200.0 + float32(i) * 0.025)
+		c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature - 200.0 + float32(i) * 0.025)
+		c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature - 200.0 + float32(i) * 0.025)
 	}
 
 	fmt.Println(c.isFull, c.thermalField.IsFull(), c.thermalField1.IsFull(), c.alternating)
@@ -43,8 +43,8 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 		for k := 0; k < 100; k++ {
 			c.thermalField.RemoveLast()
 			c.thermalField1.RemoveLast()
-			c.thermalField.AddFirst(c.initialTemperature)
-			c.thermalField1.AddFirst(c.initialTemperature)
+			c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+			c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
 		}
 
 		if c.alternating {
@@ -59,6 +59,6 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 }
 
 func TestCalculatorWithArrDeque_Calculate(t *testing.T) {
-	c := NewCalculatorWithArrDeque(0)
+	c := NewCalculatorWithArrDeque(nil)
 	c.Calculate()
 }

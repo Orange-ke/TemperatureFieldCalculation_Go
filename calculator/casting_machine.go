@@ -1,4 +1,4 @@
-package casting_machine
+package calculator
 
 import (
 	log "github.com/sirupsen/logrus"
@@ -23,15 +23,6 @@ import (
 // 步长 和 铸坯的尺寸，单位mm
 
 const (
-	XStep   = 5
-	YStep   = 5
-	ZStep   = 10
-	Length  = 2700 / 2
-	Width   = 420 / 2
-	ZLength = 40000
-)
-
-const (
 	UpLength   = 500
 	DownLength = 500
 	ArcLength  = 3000
@@ -47,9 +38,6 @@ const (
 var (
 	OneSliceDuration time.Duration
 )
-
-// 元素类型
-type ItemType [Width / YStep][Length / XStep]float32
 
 type CastingMachine struct {
 	Number                 int
@@ -118,9 +106,9 @@ func (c *CastingMachine) SetCoolerConfig(env model.Env) {
 
 func (c *CastingMachine) SetV(v float32) {
 	c.CoolerConfig.V = int64(v * 1000 / 60)
-	OneSliceDuration = time.Millisecond * time.Duration(1000*float32(ZStep)/float32(c.CoolerConfig.V)) // 10 / c.v
+	OneSliceDuration = time.Millisecond * time.Duration(1000*float32(model.ZStep)/float32(c.CoolerConfig.V)) // 10 / c.v
 	log.WithFields(log.Fields{
-		"V": c.CoolerConfig.V,
+		"V":                c.CoolerConfig.V,
 		"oneSliceDuration": OneSliceDuration.Milliseconds(),
 	}).Info("设置拉速")
 }
@@ -156,8 +144,8 @@ func (c *CastingMachine) SetRollerWaterTemperature(rollerWaterTemperature float3
 
 // 获取在那个冷却区
 func (c *CastingMachine) WhichZone(z int) int {
-	z = z * ZStep / StepZ // stepZ代表Z方向的缩放比例
-	if z <= UpLength {    // upLength 代表结晶器的长度 R
+	z = z * model.ZStep / StepZ // stepZ代表Z方向的缩放比例
+	if z <= UpLength {          // upLength 代表结晶器的长度 R
 		return Zone0
 	} else {
 		// todo 不同的区域返回不同的代号

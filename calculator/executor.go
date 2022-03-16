@@ -1,6 +1,8 @@
 package calculator
 
 import (
+	"fmt"
+	"sync"
 	"time"
 )
 
@@ -139,6 +141,7 @@ func (e *executorBaseOnSlice) run(c *calculatorWithArrDeque) {
 
 // 直接调度，直接进行遍历
 type executorBaseOnBlock struct {
+	wg           sync.WaitGroup
 	step         int
 	edgeWidth    int
 	dispatchChan chan task
@@ -155,10 +158,11 @@ func newExecutorBaseOnBlock(edgeWidth int) *executorBaseOnBlock {
 	}
 
 	e := &executorBaseOnBlock{
+		wg:           sync.WaitGroup{},
 		edgeWidth:    edgeWidth,
 		dispatchChan: make(chan task, 1),
 		finishChan:   make(chan struct{}, 10),
-		f: make([]func(t task, c *calculatorWithArrDeque), 4),
+		f:            make([]func(t task, c *calculatorWithArrDeque), 4),
 	}
 
 	e.step = 1
@@ -171,23 +175,31 @@ func newExecutorBaseOnBlock(edgeWidth int) *executorBaseOnBlock {
 	e.f[2] = e.calculateCase3
 	e.f[3] = e.calculateCase4
 
+	fmt.Println("edgeWidth:", e.edgeWidth, "step:", e.step)
 	return e
 }
 
 func (e *executorBaseOnBlock) run(c *calculatorWithArrDeque) {
-	for i := 0; i < 4; i++ {
-		go func(i int) {
-			for {
-				select {
-				case t := <-e.dispatchChan:
-					e.f[i](t, c)
-					e.finishChan <- struct{}{}
-				default:
-					time.Sleep(time.Millisecond)
+	go func() {
+		for {
+			select {
+			case t := <-e.dispatchChan:
+				e.wg.Add(4)
+				for i := 0; i < 4; i++ {
+					go func(i int) {
+						fmt.Println("获取到任务:", t)
+						e.f[i](t, c)
+						e.finishChan <- struct{}{}
+						fmt.Println("完成任务:", t)
+						e.wg.Done()
+					}(i)
 				}
+				e.wg.Wait()
+			default:
+				time.Sleep(time.Millisecond)
 			}
-		}(i)
-	}
+		}
+	}()
 }
 
 func (e *executorBaseOnBlock) dispatchTask(deltaT float32, first, last int) time.Duration {
@@ -197,12 +209,12 @@ func (e *executorBaseOnBlock) dispatchTask(deltaT float32, first, last int) time
 		end:    last,
 		deltaT: deltaT,
 	}
-	for i := 0; i < 4; i++ {
-		e.dispatchChan <- t
-	}
+	fmt.Println("分配任务")
+	e.dispatchChan <- t
 
 	for i := 0; i < 4; i++ {
 		<-e.finishChan
+		fmt.Println("完成任务：", i)
 	}
 	return time.Since(start)
 }

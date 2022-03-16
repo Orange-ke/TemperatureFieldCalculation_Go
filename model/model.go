@@ -35,3 +35,16 @@ type Msg struct {
 	Type    string `json:"type"`
 	Content string `json:"content"`
 }
+
+const (
+	XStep   = 5
+	YStep   = 5
+	ZStep   = 10
+	Length  = 2700 / 2
+	Width   = 420 / 2
+	ZLength = 40000
+)
+
+// 元素类型
+type ItemType [Width / YStep][Length / XStep]float32
+

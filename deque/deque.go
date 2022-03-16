@@ -10,7 +10,7 @@
 package deque
 
 import (
-	"lz/casting_machine"
+	"lz/model"
 )
 
 type Deque interface {
@@ -21,16 +21,16 @@ type Deque interface {
 	Get(z, y, x int) float32
 
 	// 获取某个切片
-	GetSlice(z int) *casting_machine.ItemType
+	GetSlice(z int) *model.ItemType
 
 	// 设定队列中对应下标的数值
 	Set(z, y, x int, number float32, bottom float32)
 
 	// 正向遍历
-	Traverse(f func(z int, item *casting_machine.ItemType))
+	Traverse(f func(z int, item *model.ItemType))
 
 	// 螺旋遍历
-	TraverseSpirally(start, end int, f func(z int, item *casting_machine.ItemType))
+	TraverseSpirally(start, end int, f func(z int, item *model.ItemType))
 
 	// 在队列结尾增加一个元素
 	AddLast(initialVal float32)

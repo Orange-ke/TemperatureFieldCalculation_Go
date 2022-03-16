@@ -15,7 +15,6 @@ func TestArrDeque_Traverse(t *testing.T) {
 	start := time.Now()
 	for c := 0; c < 100; c++ {
 		deque.Traverse(func(z int, item *model.ItemType) {
-			//fmt.Printf("%p \n", item)
 			for i := 0; i < len(item); i++ {
 				for j := 0; j < len(item[0]); j++ {
 					item[i][j] += 1
@@ -35,7 +34,6 @@ func TestListDeque_Traverse(t *testing.T) {
 	start := time.Now()
 	for c := 0; c < 100; c++ {
 		deque.Traverse(func(z int,item *model.ItemType) {
-			//fmt.Printf("%p \n", item)
 			for i := 0; i < len(item); i++ {
 				for j := 0; j < len(item[0]); j++ {
 					item[i][j]++
@@ -46,6 +44,37 @@ func TestListDeque_Traverse(t *testing.T) {
 	fmt.Println(time.Since(start))
 }
 
+func BenchmarkArrDeque_AddFirst(b *testing.B) {
+	deque := NewArrDeque(4000)
+	for i := 0; i < b.N; i++ {
+		deque.AddFirst(1000)
+		deque.RemoveFirst()
+	}
+}
+
+func BenchmarkArrDeque_RemoveLast(b *testing.B) {
+	deque := NewArrDeque(4000)
+	for i := 0; i < b.N; i++ {
+		deque.AddLast(1000)
+		deque.RemoveLast()
+	}
+}
+
+func BenchmarkListDeque_AddFirst(b *testing.B) {
+	deque := NewListDeque(4000)
+	for i := 0; i < b.N; i++ {
+		deque.AddFirst(1000)
+		deque.RemoveFirst()
+	}
+}
+
+func BenchmarkListDeque_AddLast(b *testing.B) {
+	deque := NewListDeque(4000)
+	for i := 0; i < b.N; i++ {
+		deque.AddLast(1000)
+		deque.RemoveLast()
+	}
+}
 
 // 测试循环展开
 func TestArr_Traverse(t *testing.T) {
@@ -108,10 +137,3 @@ func TestArrDeque_Funcs(t *testing.T) {
 	deque.Set(deque.Size() - 1, 41, 269, 1490, 0)
 	fmt.Println(deque.Get(deque.Size() - 1, 41, 269))
 }
-
-//func min(x, y int) int {
-//	if x < y {
-//		return x
-//	}
-//	return y
-//}

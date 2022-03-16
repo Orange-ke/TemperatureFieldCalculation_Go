@@ -1,7 +1,7 @@
 package deque
 
 import (
-	"lz/casting_machine"
+	"lz/model"
 )
 
 type ListDeque struct {
@@ -13,7 +13,7 @@ type ListDeque struct {
 }
 
 type node struct {
-	val  *casting_machine.ItemType
+	val  *model.ItemType
 	pre  *node
 	next *node
 }
@@ -53,7 +53,7 @@ func (ld *ListDeque) Get(z, y, x int) float32 {
 	return iter.val[y][x]
 }
 
-func (ld *ListDeque) GetSlice(z int) *casting_machine.ItemType {
+func (ld *ListDeque) GetSlice(z int) *model.ItemType {
 	if z > ld.size {
 		panic("index out of length")
 	}
@@ -80,7 +80,7 @@ func (ld *ListDeque) Set(z, y, x int, number float32, bottom float32) {
 	iter.val[y][x] = number
 }
 
-func (ld *ListDeque) Traverse(f func(z int, item *casting_machine.ItemType)) {
+func (ld *ListDeque) Traverse(f func(z int, item *model.ItemType)) {
 	iter := &node{}
 	z := 0
 	for iter = ld.head.next; iter != ld.tail; iter = iter.next {
@@ -90,7 +90,7 @@ func (ld *ListDeque) Traverse(f func(z int, item *casting_machine.ItemType)) {
 	//fmt.Println(z, "Traverse")
 }
 
-func (ld *ListDeque) TraverseSpirally(start, end int, f func(z int, item *casting_machine.ItemType)) {
+func (ld *ListDeque) TraverseSpirally(start, end int, f func(z int, item *model.ItemType)) {
 	iter := &node{}
 	iter = ld.head
 	for i := 0; i <= start ; i++ {
@@ -106,7 +106,7 @@ func (ld *ListDeque) AddLast(initialVal float32) {
 	if ld.IsFull() {
 		return
 	}
-	item := &casting_machine.ItemType{}
+	item := &model.ItemType{}
 	m, n := len(item), len(item[0])
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
@@ -136,7 +136,7 @@ func (ld *ListDeque) AddFirst(initialVal float32) {
 	if ld.IsFull() {
 		return
 	}
-	item := &casting_machine.ItemType{}
+	item := &model.ItemType{}
 	m, n := len(item), len(item[0])
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {

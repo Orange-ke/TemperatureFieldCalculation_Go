@@ -1,12 +1,11 @@
-package steel_type
+package calculator
 
 import (
 	"fmt"
-	"lz/casting_machine"
 )
 
 const (
-	ArrayLength = 1600
+	ArrayLength = 1601
 	MinTemp     = 20
 )
 
@@ -14,7 +13,7 @@ type Steel struct {
 	Number         int
 	Name           string
 	Parameter      *Parameter
-	CastingMachine *casting_machine.CastingMachine
+	CastingMachine *CastingMachine
 }
 
 type Parameter struct {
@@ -31,7 +30,7 @@ type Parameter struct {
 	TemperatureBottom float32 // 温度下限
 }
 
-func NewSteel(number int, castingMachine *casting_machine.CastingMachine) *Steel {
+func NewSteel(number int, castingMachine *CastingMachine) *Steel {
 	// 根据钢种编号获取钢种信息
 	// todo 根据 参数中的 钢种从 jmatpro 接口获取对应的物性参数
 	// 1. 初始化网格划分的各个节点的初始温度
@@ -96,8 +95,8 @@ func NewSteel(number int, castingMachine *casting_machine.CastingMachine) *Steel
 func (s *Steel) GetHeffLessThanR(T float32) float32 {
 	//fmt.Println(s.Parameter.Q[int(T)], T-s.CastingMachine.CoolerConfig.NarrowSurfaceIn, "GetHeffLessThanR")
 	// todo 待改
-	divider := T - s.CastingMachine.CoolerConfig.NarrowSurfaceIn
-	return s.Parameter.Q[int(T)] / divider
+	//divider := T - s.CastingMachine.CoolerConfig.NarrowSurfaceIn
+	return s.Parameter.Q[int(T)] / (T - 20)
 }
 
 // s > r
@@ -112,16 +111,17 @@ func (s *Steel) GetQLessThanR(T float32) float32 {
 
 // s > r
 func (s *Steel) GetQGreaterThanR(T float32) float32 {
-	return s.Parameter.HEff[int(T)] * (T - s.CastingMachine.CoolerConfig.SprayTemperature)
+	// T - s.CastingMachine.CoolerConfig.SprayTemperature
+	return s.Parameter.HEff[int(T)] * (T - 20)
 }
 
 // 获取不同冷却区对应的参数
 func (s *Steel) SetParameter(z int) {
-	if s.CastingMachine.WhichZone(z) == casting_machine.Zone0 {
+	if s.CastingMachine.WhichZone(z) == Zone0 {
 		s.Parameter.GetHeff = s.GetHeffLessThanR
 		s.Parameter.GetQ = s.GetQLessThanR
 		s.Parameter.TemperatureBottom = s.CastingMachine.CoolerConfig.NarrowSurfaceIn
-	} else if s.CastingMachine.WhichZone(z) == casting_machine.Zone1 {
+	} else if s.CastingMachine.WhichZone(z) == Zone1 {
 		s.Parameter.GetHeff = s.GetHeffGreaterThanR
 		s.Parameter.GetQ = s.GetQGreaterThanR
 		s.Parameter.TemperatureBottom = s.CastingMachine.CoolerConfig.SprayTemperature

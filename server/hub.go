@@ -78,7 +78,7 @@ func (h *Hub) handleResponse() {
 			if h.c == nil {
 				//c := calculator.NewCalculator(0)
 				//c := calculator.NewCalculatorWithListDeque(0)
-				h.c = calculator.NewCalculatorWithArrDeque()
+				h.c = calculator.NewCalculatorWithArrDeque(nil)
 			}
 			h.c.GetCastingMachine().SetCoolerConfig(env)           // 设置冷却参数
 			h.c.GetCastingMachine().SetV(env.DragSpeed)            // 设置拉速

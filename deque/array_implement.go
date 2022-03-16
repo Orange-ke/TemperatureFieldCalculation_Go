@@ -1,8 +1,7 @@
 package deque
 
 import (
-	"fmt"
-	"lz/casting_machine"
+	"lz/model"
 )
 
 const (
@@ -43,7 +42,7 @@ type arrStruct struct {
 	isEmpty bool
 }
 
-type ArrType []casting_machine.ItemType
+type ArrType []model.ItemType
 
 // 工厂方法
 func NewArrDeque(capacity int) *ArrDeque {
@@ -51,8 +50,8 @@ func NewArrDeque(capacity int) *ArrDeque {
 	if remainder != 0 {
 		capacity = capacity - remainder + base
 	}
-	arr := make([]casting_machine.ItemType, capacity)
-	arr1 := make([]casting_machine.ItemType, capacity)
+	arr := make([]model.ItemType, capacity)
+	arr1 := make([]model.ItemType, capacity)
 	container := arrStruct{
 		arr:     arr,
 		start:   capacity,
@@ -102,7 +101,7 @@ func (ad *ArrDeque) Get(z, y, x int) float32 {
 	}
 }
 
-func (ad *ArrDeque) GetSlice(z int) *casting_machine.ItemType {
+func (ad *ArrDeque) GetSlice(z int) *model.ItemType {
 	l1, l2 := ad.container.end-ad.container.start, ad.container1.end-ad.container1.start
 	if z >= l1+l2 {
 		panic("index out of length")
@@ -146,7 +145,7 @@ func (ad *ArrDeque) Set(z, y, x int, number float32, bottom float32) {
 	}
 }
 
-func (ad *ArrDeque) Traverse(f func(z int, item *casting_machine.ItemType)) {
+func (ad *ArrDeque) Traverse(f func(z int, item *model.ItemType)) {
 	// todo 加入分块
 	k := 0
 	for z := ad.container.start; z < ad.container.end; z++ {
@@ -160,7 +159,7 @@ func (ad *ArrDeque) Traverse(f func(z int, item *casting_machine.ItemType)) {
 	//fmt.Println("Traverse 切片数：", k, ad.container.start, ad.container.end, ad.container1.start, ad.container1.end)
 }
 
-func (ad *ArrDeque) TraverseSpirally(start, end int, f func(z int, item *casting_machine.ItemType)) {
+func (ad *ArrDeque) TraverseSpirally(start, end int, f func(z int, item *model.ItemType)) {
 	l1 := ad.container.end - ad.container.start
 	k := start
 	if end <= l1 {
@@ -306,7 +305,7 @@ func (ad *ArrDeque) AddFirst(initialVal float32) {
 		//fmt.Println(ad.container.end, ad.container.start, ad.container1.end, ad.container1.start, ad.capacity, "AddFirst")
 	} else {
 		// todo 扩容
-		fmt.Println("full...")
+		//fmt.Println("full...")
 	}
 }
 
@@ -353,7 +352,7 @@ func (ad *ArrDeque) IsEmpty() bool {
 	return ad.size == 0
 }
 
-func setDefaultVal(item *casting_machine.ItemType, initialVal float32) {
+func setDefaultVal(item *model.ItemType, initialVal float32) {
 	m, n := len(item), len(item[0])
 	for y := 0; y < m; y++ {
 		for x := 0; x < n; x++ {
