@@ -586,6 +586,150 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 	return c.BuildData()
 }
 
+func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
+	//zMax := ZLength / ZStep
+	yMax := model.Width / model.YStep
+	xMax := model.Length / model.XStep
+	var minus float32
+	initialTemp := float32(1600.0)
+	var slice *model.ItemType
+	var scale = float32(0.9665)
+	var base1 = float32(664.864)
+	for i := 0; i < 4000; i++ {
+		c.Field.AddFirst(initialTemp)
+	}
+	for i := 4000 - 1; i >= 0; i-- {
+		slice = c.Field.GetSlice(i)
+		// 从右向左减少
+		for y := yMax - 1; y >= 0; y-- {
+			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
+			for x := xMax - 1; x >= 0; x-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+
+		// 从上到下减少
+		for x := xMax - 1; x >= 0; x-- {
+			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
+			for y := yMax - 1; y >= 0; y-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+	}
+
+	var base2 = float32(1048.4)
+	for i := 0; i < UpLength; i++ {
+		slice = c.Field.GetSlice(i)
+		// 从右向左减少
+		for y := yMax - 1; y >= 0; y-- {
+			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			for x := xMax - 1; x >= 0; x-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+
+		// 从上到下减少
+		for x := xMax - 1; x >= 0; x-- {
+			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			for y := yMax - 1; y >= 0; y-- {
+				minus *= scale
+				slice[y][x] -= minus
+			}
+		}
+	}
+	fmt.Println(model.Length / model.XStep, model.Width / model.YStep)
+	topLength := (model.Length / model.XStep) * (model.Width / model.YStep)
+	arcLength := (model.ZLength/model.ZStep - 2) * (model.Length/model.XStep + model.Width/model.YStep - 1)
+	downLength := topLength
+	fmt.Println(topLength, arcLength, downLength)
+	res := &MiddleState{
+		Top:    make([]int, topLength),
+		Arc:    make([]int, arcLength),
+		Bottom: make([]int, downLength),
+	}
+	index := 0
+	var curSlice *model.ItemType
+	alter := 1
+	for i := 0; i < c.Field.Size(); i++ {
+		if i == 0 {
+			buildDataForEnd(res.Top, c.Field.GetSlice(i))
+		} else if i == c.Field.Size()-1 {
+			buildDataForEnd(res.Bottom, c.Field.GetSlice(i))
+		} else {
+			curSlice = c.Field.GetSlice(i)
+			if alter == 1 {
+				for j := 0; j < model.Length/model.XStep; j++ {
+					res.Arc[index] = int(curSlice[model.Width/model.YStep-1][j])
+					index++
+				}
+				for k := model.Width/model.YStep - 2; k >= 0; k-- {
+					res.Arc[index] = int(curSlice[k][model.Length/model.XStep-1])
+					index++
+				}
+			} else {
+				for k := 0; k < model.Width/model.YStep; k++ {
+					res.Arc[index] = int(curSlice[k][model.Length/model.XStep-1])
+					index++
+				}
+				for j := model.Length/model.XStep - 2; j >= 0; j-- {
+					res.Arc[index] = int(curSlice[model.Width/model.YStep-1][j])
+					index++
+				}
+			}
+			alter ^= 1
+		}
+	}
+
+	return res
+}
+
+func buildDataForEnd(container []int, slice *model.ItemType) {
+	index := 0
+	left, right, bottom, top := 0, model.Length/model.XStep - 1, 0, model.Width/model.YStep-1
+	alter := 1
+	for left < right && bottom < top {
+		if alter == 1 {
+			for c := left; c <= right; c++ {
+				container[index] = int(slice[top][c])
+				index++
+
+			}
+			for r := top - 1; r >= 0; r-- {
+				container[index] = int(slice[r][right])
+				index++
+			}
+		} else {
+			for r := bottom; r <= top; r++ {
+				container[index] = int(slice[r][right])
+				index++
+			}
+			for c := right - 1; c >= 0; c-- {
+				container[index] = int(slice[top][c])
+				index++
+			}
+		}
+		alter ^= 1
+		right--
+		top--
+	}
+	if left <= right {
+		if alter == 1 {
+			for c := left; c <= right; c++ {
+				container[index] = int(slice[top][c])
+				index++
+			}
+		} else {
+			for c := right; c >= left; c-- {
+				container[index] = int(slice[top][c])
+				index++
+			}
+		}
+	}
+}
+
 type SliceInfo struct {
 	HorizontalSolidThickness  int                                                                     `json:"horizontal_solid_thickness"`
 	VerticalSolidThickness    int                                                                     `json:"vertical_solid_thickness"`
