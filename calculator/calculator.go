@@ -32,4 +32,8 @@ type Calculator interface {
 	GenerateResult() *TemperatureFieldData
 
 	GenerateSLiceInfo(index int) *SliceInfo
+
+	GenerateVerticalSlice1Data(index int) *VerticalSliceData1
+
+	GenerateVerticalSlice2Data(index int) *VerticalSliceData2
 }

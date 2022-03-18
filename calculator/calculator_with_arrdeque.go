@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"lz/deque"
 	"lz/model"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -548,7 +549,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for x := xMax - 1; x >= 0; x-- {
 				minus *= scale
-				slice[y][x] -= minus
+				slice[y][x] -= rand.Float32()*10.8 + minus
 			}
 		}
 
@@ -557,7 +558,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for y := yMax - 1; y >= 0; y-- {
 				minus *= scale
-				slice[y][x] -= minus
+				slice[y][x] -= rand.Float32()*10.8 + minus
 			}
 		}
 	}
@@ -570,7 +571,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
 			for x := xMax - 1; x >= 0; x-- {
 				minus *= scale
-				slice[y][x] -= minus
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 
@@ -579,7 +580,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
 			for y := yMax - 1; y >= 0; y-- {
 				minus *= scale
-				slice[y][x] -= minus
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 	}
@@ -619,7 +620,7 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 		}
 	}
 
-	var base2 = float32(1048.4)
+	var base2 = float32(655.42)
 	for i := 0; i < UpLength; i++ {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
@@ -640,7 +641,7 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 			}
 		}
 	}
-	fmt.Println(model.Length / model.XStep, model.Width / model.YStep)
+	fmt.Println(model.Length/model.XStep, model.Width/model.YStep)
 	topLength := (model.Length / model.XStep) * (model.Width / model.YStep)
 	arcLength := (model.ZLength/model.ZStep - 2) * (model.Length/model.XStep + model.Width/model.YStep - 1)
 	downLength := topLength
@@ -688,7 +689,7 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 
 func buildDataForEnd(container []int, slice *model.ItemType) {
 	index := 0
-	left, right, bottom, top := 0, model.Length/model.XStep - 1, 0, model.Width/model.YStep-1
+	left, right, bottom, top := 0, model.Length/model.XStep-1, 0, model.Width/model.YStep-1
 	alter := 1
 	for left < right && bottom < top {
 		if alter == 1 {
@@ -796,6 +797,103 @@ func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
 		}
 	}
 	return sliceInfo
+}
+
+type VerticalSliceData1 struct {
+	Outer [][2]float32 `json:"outer"`
+	Inner [][2]float32 `json:"inner"`
+}
+
+func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *VerticalSliceData1 {
+	res := &VerticalSliceData1{
+		Outer: make([][2]float32, 0),
+		Inner: make([][2]float32, 0),
+	}
+	step := 0
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		step++
+		if step == 20 {
+			res.Outer = append(res.Outer, [2]float32{float32(z * 10), item[model.Width/model.YStep-1][model.Length/model.XStep-1-index]})
+			res.Inner = append(res.Inner, [2]float32{float32(z * 10), item[0][model.Length/model.XStep-1-index]})
+			step = 0
+		}
+	})
+	return res
+}
+
+type VerticalSliceData2 struct {
+	Length        int           `json:"length"`
+	VerticalSlice [][84]float32 `json:"vertical_slice"`
+	Solid         []int         `json:"solid"`
+	Liquid        []int         `json:"liquid"`
+	SolidJoin     Join          `json:"solid_join"`
+	LiquidJoin    Join          `json:"liquid_join"`
+}
+
+type Join struct {
+	IsJoin    bool `json:"is_join"`
+	JoinIndex int  `json:"join_index"`
+}
+
+func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *VerticalSliceData2 {
+	solidTemp := float32(1445.69)
+	liquidTemp := float32(1506.77)
+	scale := 5
+	res := &VerticalSliceData2{
+		Length:        c.Field.Size(),
+		VerticalSlice: make([][84]float32, c.Field.Size()/scale),
+		Solid:         make([]int, c.Field.Size()/scale),
+		Liquid:        make([]int, c.Field.Size()/scale),
+	}
+
+	var temp float32
+	var solidJoinSet, liquidJoinSet bool
+	step := 0
+	zIndex := 0
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		step++
+		if step == scale {
+			for i := 0; i < 42; i++ {
+				res.VerticalSlice[zIndex][42+i] = item[i][model.Length/model.XStep-1-index]
+			}
+			for i := 42 - 1; i >= 0; i-- {
+				res.VerticalSlice[zIndex][42-1-i] = item[i][model.Length/model.XStep-1-index]
+			}
+			for i := 0; i < 42; i++ {
+				temp = item[i][model.Length/model.XStep-1-index]
+				if temp <= solidTemp {
+					res.Solid[zIndex] = (42 - i) * 5
+					if res.Solid[zIndex] == 210 && !solidJoinSet {
+						res.SolidJoin.IsJoin = true
+						res.SolidJoin.JoinIndex = zIndex
+						solidJoinSet = true
+					}
+					break
+				} else {
+					res.Solid[zIndex] = 0
+				}
+			}
+
+			for i := 0; i < 42; i++ {
+				temp = item[i][model.Length/model.XStep-1-index]
+				if temp <= liquidTemp {
+					res.Liquid[zIndex] = (42 - i) * 5
+					if res.Liquid[zIndex] == 210 && !liquidJoinSet {
+						res.LiquidJoin.IsJoin = true
+						res.LiquidJoin.JoinIndex = zIndex
+						liquidJoinSet = true
+					}
+					break
+				} else {
+					res.Liquid[zIndex] = 0
+				}
+			}
+			step = 0
+			zIndex++
+		}
+	})
+
+	return res
 }
 
 // 测试用

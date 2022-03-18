@@ -43,6 +43,9 @@ type Hub struct {
 	generate      chan struct{}
 	generateSlice chan int
 
+	generateVerticalSlice1 chan int
+	generateVerticalSlice2 chan int
+
 	mu sync.Mutex
 }
 
@@ -63,8 +66,11 @@ func NewHub() *Hub {
 		startPushSliceDetail:  make(chan int, 10),
 		stopPushSliceDetail:   make(chan struct{}, 10),
 
-		generate: make(chan struct{}, 10),
+		generate:      make(chan struct{}, 10),
 		generateSlice: make(chan int, 10),
+
+		generateVerticalSlice1: make(chan int, 10),
+		generateVerticalSlice2: make(chan int, 10),
 	}
 }
 
@@ -277,6 +283,40 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场切片推送消息失败")
 			}
+		case index := <-h.generateVerticalSlice1:
+			reply := model.Msg{
+				Type: "vertical_slice1_generated",
+			}
+			verticalSliceData := h.c.GenerateVerticalSlice1Data(index)
+			data, err := json.Marshal(verticalSliceData)
+			if err != nil {
+				log.WithField("err", err).Error("纵向切片1推送数据json解析失败")
+				return
+			}
+			reply.Content = string(data)
+			h.mu.Lock()
+			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.WithField("err", err).Error("发送纵向切片1推送消息失败")
+			}
+		case index := <-h.generateVerticalSlice2:
+			reply := model.Msg{
+				Type: "vertical_slice2_generated",
+			}
+			verticalSliceData := h.c.GenerateVerticalSlice2Data(index)
+			data, err := json.Marshal(verticalSliceData)
+			if err != nil {
+				log.WithField("err", err).Error("纵向切片2推送数据json解析失败")
+				return
+			}
+			reply.Content = string(data)
+			h.mu.Lock()
+			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.WithField("err", err).Error("发送纵向切片2推送消息失败")
+			}
 		default:
 			time.Sleep(10 * time.Millisecond)
 		}
@@ -392,6 +432,32 @@ func (h *Hub) handleRequest() {
 					break
 				}
 				h.generateSlice <- int(index)
+			case "generate_vertical_slice1":
+				log.Info("获取到生成纵向切片1数据的信号")
+				index, err := strconv.ParseInt(msg.Content, 10, 64)
+				log.Info("获取到切片下标：", index)
+				if err != nil {
+					log.WithField("err", err).Error("切片下标不是整数")
+					return
+				}
+				if index < 0 || int(index) >= 270 {
+					log.Warn("切片下标越界")
+					break
+				}
+				h.generateVerticalSlice1 <- int(index)
+			case "generate_vertical_slice2":
+				log.Info("获取到生成纵向切片2数据的信号")
+				index, err := strconv.ParseInt(msg.Content, 10, 64)
+				log.Info("获取到切片下标：", index)
+				if err != nil {
+					log.WithField("err", err).Error("切片下标不是整数")
+					return
+				}
+				if index < 0 || int(index) >= 270 {
+					log.Warn("切片下标越界")
+					break
+				}
+				h.generateVerticalSlice2 <- int(index)
 			default:
 				log.Warn("no such type")
 			}
