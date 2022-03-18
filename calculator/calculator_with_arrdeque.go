@@ -537,19 +537,19 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 	var minus float32
 	initialTemp := float32(1600.0)
 	var slice *model.ItemType
-	var scale = float32(0.9665)
-	var base1 = float32(664.864)
+	var scale = float32(0.9865)
+	var base1 = float32(1414.864)
 	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
-	for i := 4000 - 1; i >= 0; i-- {
+	for i := UpLength - 1; i >= 0; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
 		for y := yMax - 1; y >= 0; y-- {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for x := xMax - 1; x >= 0; x-- {
-				minus *= scale
-				slice[y][x] -= rand.Float32()*10.8 + minus
+				minus *= scale*scale
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 
@@ -557,30 +557,51 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 		for x := xMax - 1; x >= 0; x-- {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for y := yMax - 1; y >= 0; y-- {
-				minus *= scale
-				slice[y][x] -= rand.Float32()*10.8 + minus
+				minus *= scale*scale
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 	}
 
-	var base2 = float32(1048.4)
-	for i := 0; i < UpLength; i++ {
+	var sliceCopy  *model.ItemType
+	for i := UpLength; i < UpLength + 30; i++ {
+		slice = c.Field.GetSlice(i)
+		sliceCopy = c.Field.GetSlice(UpLength-1-(i - UpLength))
+		for i := 0; i < len(slice); i++ {
+			for j := 0; j < len(slice[0]); j++ {
+				slice[i][j] = sliceCopy[i][j]
+			}
+		}
+	}
+
+	for i := UpLength + 30; i < c.Field.Size(); i++ {
+		slice = c.Field.GetSlice(i)
+		for i := 0; i < len(slice); i++ {
+			for j := 0; j < len(slice[0]); j++ {
+				slice[i][j] = sliceCopy[i][j]
+			}
+		}
+	}
+
+	base2 := float32(414.864)
+	scale2 := float32(0.9665)
+	for i := 4000 - 1; i >= UpLength + 30; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
 		for y := yMax - 1; y >= 0; y-- {
-			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			minus = base2 - base2*float32(4000-(UpLength + 30)-1-(i-(UpLength + 30)))/float32(4000-1-(UpLength + 30))
 			for x := xMax - 1; x >= 0; x-- {
-				minus *= scale
-				slice[y][x] -= rand.Float32()*6.8 + minus
+				minus *= scale2
+				slice[y][x] -= rand.Float32()*5.8 + minus
 			}
 		}
 
 		// 从上到下减少
 		for x := xMax - 1; x >= 0; x-- {
-			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			minus = base2 - base2*float32(4000-(UpLength + 112)-1-(i-(UpLength + 112)))/float32(4000-1-(UpLength + 112))
 			for y := yMax - 1; y >= 0; y-- {
-				minus *= scale
-				slice[y][x] -= rand.Float32()*6.8 + minus
+				minus *= scale2
+				slice[y][x] -= rand.Float32()*5.8 + minus
 			}
 		}
 	}
@@ -594,19 +615,19 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 	var minus float32
 	initialTemp := float32(1600.0)
 	var slice *model.ItemType
-	var scale = float32(0.9665)
-	var base1 = float32(664.864)
+	var scale = float32(0.9865)
+	var base1 = float32(1414.864)
 	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
-	for i := 4000 - 1; i >= 0; i-- {
+	for i := UpLength - 1; i >= 0; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
 		for y := yMax - 1; y >= 0; y-- {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for x := xMax - 1; x >= 0; x-- {
-				minus *= scale
-				slice[y][x] -= minus
+				minus *= scale*scale
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 
@@ -614,30 +635,51 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 		for x := xMax - 1; x >= 0; x-- {
 			minus = base1 - base1*float32(4000-1-i)/float32(4000-1)
 			for y := yMax - 1; y >= 0; y-- {
-				minus *= scale
-				slice[y][x] -= minus
+				minus *= scale*scale
+				slice[y][x] -= rand.Float32()*6.8 + minus
 			}
 		}
 	}
 
-	var base2 = float32(655.42)
-	for i := 0; i < UpLength; i++ {
+	var sliceCopy  *model.ItemType
+	for i := UpLength; i < UpLength + 30; i++ {
+		slice = c.Field.GetSlice(i)
+		sliceCopy = c.Field.GetSlice(UpLength-1-(i - UpLength))
+		for i := 0; i < len(slice); i++ {
+			for j := 0; j < len(slice[0]); j++ {
+				slice[i][j] = sliceCopy[i][j]
+			}
+		}
+	}
+
+	for i := UpLength + 30; i < c.Field.Size(); i++ {
+		slice = c.Field.GetSlice(i)
+		for i := 0; i < len(slice); i++ {
+			for j := 0; j < len(slice[0]); j++ {
+				slice[i][j] = sliceCopy[i][j]
+			}
+		}
+	}
+
+	base2 := float32(414.864)
+	scale2 := float32(0.9665)
+	for i := 4000 - 1; i >= UpLength + 30; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
 		for y := yMax - 1; y >= 0; y-- {
-			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			minus = base2 - base2*float32(4000-(UpLength + 30)-1-(i-(UpLength + 30)))/float32(4000-1-(UpLength + 30))
 			for x := xMax - 1; x >= 0; x-- {
-				minus *= scale
-				slice[y][x] -= minus
+				minus *= scale2
+				slice[y][x] -= rand.Float32()*5.8 + minus
 			}
 		}
 
 		// 从上到下减少
 		for x := xMax - 1; x >= 0; x-- {
-			minus = base2 - base2*float32(4000-1-i)/float32(4000-1)
+			minus = base2 - base2*float32(4000-(UpLength + 112)-1-(i-(UpLength + 112)))/float32(4000-1-(UpLength + 112))
 			for y := yMax - 1; y >= 0; y-- {
-				minus *= scale
-				slice[y][x] -= minus
+				minus *= scale2
+				slice[y][x] -= rand.Float32()*5.8 + minus
 			}
 		}
 	}
@@ -862,7 +904,7 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 			for i := 0; i < 42; i++ {
 				temp = item[i][model.Length/model.XStep-1-index]
 				if temp <= solidTemp {
-					res.Solid[zIndex] = (42 - i) * 5
+					res.Solid[zIndex] = 42 - i
 					if res.Solid[zIndex] == 210 && !solidJoinSet {
 						res.SolidJoin.IsJoin = true
 						res.SolidJoin.JoinIndex = zIndex
@@ -877,7 +919,7 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 			for i := 0; i < 42; i++ {
 				temp = item[i][model.Length/model.XStep-1-index]
 				if temp <= liquidTemp {
-					res.Liquid[zIndex] = (42 - i) * 5
+					res.Liquid[zIndex] = 42 - i
 					if res.Liquid[zIndex] == 210 && !liquidJoinSet {
 						res.LiquidJoin.IsJoin = true
 						res.LiquidJoin.JoinIndex = zIndex
