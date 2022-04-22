@@ -194,7 +194,7 @@ func getDeltaTCase9(x, y int, slice *model.ItemType, parameter *Parameter) float
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
-const bigNum = float32(1000.0)
+const bigNum = float32(3.0)
 
 // 计算一个切片的时间步长
 func calculateTimeStepOfOneSlice(slice *model.ItemType, parameter *Parameter) float32 {

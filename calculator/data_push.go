@@ -109,6 +109,9 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
 	}
 
 	z := 0
+	//for i := 0; i < 2000; i++ {
+	//	c.Field.RemoveLast()
+	//}
 	c.Field.Traverse(func(_ int, item *model.ItemType) {
 		Field[z] = *item
 		z++

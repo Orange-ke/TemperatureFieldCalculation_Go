@@ -132,7 +132,7 @@ func (c *calculatorWithArrDeque) GetFieldSize() int {
 // 计算所有切片中最短的时间步长
 func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	start := time.Now()
-	min := float32(1000.0)
+	min := bigNum
 	var t float32
 	var parameter *Parameter
 	c.Field.Traverse(func(z int, item *model.ItemType) {
@@ -905,10 +905,11 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 				temp = item[i][model.Length/model.XStep-1-index]
 				if temp <= solidTemp {
 					res.Solid[zIndex] = 42 - i
-					if res.Solid[zIndex] == 210 && !solidJoinSet {
+					if res.Solid[zIndex] == 42 && !solidJoinSet {
 						res.SolidJoin.IsJoin = true
 						res.SolidJoin.JoinIndex = zIndex
 						solidJoinSet = true
+						fmt.Println(res.SolidJoin)
 					}
 					break
 				} else {
@@ -920,10 +921,11 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 				temp = item[i][model.Length/model.XStep-1-index]
 				if temp <= liquidTemp {
 					res.Liquid[zIndex] = 42 - i
-					if res.Liquid[zIndex] == 210 && !liquidJoinSet {
+					if res.Liquid[zIndex] == 42 && !liquidJoinSet {
 						res.LiquidJoin.IsJoin = true
 						res.LiquidJoin.JoinIndex = zIndex
 						liquidJoinSet = true
+						fmt.Println(res.LiquidJoin)
 					}
 					break
 				} else {
@@ -934,7 +936,7 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 			zIndex++
 		}
 	})
-
+	fmt.Println(res)
 	return res
 }
 

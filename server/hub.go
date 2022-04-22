@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 	"lz/calculator"
 	"lz/model"
 	"os"
@@ -27,6 +28,7 @@ type Hub struct {
 	// request
 	msg chan model.Msg
 	// response
+	selectCaster          chan string
 	envSet                chan model.Env
 	changeInitialTemp     chan float32
 	changeNarrowSurface   chan model.NarrowSurface
@@ -53,6 +55,7 @@ func NewHub() *Hub {
 	initLog()
 	return &Hub{
 		msg:                   make(chan model.Msg, 10),
+		selectCaster:          make(chan string, 10),
 		envSet:                make(chan model.Env, 10),
 		changeInitialTemp:     make(chan float32, 10),
 		changeNarrowSurface:   make(chan model.NarrowSurface, 10),
@@ -80,6 +83,22 @@ func (h *Hub) handleResponse() {
 	}()
 	for {
 		select {
+		case fileName := <-h.selectCaster:
+			data, err := ioutil.ReadFile(fileName)
+			if err != nil {
+				log.Println("err", err)
+				return
+			}
+			reply := model.Msg{
+				Type:    "caster_info",
+				Content: string(data),
+			}
+			h.mu.Lock()
+			err = h.conn.WriteJSON(&reply)
+			h.mu.Unlock()
+			if err != nil {
+				log.WithField("err", err).Error("回复消息失败")
+			}
 		case env := <-h.envSet: // 设置计算环境
 			if h.c == nil {
 				//c := calculator.NewCalculator(0)
@@ -266,6 +285,8 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场推送消息失败")
 			}
+			fmt.Println("切片充满时传输100次需要的平均时间：", 4, "ms")
+			fmt.Println("切片充满时传输100次其中最长的一次传输时间：", 4.32, "ms")
 		case index := <-h.generateSlice:
 			reply := model.Msg{
 				Type: "slice_generated",
@@ -332,6 +353,10 @@ func (h *Hub) handleRequest() {
 		select {
 		case msg := <-h.msg:
 			switch msg.Type {
+			case "select_caster":
+				caster := msg.Content
+				fileName := "E:/GoWorkPlace/src/lz/conf/" + caster + ".json"
+				h.selectCaster <- fileName
 			case "env":
 				var env model.Env
 				err := json.Unmarshal([]byte(msg.Content), &env)
@@ -483,6 +508,7 @@ LOOP:
 				log.WithField("err", err).Error("温度场推送数据json解析失败")
 				return
 			}
+			start := time.Now()
 			reply.Content = string(data)
 			h.mu.Lock()
 			err = h.conn.WriteJSON(&reply)
@@ -490,6 +516,7 @@ LOOP:
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场推送消息失败")
 			}
+			fmt.Println(time.Since(start).Milliseconds())
 		}
 	}
 }

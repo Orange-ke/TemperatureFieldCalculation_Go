@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"lz/model"
 	"math"
+	"time"
 )
 
 // 第一步先将数据进行处理
@@ -18,7 +19,7 @@ type EncodedPushData struct {
 
 type Encoder struct {
 	Start int
-	Data  []uint8
+	Data  []int8
 }
 
 type MiddleState struct {
@@ -37,13 +38,15 @@ func (e *encoder) GeneratePushData1() EncodedPushData {
 	//printTop(res)
 	//printArc(res)
 	printBottom(res)
+	start := time.Now()
 	final := EncodedPushData{}
 	final.Top = generateMiddleData(res.Top)
 	final.Arc = generateMiddleData(res.Arc)
 	final.Bottom = generateMiddleData(res.Bottom)
-	fmt.Println(len(final.Top.Data), len(final.Arc.Data), len(final.Bottom.Data))
-	fmt.Println(final.Top)
-	fmt.Println(final.Bottom)
+	//fmt.Println(len(final.Top.Data), len(final.Arc.Data), len(final.Bottom.Data))
+	//fmt.Println(final.Top)
+	//fmt.Println(final.Bottom)
+	fmt.Println(time.Since(start), "1321312")
 	return final
 }
 
@@ -57,7 +60,7 @@ func (e *encoder) GeneratePushData2() *MiddleState {
 
 func generateMiddleData(data []int) Encoder {
 	max := math.MinInt32
-	res := make([]uint8, 0)
+	res := make([]int8, 0)
 	first := data[0]
 	pre := first
 	start := first
@@ -69,7 +72,7 @@ func generateMiddleData(data []int) Encoder {
 			for index < len(data) && start == data[index] {
 				index++
 				length++
-				res = append(res, uint8(gap))
+				res = append(res, int8(gap))
 				if index < len(data) && gap > max {
 					max = gap
 				}
@@ -81,7 +84,6 @@ func generateMiddleData(data []int) Encoder {
 			length = 0
 		}
 	}
-	fmt.Println(max)
 	return Encoder{
 		Start: first,
 		Data: res,
@@ -141,4 +143,14 @@ func Abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+func decode(src Encoder) []int {
+	res := make([]int, 0)
+	start := src.Start
+	for i := 0; i < len(src.Data); i++ {
+		res = append(res, start + int(src.Data[i]))
+		start = start + int(src.Data[i])
+	}
+	return res
 }
