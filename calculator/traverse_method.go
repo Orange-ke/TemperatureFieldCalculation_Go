@@ -15,7 +15,7 @@ func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque
 		if item[0][0] == -1 {
 			return
 		}
-		left, right, top, bottom := 0, model.Length/model.XStep-1, 0, model.Width/model.YStep-1 // 每个切片迭代时需要重置
+		left, right, top, bottom := 0, Length/XStep-1, 0, Width/YStep-1 // 每个切片迭代时需要重置
 		// parameter set
 		parameter = c.getParameter(z)
 		// 计算最外层， 逆时针
@@ -110,34 +110,34 @@ func (e *executorBaseOnBlock) calculateCase1(t task, c *calculatorWithArrDeque) 
 		// 先计算点，再计算外表面，再计算里面的点
 		c.calculatePointLT(t.deltaT, z, item, parameter)
 		count++
-		for i := 1; i < model.Length/model.XStep/2; i++ {
+		for i := 1; i < Length/XStep/2; i++ {
 			c.calculatePointTA(t.deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1; j++ {
+		for j := Width / YStep / 2; j < Width/YStep-1; j++ {
 			c.calculatePointLA(t.deltaT, j, z, item, parameter)
 			count++
 		}
-		for j := model.Width/model.YStep - 1 - e.edgeWidth; j < model.Width/model.YStep-1; j++ {
+		for j := Width/YStep - 1 - e.edgeWidth; j < Width/YStep-1; j++ {
 			for i := 1; i < 1+e.edgeWidth; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-e.edgeWidth; j++ {
+		for j := Width / YStep / 2; j < Width/YStep-1-e.edgeWidth; j++ {
 			for i := 1; i < 1+e.edgeWidth; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width/model.YStep - 1 - e.edgeWidth; j < model.Width/model.YStep-1; j++ {
-			for i := 1 + e.edgeWidth; i < model.Length/model.XStep/2; i = i + 1 {
+		for j := Width/YStep - 1 - e.edgeWidth; j < Width/YStep-1; j++ {
+			for i := 1 + e.edgeWidth; i < Length/XStep/2; i = i + 1 {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-e.edgeWidth; j = j + e.step {
-			for i := 1 + e.edgeWidth; i < model.Length/model.XStep/2; i = i + e.step {
+		for j := Width / YStep / 2; j < Width/YStep-1-e.edgeWidth; j = j + e.step {
+			for i := 1 + e.edgeWidth; i < Length/XStep/2; i = i + e.step {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
@@ -158,34 +158,34 @@ func (e *executorBaseOnBlock) calculateCase2(t task, c *calculatorWithArrDeque) 
 		// 先计算点，再计算外表面，再计算里面的点
 		c.calculatePointRT(t.deltaT, z, item, parameter)
 		count++
-		for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1; i++ {
+		for i := Length / XStep / 2; i < Length/XStep-1; i++ {
 			c.calculatePointTA(t.deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1; j++ {
+		for j := Width / YStep / 2; j < Width/YStep-1; j++ {
 			c.calculatePointRA(t.deltaT, j, z, item, parameter)
 			count++
 		}
-		for j := model.Width/model.YStep - 1 - e.edgeWidth; j < model.Width/model.YStep-1; j++ {
-			for i := model.Length/model.XStep - 1 - e.edgeWidth; i < model.Length/model.XStep-1; i++ {
+		for j := Width/YStep - 1 - e.edgeWidth; j < Width/YStep-1; j++ {
+			for i := Length/XStep - 1 - e.edgeWidth; i < Length/XStep-1; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-e.edgeWidth; j++ {
-			for i := model.Length/model.XStep - 1 - e.edgeWidth; i < model.Length/model.XStep-1; i++ {
+		for j := Width / YStep / 2; j < Width/YStep-1-e.edgeWidth; j++ {
+			for i := Length/XStep - 1 - e.edgeWidth; i < Length/XStep-1; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width/model.YStep - 1 - e.edgeWidth; j < model.Width/model.YStep-1; j++ {
-			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-e.edgeWidth; i = i + 1 {
+		for j := Width/YStep - 1 - e.edgeWidth; j < Width/YStep-1; j++ {
+			for i := Length / XStep / 2; i < Length/XStep-1-e.edgeWidth; i = i + 1 {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := model.Width / model.YStep / 2; j < model.Width/model.YStep-1-e.edgeWidth; j = j + e.step {
-			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-e.edgeWidth; i = i + e.step {
+		for j := Width / YStep / 2; j < Width/YStep-1-e.edgeWidth; j = j + e.step {
+			for i := Length / XStep / 2; i < Length/XStep-1-e.edgeWidth; i = i + e.step {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
@@ -205,34 +205,34 @@ func (e *executorBaseOnBlock) calculateCase3(t task, c *calculatorWithArrDeque) 
 		// 先计算点，再计算外表面，再计算里面的点
 		c.calculatePointRB(t.deltaT, z, item, parameter)
 		count++
-		for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1; i++ {
+		for i := Length / XStep / 2; i < Length/XStep-1; i++ {
 			c.calculatePointBA(t.deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := 1; j < model.Width/model.YStep/2; j++ {
+		for j := 1; j < Width/YStep/2; j++ {
 			c.calculatePointRA(t.deltaT, j, z, item, parameter)
 			count++
 		}
 		for j := 1; j < 1+e.edgeWidth; j++ {
-			for i := model.Length/model.XStep - 1 - e.edgeWidth; i < model.Length/model.XStep-1; i++ {
+			for i := Length/XStep - 1 - e.edgeWidth; i < Length/XStep-1; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + e.edgeWidth; j < model.Width/model.YStep/2; j++ {
-			for i := model.Length/model.XStep - 1 - e.edgeWidth; i < model.Length/model.XStep-1; i++ {
+		for j := 1 + e.edgeWidth; j < Width/YStep/2; j++ {
+			for i := Length/XStep - 1 - e.edgeWidth; i < Length/XStep-1; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
 		for j := 1; j < 1+e.edgeWidth; j++ {
-			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-e.edgeWidth; i++ {
+			for i := Length / XStep / 2; i < Length/XStep-1-e.edgeWidth; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + e.edgeWidth; j < model.Width/model.YStep/2; j = j + e.step {
-			for i := model.Length / model.XStep / 2; i < model.Length/model.XStep-1-e.edgeWidth; i = i + e.step {
+		for j := 1 + e.edgeWidth; j < Width/YStep/2; j = j + e.step {
+			for i := Length / XStep / 2; i < Length/XStep-1-e.edgeWidth; i = i + e.step {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
@@ -252,11 +252,11 @@ func (e *executorBaseOnBlock) calculateCase4(t task, c *calculatorWithArrDeque) 
 		// 先计算点，再计算外表面，再计算里面的点
 		c.calculatePointLB(t.deltaT, z, item, parameter)
 		count++
-		for i := 1; i < model.Length/model.XStep/2; i++ {
+		for i := 1; i < Length/XStep/2; i++ {
 			c.calculatePointBA(t.deltaT, i, z, item, parameter)
 			count++
 		}
-		for j := 1; j < model.Width/model.YStep/2; j++ {
+		for j := 1; j < Width/YStep/2; j++ {
 			c.calculatePointLA(t.deltaT, j, z, item, parameter)
 			count++
 		}
@@ -266,20 +266,20 @@ func (e *executorBaseOnBlock) calculateCase4(t task, c *calculatorWithArrDeque) 
 				count++
 			}
 		}
-		for j := 1 + e.edgeWidth; j < model.Width/model.YStep/2; j++ {
+		for j := 1 + e.edgeWidth; j < Width/YStep/2; j++ {
 			for i := 1; i < 1+e.edgeWidth; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
 		for j := 1; j < 1+e.edgeWidth; j++ {
-			for i := 1 + e.edgeWidth; i < model.Length/model.XStep/2; i++ {
+			for i := 1 + e.edgeWidth; i < Length/XStep/2; i++ {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}
 		}
-		for j := 1 + e.edgeWidth; j < model.Width/model.YStep/2; j = j + e.step {
-			for i := 1 + e.edgeWidth; i < model.Length/model.XStep/2; i = i + e.step {
+		for j := 1 + e.edgeWidth; j < Width/YStep/2; j = j + e.step {
+			for i := 1 + e.edgeWidth; i < Length/XStep/2; i = i + e.step {
 				c.calculatePointIN(t.deltaT, i, j, z, item, parameter)
 				count++
 			}

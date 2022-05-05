@@ -1,0 +1,6638 @@
+[
+  {
+    "id": 1023,
+    "temperature": 1600,
+    "thermal_conductivity": 34.8225712,
+    "specfic_heat": 0,
+    "density": 6840.391603,
+    "enthalpy": 1323798,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499948784435463,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1024,
+    "temperature": 1595,
+    "thermal_conductivity": 34.73176382,
+    "specfic_heat": 827.4,
+    "density": 6844.449345,
+    "enthalpy": 1319661,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499941436861591,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1025,
+    "temperature": 1590,
+    "thermal_conductivity": 34.64095643,
+    "specfic_heat": 827.6,
+    "density": 6848.501292,
+    "enthalpy": 1315523,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499933035542828,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1026,
+    "temperature": 1585,
+    "thermal_conductivity": 34.55014905,
+    "specfic_heat": 827.6,
+    "density": 6852.547415,
+    "enthalpy": 1311385,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499923429469667,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1027,
+    "temperature": 1580,
+    "thermal_conductivity": 34.45934167,
+    "specfic_heat": 827.4,
+    "density": 6856.587684,
+    "enthalpy": 1307248,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499912446026302,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1028,
+    "temperature": 1575,
+    "thermal_conductivity": 34.36853429,
+    "specfic_heat": 827.4,
+    "density": 6860.622071,
+    "enthalpy": 1303111,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.849989988790984,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1029,
+    "temperature": 1570,
+    "thermal_conductivity": 34.2777269,
+    "specfic_heat": 827.6,
+    "density": 6864.650546,
+    "enthalpy": 1298973,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499885529613437,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1030,
+    "temperature": 1565,
+    "thermal_conductivity": 34.18691952,
+    "specfic_heat": 827.4,
+    "density": 6868.67308,
+    "enthalpy": 1294836,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.849986911341274,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1031,
+    "temperature": 1560,
+    "thermal_conductivity": 34.09611214,
+    "specfic_heat": 827.4,
+    "density": 6872.689644,
+    "enthalpy": 1290699,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499850344786699,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1032,
+    "temperature": 1555,
+    "thermal_conductivity": 34.00530476,
+    "specfic_heat": 827.4,
+    "density": 6876.700209,
+    "enthalpy": 1286562,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499828887194807,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1033,
+    "temperature": 1550,
+    "thermal_conductivity": 33.91449738,
+    "specfic_heat": 827.2,
+    "density": 6880.704747000001,
+    "enthalpy": 1282426,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499804356122528,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1034,
+    "temperature": 1545,
+    "thermal_conductivity": 33.82368999,
+    "specfic_heat": 827.4,
+    "density": 6884.703227,
+    "enthalpy": 1278289,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499776312295283,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1035,
+    "temperature": 1540,
+    "thermal_conductivity": 33.73288261,
+    "specfic_heat": 827.2,
+    "density": 6888.69562,
+    "enthalpy": 1274153,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499744253948726,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1036,
+    "temperature": 1535,
+    "thermal_conductivity": 33.64207523,
+    "specfic_heat": 824,
+    "density": 6892.681898,
+    "enthalpy": 1270033,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499707608029033,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1037,
+    "temperature": 1530,
+    "thermal_conductivity": 33.55126785,
+    "specfic_heat": 824.6,
+    "density": 6896.662031,
+    "enthalpy": 1265910,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499665720181594,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1038,
+    "temperature": 1525,
+    "thermal_conductivity": 33.46046047,
+    "specfic_heat": 822.2,
+    "density": 6900.63599,
+    "enthalpy": 1261799,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499617843369739,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1039,
+    "temperature": 1520,
+    "thermal_conductivity": 33.36965308,
+    "specfic_heat": 820,
+    "density": 6904.603746000001,
+    "enthalpy": 1257699,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499563124947127,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1040,
+    "temperature": 1515,
+    "thermal_conductivity": 33.2788457,
+    "specfic_heat": 817.4,
+    "density": 6908.56527,
+    "enthalpy": 1253612,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499500591988084,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1041,
+    "temperature": 1510,
+    "thermal_conductivity": 33.18803832,
+    "specfic_heat": 815,
+    "density": 6912.5205320000005,
+    "enthalpy": 1249537,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499429134659964,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1042,
+    "temperature": 1505,
+    "thermal_conductivity": 33.09723094,
+    "specfic_heat": 812.8,
+    "density": 6916.469503,
+    "enthalpy": 1245473,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.849934748740072,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1043,
+    "temperature": 1500,
+    "thermal_conductivity": 33.00642355,
+    "specfic_heat": 810.4,
+    "density": 6920.412154,
+    "enthalpy": 1241421,
+    "liquid_phase_fraction": 1,
+    "emissivity": 0.8499254207643904,
+    "poisson_ratio": 0.4996548201,
+    "linear_expansion": 0,
+    "young_modulus": 0,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1044,
+    "temperature": 1495,
+    "thermal_conductivity": 33.16316389,
+    "specfic_heat": 8096,
+    "density": 6959.39346,
+    "enthalpy": 1200941,
+    "liquid_phase_fraction": 0.8550028227,
+    "emissivity": 0.8499147651813116,
+    "poisson_ratio": 0.477619143,
+    "linear_expansion": 0,
+    "young_modulus": 0.00001432487709,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1045,
+    "temperature": 1490,
+    "thermal_conductivity": 33.30487997,
+    "specfic_heat": 7361.6,
+    "density": 6995.062958,
+    "enthalpy": 1164133,
+    "liquid_phase_fraction": 0.7223194392,
+    "emissivity": 0.8499025948289618,
+    "poisson_ratio": 0.4573866233,
+    "linear_expansion": 0,
+    "young_modulus": 0.0001950890699,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1046,
+    "temperature": 1485,
+    "thermal_conductivity": 33.39836171,
+    "specfic_heat": 5723.200000000001,
+    "density": 7022.809003,
+    "enthalpy": 1135517,
+    "liquid_phase_fraction": 0.6209930332,
+    "emissivity": 0.849888696704184,
+    "poisson_ratio": 0.4418763871,
+    "linear_expansion": 0,
+    "young_modulus": 0.0006856161717,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1047,
+    "temperature": 1480,
+    "thermal_conductivity": 33.45917835,
+    "specfic_heat": 4615.400000000001,
+    "density": 7045.143333,
+    "enthalpy": 1112440,
+    "liquid_phase_fraction": 0.5411014853,
+    "emissivity": 0.8498728285596199,
+    "poisson_ratio": 0.4296003276,
+    "linear_expansion": 0,
+    "young_modulus": 0.00149219357,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1048,
+    "temperature": 1475,
+    "thermal_conductivity": 33.4958387,
+    "specfic_heat": 3825.2000000000003,
+    "density": 7063.648087,
+    "enthalpy": 1093314,
+    "liquid_phase_fraction": 0.4766473961,
+    "emissivity": 0.8498547151027441,
+    "poisson_ratio": 0.4196448299,
+    "linear_expansion": 0,
+    "young_modulus": 0.002556358265,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1049,
+    "temperature": 1470,
+    "thermal_conductivity": 33.5147475,
+    "specfic_heat": 3242.7999999999997,
+    "density": 7079.239179,
+    "enthalpy": 1077100,
+    "liquid_phase_fraction": 0.4237014986,
+    "emissivity": 0.8498340437657389,
+    "poisson_ratio": 0.4114257977,
+    "linear_expansion": 0,
+    "young_modulus": 0.003806568307,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1050,
+    "temperature": 1465,
+    "thermal_conductivity": 33.52003134,
+    "specfic_heat": 2802.6,
+    "density": 7092.63681,
+    "enthalpy": 1063087,
+    "liquid_phase_fraction": 0.3795266257,
+    "emissivity": 0.8498104600178022,
+    "poisson_ratio": 0.4045299228,
+    "linear_expansion": 0,
+    "young_modulus": 0.005180203160999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1051,
+    "temperature": 1460,
+    "thermal_conductivity": 33.51473213,
+    "specfic_heat": 2462,
+    "density": 7104.305386,
+    "enthalpy": 1050777,
+    "liquid_phase_fraction": 0.342180176,
+    "emissivity": 0.8497835621963901,
+    "poisson_ratio": 0.3986655446,
+    "linear_expansion": 0,
+    "young_modulus": 0.006628275855,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1052,
+    "temperature": 1455,
+    "thermal_conductivity": 33.50094838,
+    "specfic_heat": 2194,
+    "density": 7114.618963,
+    "enthalpy": 1039807,
+    "liquid_phase_fraction": 0.3102744555,
+    "emissivity": 0.8497528958417155,
+    "poisson_ratio": 0.3936222794,
+    "linear_expansion": 0,
+    "young_modulus": 0.008113371298,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1053,
+    "temperature": 1450,
+    "thermal_conductivity": 33.49209122,
+    "specfic_heat": 2286.7999999999997,
+    "density": 7125.673269,
+    "enthalpy": 1028373,
+    "liquid_phase_fraction": 0.2793293965,
+    "emissivity": 0.8497179475303935,
+    "poisson_ratio": 0.3896663964,
+    "linear_expansion": 0,
+    "young_modulus": 0.009867831682,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1054,
+    "temperature": 1445,
+    "thermal_conductivity": 33.47418638,
+    "specfic_heat": 2025.6,
+    "density": 7135.390081,
+    "enthalpy": 1018245,
+    "liquid_phase_fraction": 0.2533355249,
+    "emissivity": 0.8496781382204683,
+    "poisson_ratio": 0.3862975081,
+    "linear_expansion": 0,
+    "young_modulus": 0.01161229429,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1055,
+    "temperature": 1440,
+    "thermal_conductivity": 33.45753437,
+    "specfic_heat": 2056.4,
+    "density": 7145.8560210000005,
+    "enthalpy": 1007963,
+    "liquid_phase_fraction": 0.2271586706,
+    "emissivity": 0.8496328161422787,
+    "poisson_ratio": 0.382902784,
+    "linear_expansion": 0,
+    "young_modulus": 0.01363207973,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1056,
+    "temperature": 1435,
+    "thermal_conductivity": 33.43994681,
+    "specfic_heat": 2032.2,
+    "density": 7156.6800920000005,
+    "enthalpy": 997802,
+    "liquid_phase_fraction": 0.2016804275,
+    "emissivity": 0.8495812492990201,
+    "poisson_ratio": 0.3795814836,
+    "linear_expansion": 0,
+    "young_modulus": 0.01588886219,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1057,
+    "temperature": 1430,
+    "thermal_conductivity": 33.41504264,
+    "specfic_heat": 1818.2,
+    "density": 7166.172121,
+    "enthalpy": 988711,
+    "liquid_phase_fraction": 0.1801218815,
+    "emissivity": 0.8495226176787076,
+    "poisson_ratio": 0.3767258183,
+    "linear_expansion": 0,
+    "young_modulus": 0.018079359740000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1058,
+    "temperature": 1425,
+    "thermal_conductivity": 33.38419851,
+    "specfic_heat": 1649.2,
+    "density": 7174.63452,
+    "enthalpy": 980465,
+    "liquid_phase_fraction": 0.1616742842,
+    "emissivity": 0.849456005326815,
+    "poisson_ratio": 0.3742380556,
+    "linear_expansion": 0,
+    "young_modulus": 0.02019112377,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1059,
+    "temperature": 1420,
+    "thermal_conductivity": 33.34884029,
+    "specfic_heat": 1514.2,
+    "density": 7182.2647799999995,
+    "enthalpy": 972894,
+    "liquid_phase_fraction": 0.1457224604,
+    "emissivity": 0.8493803924871401,
+    "poisson_ratio": 0.3720474195,
+    "linear_expansion": 0,
+    "young_modulus": 0.02222004907,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1060,
+    "temperature": 1415,
+    "thermal_conductivity": 33.30968926,
+    "specfic_heat": 1452.3999999999999,
+    "density": 7189.689663,
+    "enthalpy": 965632,
+    "liquid_phase_fraction": 0.1310144162,
+    "emissivity": 0.8492946480879616,
+    "poisson_ratio": 0.3700110003,
+    "linear_expansion": 0,
+    "young_modulus": 0.02426236469,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1061,
+    "temperature": 1410,
+    "thermal_conductivity": 33.26744524,
+    "specfic_heat": 1382.2,
+    "density": 7196.769931000001,
+    "enthalpy": 958721,
+    "liquid_phase_fraction": 0.1176251863,
+    "emissivity": 0.8491975229309524,
+    "poisson_ratio": 0.3681314541,
+    "linear_expansion": 0,
+    "young_modulus": 0.02628377197,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1062,
+    "temperature": 1405,
+    "thermal_conductivity": 33.2226785,
+    "specfic_heat": 1295.4,
+    "density": 7203.24997,
+    "enthalpy": 952244,
+    "liquid_phase_fraction": 0.1058430237,
+    "emissivity": 0.8490876440299538,
+    "poisson_ratio": 0.366443044,
+    "linear_expansion": 0,
+    "young_modulus": 0.0282171536,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1063,
+    "temperature": 1400,
+    "thermal_conductivity": 33.17556538,
+    "specfic_heat": 1220.2,
+    "density": 7209.22332,
+    "enthalpy": 946143,
+    "liquid_phase_fraction": 0.09547434066,
+    "emissivity": 0.8489635106420663,
+    "poisson_ratio": 0.3649218105,
+    "linear_expansion": 0,
+    "young_modulus": 0.03005710755,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1064,
+    "temperature": 1395,
+    "thermal_conductivity": 33.12657917,
+    "specfic_heat": 1156.4,
+    "density": 7214.772477,
+    "enthalpy": 940361,
+    "liquid_phase_fraction": 0.0863008892,
+    "emissivity": 0.8488234926285785,
+    "poisson_ratio": 0.3635437059,
+    "linear_expansion": 0,
+    "young_modulus": 0.03180917709,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1065,
+    "temperature": 1390,
+    "thermal_conductivity": 33.07603825,
+    "specfic_heat": 1102.4,
+    "density": 7219.950057,
+    "enthalpy": 934849,
+    "liquid_phase_fraction": 0.0781536751,
+    "emissivity": 0.848665831868948,
+    "poisson_ratio": 0.3622895159,
+    "linear_expansion": 0,
+    "young_modulus": 0.03347808852,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1066,
+    "temperature": 1385,
+    "thermal_conductivity": 33.02418356,
+    "specfic_heat": 1056.2,
+    "density": 7224.815477,
+    "enthalpy": 929568,
+    "liquid_phase_fraction": 0.07089238501,
+    "emissivity": 0.8484886475148472,
+    "poisson_ratio": 0.3611423543,
+    "linear_expansion": 0,
+    "young_modulus": 0.03506894243,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1067,
+    "temperature": 1380,
+    "thermal_conductivity": 32.9711909,
+    "specfic_heat": 1016.2,
+    "density": 7229.419538,
+    "enthalpy": 924487,
+    "liquid_phase_fraction": 0.06439658067,
+    "emissivity": 0.8482899458971079,
+    "poisson_ratio": 0.3600878254,
+    "linear_expansion": 0,
+    "young_modulus": 0.03658774743,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1068,
+    "temperature": 1375,
+    "thermal_conductivity": 32.91727528,
+    "specfic_heat": 981.8,
+    "density": 7233.78771,
+    "enthalpy": 919578,
+    "liquid_phase_fraction": 0.05857238765,
+    "emissivity": 0.8480676358673666,
+    "poisson_ratio": 0.3591157249,
+    "linear_expansion": 0,
+    "young_modulus": 0.03803907977,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1069,
+    "temperature": 1370,
+    "thermal_conductivity": 32.86256576,
+    "specfic_heat": 951.6,
+    "density": 7237.956851,
+    "enthalpy": 914820,
+    "liquid_phase_fraction": 0.05333582892,
+    "emissivity": 0.8478195502480759,
+    "poisson_ratio": 0.3582156341,
+    "linear_expansion": 0,
+    "young_modulus": 0.03942808979,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1070,
+    "temperature": 1365,
+    "thermal_conductivity": 32.80716415,
+    "specfic_heat": 925.2,
+    "density": 7241.956389,
+    "enthalpy": 910194,
+    "liquid_phase_fraction": 0.04861571663,
+    "emissivity": 0.8475434738606208,
+    "poisson_ratio": 0.3573789643,
+    "linear_expansion": 0,
+    "young_modulus": 0.04075975757,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1071,
+    "temperature": 1360,
+    "thermal_conductivity": 32.75242236,
+    "specfic_heat": 946.2,
+    "density": 7246.039650000001,
+    "enthalpy": 905463,
+    "liquid_phase_fraction": 0.04359991032,
+    "emissivity": 0.8472371782883303,
+    "poisson_ratio": 0.3564930997,
+    "linear_expansion": 0,
+    "young_modulus": 0.04218754355,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1072,
+    "temperature": 1355,
+    "thermal_conductivity": 32.69717565,
+    "specfic_heat": 926.2,
+    "density": 7249.998374,
+    "enthalpy": 900832,
+    "liquid_phase_fraction": 0.03897551809,
+    "emissivity": 0.8468984631065951,
+    "poisson_ratio": 0.3556549928,
+    "linear_expansion": 0,
+    "young_modulus": 0.04357667093,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1073,
+    "temperature": 1350,
+    "thermal_conductivity": 32.641287,
+    "specfic_heat": 901,
+    "density": 7253.812142,
+    "enthalpy": 896327,
+    "liquid_phase_fraction": 0.03483382279,
+    "emissivity": 0.8465252027892418,
+    "poisson_ratio": 0.3548783295,
+    "linear_expansion": 0,
+    "young_modulus": 0.044902714690000005,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1074,
+    "temperature": 1345,
+    "thermal_conductivity": 32.58488027,
+    "specfic_heat": 878.6,
+    "density": 7257.491358,
+    "enthalpy": 891934,
+    "liquid_phase_fraction": 0.03112927302,
+    "emissivity": 0.8461153979121359,
+    "poisson_ratio": 0.3541578815,
+    "linear_expansion": 0,
+    "young_modulus": 0.046168505590000006,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1075,
+    "temperature": 1340,
+    "thermal_conductivity": 32.52804556,
+    "specfic_heat": 859,
+    "density": 7261.055327,
+    "enthalpy": 887639,
+    "liquid_phase_fraction": 0.02780691775,
+    "emissivity": 0.8456672286766345,
+    "poisson_ratio": 0.3534868781,
+    "linear_expansion": 0,
+    "young_modulus": 0.04738024279,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1076,
+    "temperature": 1335,
+    "thermal_conductivity": 32.47084722,
+    "specfic_heat": 842.1999999999999,
+    "density": 7264.525629999999,
+    "enthalpy": 883428,
+    "liquid_phase_fraction": 0.02481757022,
+    "emissivity": 0.8451791082408381,
+    "poisson_ratio": 0.3528585355,
+    "linear_expansion": 0,
+    "young_modulus": 0.04854382479,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1077,
+    "temperature": 1330,
+    "thermal_conductivity": 32.41339232,
+    "specfic_heat": 827.6,
+    "density": 7267.911601,
+    "enthalpy": 879290,
+    "liquid_phase_fraction": 0.02212152249,
+    "emissivity": 0.8446497329598359,
+    "poisson_ratio": 0.3522682924,
+    "linear_expansion": 0,
+    "young_modulus": 0.049664003729999996,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1078,
+    "temperature": 1325,
+    "thermal_conductivity": 32.3557412,
+    "specfic_heat": 815,
+    "density": 7271.226623,
+    "enthalpy": 875215,
+    "liquid_phase_fraction": 0.0196779017,
+    "emissivity": 0.8440781264782518,
+    "poisson_ratio": 0.351711053,
+    "linear_expansion": 0,
+    "young_modulus": 0.05074683059,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1079,
+    "temperature": 1320,
+    "thermal_conductivity": 32.29794613,
+    "specfic_heat": 804.2,
+    "density": 7274.484144,
+    "enthalpy": 871194,
+    "liquid_phase_fraction": 0.01745334525,
+    "emissivity": 0.8434636747499866,
+    "poisson_ratio": 0.351182171,
+    "linear_expansion": 0,
+    "young_modulus": 0.05179702322,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1080,
+    "temperature": 1315,
+    "thermal_conductivity": 32.24006198,
+    "specfic_heat": 795,
+    "density": 7277.693515,
+    "enthalpy": 867219,
+    "liquid_phase_fraction": 0.0154139928,
+    "emissivity": 0.8428061495049533,
+    "poisson_ratio": 0.3506774704,
+    "linear_expansion": 0,
+    "young_modulus": 0.05282028421,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1081,
+    "temperature": 1310,
+    "thermal_conductivity": 32.18215348,
+    "specfic_heat": 788,
+    "density": 7280.872889,
+    "enthalpy": 863279,
+    "liquid_phase_fraction": 0.01352643174,
+    "emissivity": 0.8421057184166884,
+    "poisson_ratio": 0.3501920891,
+    "linear_expansion": 0,
+    "young_modulus": 0.05382234749,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1082,
+    "temperature": 1305,
+    "thermal_conductivity": 32.12426701,
+    "specfic_heat": 782.5999999999999,
+    "density": 7284.031895,
+    "enthalpy": 859366,
+    "liquid_phase_fraction": 0.01175728059,
+    "emissivity": 0.8413629411744946,
+    "poisson_ratio": 0.3497218319,
+    "linear_expansion": 0,
+    "young_modulus": 0.05481002283,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1083,
+    "temperature": 1300,
+    "thermal_conductivity": 32.06647512,
+    "specfic_heat": 779.5999999999999,
+    "density": 7287.193489,
+    "enthalpy": 855468,
+    "liquid_phase_fraction": 0.01006272159,
+    "emissivity": 0.8405787517161066,
+    "poisson_ratio": 0.3492603563,
+    "linear_expansion": 0,
+    "young_modulus": 0.05579280044,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1084,
+    "temperature": 1295,
+    "thermal_conductivity": 32.00888336,
+    "specfic_heat": 779.8000000000001,
+    "density": 7290.390506,
+    "enthalpy": 851569,
+    "liquid_phase_fraction": 0.008390819886,
+    "emissivity": 0.8397544278991321,
+    "poisson_ratio": 0.3488000981,
+    "linear_expansion": 0,
+    "young_modulus": 0.05678276461,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1085,
+    "temperature": 1290,
+    "thermal_conductivity": 31.9515711,
+    "specfic_heat": 782,
+    "density": 7293.649875,
+    "enthalpy": 847659,
+    "liquid_phase_fraction": 0.006703083086,
+    "emissivity": 0.8388915507544477,
+    "poisson_ratio": 0.348335695,
+    "linear_expansion": 0,
+    "young_modulus": 0.05778976977,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1086,
+    "temperature": 1285,
+    "thermal_conductivity": 31.89460461,
+    "specfic_heat": 782,
+    "density": 7296.9730549999995,
+    "enthalpy": 843749,
+    "liquid_phase_fraction": 0.00504170871,
+    "emissivity": 0.837991956074244,
+    "poisson_ratio": 0.3478731464,
+    "linear_expansion": 0,
+    "young_modulus": 0.058802806799999996,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1087,
+    "temperature": 1280,
+    "thermal_conductivity": 31.8379114,
+    "specfic_heat": 776.2,
+    "density": 7300.313911,
+    "enthalpy": 839868,
+    "liquid_phase_fraction": 0.003506140331,
+    "emissivity": 0.8370576813887699,
+    "poisson_ratio": 0.3474275614,
+    "linear_expansion": 0,
+    "young_modulus": 0.05979585601,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1088,
+    "temperature": 1275,
+    "thermal_conductivity": 31.78144302,
+    "specfic_heat": 766.4,
+    "density": 7303.634634,
+    "enthalpy": 836036,
+    "liquid_phase_fraction": 0.002157717865,
+    "emissivity": 0.8360909113766847,
+    "poisson_ratio": 0.3470082071,
+    "linear_expansion": 0,
+    "young_modulus": 0.060751153860000004,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1089,
+    "temperature": 1270,
+    "thermal_conductivity": 31.72515183,
+    "specfic_heat": 756.4,
+    "density": 7306.91533,
+    "enthalpy": 832254,
+    "liquid_phase_fraction": 0.0009969754061,
+    "emissivity": 0.8350939244764671,
+    "poisson_ratio": 0.3466156586,
+    "linear_expansion": 0,
+    "young_modulus": 0.06166683838,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1090,
+    "temperature": 1265,
+    "thermal_conductivity": 31.66905276,
+    "specfic_heat": 747.1999999999999,
+    "density": 7310.157244,
+    "enthalpy": 828518,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8340690429929909,
+    "poisson_ratio": 0.3462464885,
+    "linear_expansion": 0,
+    "young_modulus": 0.06254734904,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1091,
+    "temperature": 1260,
+    "thermal_conductivity": 31.61100801,
+    "specfic_heat": 748.4,
+    "density": 7312.503412,
+    "enthalpy": 824776,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8330185884096337,
+    "poisson_ratio": 0.3460250437,
+    "linear_expansion": 0,
+    "young_modulus": 0.06316523347,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1092,
+    "temperature": 1255,
+    "thermal_conductivity": 31.55320711,
+    "specfic_heat": 699.8,
+    "density": 7314.8480979999995,
+    "enthalpy": 821277,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.831944843004289,
+    "poisson_ratio": 0.3458035982,
+    "linear_expansion": 0,
+    "young_modulus": 0.06378568921,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1093,
+    "temperature": 1250,
+    "thermal_conductivity": 31.49566157,
+    "specfic_heat": 699.2,
+    "density": 7317.191301,
+    "enthalpy": 817781,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8308500182945449,
+    "poisson_ratio": 0.3455821522,
+    "linear_expansion": 0,
+    "young_modulus": 0.06440867136,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1094,
+    "temperature": 1245,
+    "thermal_conductivity": 31.43838314,
+    "specfic_heat": 698.6,
+    "density": 7319.533015,
+    "enthalpy": 814288,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8297362303491757,
+    "poisson_ratio": 0.3453607056,
+    "linear_expansion": 0,
+    "young_modulus": 0.0650341353,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1095,
+    "temperature": 1240,
+    "thermal_conductivity": 31.38138377,
+    "specfic_heat": 698.2,
+    "density": 7321.873240000001,
+    "enthalpy": 810797,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8286054816242095,
+    "poisson_ratio": 0.3451392584,
+    "linear_expansion": 0,
+    "young_modulus": 0.06566203669,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1096,
+    "temperature": 1235,
+    "thermal_conductivity": 31.32467563,
+    "specfic_heat": 697.6,
+    "density": 7324.21197,
+    "enthalpy": 807309,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8274596487176277,
+    "poisson_ratio": 0.3449178108,
+    "linear_expansion": 0,
+    "young_modulus": 0.06629233146,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1097,
+    "temperature": 1230,
+    "thermal_conductivity": 31.26827111,
+    "specfic_heat": 697.2,
+    "density": 7326.549204,
+    "enthalpy": 803823,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.826300475278831,
+    "poisson_ratio": 0.3446963626,
+    "linear_expansion": 0,
+    "young_modulus": 0.06692497577999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1098,
+    "temperature": 1225,
+    "thermal_conductivity": 31.21218277,
+    "specfic_heat": 696.8,
+    "density": 7328.884938,
+    "enthalpy": 800339,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8251295692406168,
+    "poisson_ratio": 0.344474914,
+    "linear_expansion": 0,
+    "young_modulus": 0.06755992612,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1099,
+    "temperature": 1220,
+    "thermal_conductivity": 31.15642342,
+    "specfic_heat": 696.2,
+    "density": 7331.219168,
+    "enthalpy": 796858,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8239484035421536,
+    "poisson_ratio": 0.3442534649,
+    "linear_expansion": 0,
+    "young_modulus": 0.06819713916,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1100,
+    "temperature": 1215,
+    "thermal_conductivity": 31.10100602,
+    "specfic_heat": 695.8,
+    "density": 7333.551893,
+    "enthalpy": 793379,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8227583195608537,
+    "poisson_ratio": 0.3440320154,
+    "linear_expansion": 0,
+    "young_modulus": 0.06883657187,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1101,
+    "temperature": 1210,
+    "thermal_conductivity": 31.04594374,
+    "specfic_heat": 695.4,
+    "density": 7335.883108,
+    "enthalpy": 789902,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8215605325509332,
+    "poisson_ratio": 0.3438105655,
+    "linear_expansion": 0,
+    "young_modulus": 0.06947818145,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1102,
+    "temperature": 1205,
+    "thermal_conductivity": 30.99124993,
+    "specfic_heat": 695,
+    "density": 7338.212811,
+    "enthalpy": 786427,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8203561384819363,
+    "poisson_ratio": 0.3435891152,
+    "linear_expansion": 0,
+    "young_modulus": 0.07012192533,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1103,
+    "temperature": 1200,
+    "thermal_conductivity": 30.93693812,
+    "specfic_heat": 694.4,
+    "density": 7340.5409979999995,
+    "enthalpy": 782955,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8191461217704185,
+    "poisson_ratio": 0.3433676646,
+    "linear_expansion": 0,
+    "young_modulus": 0.07076776118,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1104,
+    "temperature": 1195,
+    "thermal_conductivity": 30.88302201,
+    "specfic_heat": 694.2,
+    "density": 7342.867666,
+    "enthalpy": 779484,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8179313634945754,
+    "poisson_ratio": 0.3431462137,
+    "linear_expansion": 0,
+    "young_modulus": 0.07141564692999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1105,
+    "temperature": 1190,
+    "thermal_conductivity": 30.82951548,
+    "specfic_heat": 693.6,
+    "density": 7345.192811999999,
+    "enthalpy": 776016,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8167126497700241,
+    "poisson_ratio": 0.3429247624,
+    "linear_expansion": 0,
+    "young_modulus": 0.07206554068,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1106,
+    "temperature": 1185,
+    "thermal_conductivity": 30.77643254,
+    "specfic_heat": 693.2,
+    "density": 7347.516433,
+    "enthalpy": 772550,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8154906800425866,
+    "poisson_ratio": 0.3427033109,
+    "linear_expansion": 0,
+    "young_modulus": 0.07271740081,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1107,
+    "temperature": 1180,
+    "thermal_conductivity": 30.72378738,
+    "specfic_heat": 692.8,
+    "density": 7349.838527,
+    "enthalpy": 769086,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8142660751198602,
+    "poisson_ratio": 0.3424818591,
+    "linear_expansion": 0,
+    "young_modulus": 0.07337118589000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1108,
+    "temperature": 1175,
+    "thermal_conductivity": 30.67159432,
+    "specfic_heat": 692.6,
+    "density": 7352.159089,
+    "enthalpy": 765623,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8130393848177548,
+    "poisson_ratio": 0.3422604071,
+    "linear_expansion": 0,
+    "young_modulus": 0.07402685468999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1109,
+    "temperature": 1170,
+    "thermal_conductivity": 30.61986781,
+    "specfic_heat": 692,
+    "density": 7354.478116,
+    "enthalpy": 762163,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8118110951418734,
+    "poisson_ratio": 0.3420389549,
+    "linear_expansion": 0,
+    "young_modulus": 0.07468436622,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1110,
+    "temperature": 1165,
+    "thermal_conductivity": 30.56862246,
+    "specfic_heat": 691.8,
+    "density": 7356.795606000001,
+    "enthalpy": 758704,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8105816349578505,
+    "poisson_ratio": 0.3418175024,
+    "linear_expansion": 0,
+    "young_modulus": 0.07534367967,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1111,
+    "temperature": 1160,
+    "thermal_conductivity": 30.51787295,
+    "specfic_heat": 691.4,
+    "density": 7359.111556,
+    "enthalpy": 755247,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8093513821308925,
+    "poisson_ratio": 0.3415960499,
+    "linear_expansion": 0,
+    "young_modulus": 0.07600475443,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1112,
+    "temperature": 1155,
+    "thermal_conductivity": 30.46763412,
+    "specfic_heat": 691.2,
+    "density": 7361.425962,
+    "enthalpy": 751791,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.808120669134145,
+    "poisson_ratio": 0.3413745972,
+    "linear_expansion": 0,
+    "young_modulus": 0.07666755012,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1113,
+    "temperature": 1150,
+    "thermal_conductivity": 30.41792087,
+    "specfic_heat": 690.6,
+    "density": 7363.738821,
+    "enthalpy": 748338,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8068897881394034,
+    "poisson_ratio": 0.3411531443,
+    "linear_expansion": 0,
+    "young_modulus": 0.0773320265,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1114,
+    "temperature": 1145,
+    "thermal_conductivity": 30.36874821,
+    "specfic_heat": 690.6,
+    "density": 7366.05013,
+    "enthalpy": 744885,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8056589956132191,
+    "poisson_ratio": 0.3409316914,
+    "linear_expansion": 0,
+    "young_modulus": 0.07799814356,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1115,
+    "temperature": 1140,
+    "thermal_conductivity": 30.32013125,
+    "specfic_heat": 690,
+    "density": 7368.359886,
+    "enthalpy": 741435,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8044285164475816,
+    "poisson_ratio": 0.3407102385,
+    "linear_expansion": 0,
+    "young_modulus": 0.07866586144,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1116,
+    "temperature": 1135,
+    "thermal_conductivity": 30.27208513,
+    "specfic_heat": 690,
+    "density": 7370.668086000001,
+    "enthalpy": 737985,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8031985476578903,
+    "poisson_ratio": 0.3404887855,
+    "linear_expansion": 0,
+    "young_modulus": 0.07933514049,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1117,
+    "temperature": 1130,
+    "thermal_conductivity": 30.22462508,
+    "specfic_heat": 689.6,
+    "density": 7372.9747259999995,
+    "enthalpy": 734537,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.801969261682529,
+    "poisson_ratio": 0.3402673324,
+    "linear_expansion": 0,
+    "young_modulus": 0.08000594121,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1118,
+    "temperature": 1125,
+    "thermal_conductivity": 30.17776637,
+    "specfic_heat": 689.2,
+    "density": 7375.279804,
+    "enthalpy": 731091,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.8007408093185441,
+    "poisson_ratio": 0.3400458794,
+    "linear_expansion": 0,
+    "young_modulus": 0.08067822427999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1119,
+    "temperature": 1120,
+    "thermal_conductivity": 30.13152431,
+    "specfic_heat": 689.2,
+    "density": 7377.583317,
+    "enthalpy": 727645,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7995133223271239,
+    "poisson_ratio": 0.3398244264,
+    "linear_expansion": 0,
+    "young_modulus": 0.08135195056000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1120,
+    "temperature": 1115,
+    "thermal_conductivity": 30.08591422,
+    "specfic_heat": 688.8,
+    "density": 7379.885261,
+    "enthalpy": 724201,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7982869157410979,
+    "poisson_ratio": 0.3396029735,
+    "linear_expansion": 0,
+    "young_modulus": 0.08202708106,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1121,
+    "temperature": 1110,
+    "thermal_conductivity": 30.04095146,
+    "specfic_heat": 688.6,
+    "density": 7382.185633,
+    "enthalpy": 720758,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7970616899047723,
+    "poisson_ratio": 0.3393815207,
+    "linear_expansion": 0,
+    "young_modulus": 0.08270357695,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1122,
+    "temperature": 1105,
+    "thermal_conductivity": 29.99665138,
+    "specfic_heat": 688.4,
+    "density": 7384.4844299999995,
+    "enthalpy": 717316,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7958377322742765,
+    "poisson_ratio": 0.3391600679,
+    "linear_expansion": 0,
+    "young_modulus": 0.08338139956,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1123,
+    "temperature": 1100,
+    "thermal_conductivity": 29.9530293,
+    "specfic_heat": 688.4,
+    "density": 7386.78165,
+    "enthalpy": 713874,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7946151190043395,
+    "poisson_ratio": 0.3389386153,
+    "linear_expansion": 0,
+    "young_modulus": 0.08406051037000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1124,
+    "temperature": 1095,
+    "thermal_conductivity": 29.91010054,
+    "specfic_heat": 688,
+    "density": 7389.077288,
+    "enthalpy": 710434,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7933939163451499,
+    "poisson_ratio": 0.3387171629,
+    "linear_expansion": 0,
+    "young_modulus": 0.08474087103,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1125,
+    "temperature": 1090,
+    "thermal_conductivity": 29.86788038,
+    "specfic_heat": 688,
+    "density": 7391.371343000001,
+    "enthalpy": 706994,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7921741818707475,
+    "poisson_ratio": 0.3384957106,
+    "linear_expansion": 0,
+    "young_modulus": 0.08542244331000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1126,
+    "temperature": 1085,
+    "thermal_conductivity": 29.82638402,
+    "specfic_heat": 687.8,
+    "density": 7393.66381,
+    "enthalpy": 703555,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7909559655582826,
+    "poisson_ratio": 0.3382742586,
+    "linear_expansion": 0,
+    "young_modulus": 0.08610518912000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1127,
+    "temperature": 1080,
+    "thermal_conductivity": 29.78562664,
+    "specfic_heat": 687.8,
+    "density": 7395.9546869999995,
+    "enthalpy": 700116,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7897393107354986,
+    "poisson_ratio": 0.3380528068,
+    "linear_expansion": 0,
+    "young_modulus": 0.08678907054,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1128,
+    "temperature": 1075,
+    "thermal_conductivity": 29.74562329,
+    "specfic_heat": 687.6,
+    "density": 7398.24397,
+    "enthalpy": 696678,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7885242549119539,
+    "poisson_ratio": 0.3378313552,
+    "linear_expansion": 0,
+    "young_modulus": 0.08747404976999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1129,
+    "temperature": 1070,
+    "thermal_conductivity": 29.70638896,
+    "specfic_heat": 687.6,
+    "density": 7400.531657,
+    "enthalpy": 693240,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.787310830507813,
+    "poisson_ratio": 0.3376099039,
+    "linear_expansion": 0,
+    "young_modulus": 0.08816008913000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1130,
+    "temperature": 1065,
+    "thermal_conductivity": 29.66793852,
+    "specfic_heat": 687.4,
+    "density": 7402.817744,
+    "enthalpy": 689803,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7860990654924919,
+    "poisson_ratio": 0.337388453,
+    "linear_expansion": 0,
+    "young_modulus": 0.08884715110000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1131,
+    "temperature": 1060,
+    "thermal_conductivity": 29.63028672,
+    "specfic_heat": 687.6,
+    "density": 7405.102229,
+    "enthalpy": 686365,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7848889839440548,
+    "poisson_ratio": 0.3371670023,
+    "linear_expansion": 0,
+    "young_modulus": 0.08953519826,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1132,
+    "temperature": 1055,
+    "thermal_conductivity": 29.59344815,
+    "specfic_heat": 687.4,
+    "density": 7407.3851079999995,
+    "enthalpy": 682928,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7836806065389997,
+    "poisson_ratio": 0.336945552,
+    "linear_expansion": 0,
+    "young_modulus": 0.09022419333000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1133,
+    "temperature": 1050,
+    "thermal_conductivity": 29.55743727,
+    "specfic_heat": 687.6,
+    "density": 7409.666378,
+    "enthalpy": 679490,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7824739509809466,
+    "poisson_ratio": 0.3367241021,
+    "linear_expansion": 0,
+    "young_modulus": 0.09091409915,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1134,
+    "temperature": 1045,
+    "thermal_conductivity": 29.52226836,
+    "specfic_heat": 687.4,
+    "density": 7411.946035999999,
+    "enthalpy": 676053,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7812690323757339,
+    "poisson_ratio": 0.3365026526,
+    "linear_expansion": 0,
+    "young_modulus": 0.09160487867,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1135,
+    "temperature": 1040,
+    "thermal_conductivity": 29.48795551,
+    "specfic_heat": 687.6,
+    "density": 7414.2240790000005,
+    "enthalpy": 672615,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7800658635595391,
+    "poisson_ratio": 0.3362812036,
+    "linear_expansion": 0,
+    "young_modulus": 0.09229649498,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1136,
+    "temperature": 1035,
+    "thermal_conductivity": 29.45451261,
+    "specfic_heat": 687.6,
+    "density": 7416.500504,
+    "enthalpy": 669177,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7788644553858377,
+    "poisson_ratio": 0.336059755,
+    "linear_expansion": 0,
+    "young_modulus": 0.09298891126,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1137,
+    "temperature": 1030,
+    "thermal_conductivity": 29.42195333,
+    "specfic_heat": 687.8,
+    "density": 7418.775308,
+    "enthalpy": 665738,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7776648169763123,
+    "poisson_ratio": 0.3358383069,
+    "linear_expansion": 0,
+    "young_modulus": 0.09368209079999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1138,
+    "temperature": 1025,
+    "thermal_conductivity": 29.39029111,
+    "specfic_heat": 687.8,
+    "density": 7421.048487,
+    "enthalpy": 662299,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7764669559402059,
+    "poisson_ratio": 0.3356168592,
+    "linear_expansion": 0,
+    "young_modulus": 0.09437599702999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1139,
+    "temperature": 1020.0000000000001,
+    "thermal_conductivity": 29.35953913,
+    "specfic_heat": 688.2,
+    "density": 7423.320039,
+    "enthalpy": 658858,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7752708785660534,
+    "poisson_ratio": 0.3353954122,
+    "linear_expansion": 0,
+    "young_modulus": 0.09507059345,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1140,
+    "temperature": 1015.0000000000001,
+    "thermal_conductivity": 29.32971031,
+    "specfic_heat": 688.2,
+    "density": 7425.589961,
+    "enthalpy": 655417,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7740765899892503,
+    "poisson_ratio": 0.3351739657,
+    "linear_expansion": 0,
+    "young_modulus": 0.09576584368999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1141,
+    "temperature": 1010.0000000000001,
+    "thermal_conductivity": 29.30081728,
+    "specfic_heat": 688.4,
+    "density": 7427.858249,
+    "enthalpy": 651975,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7728840943384856,
+    "poisson_ratio": 0.3349525197,
+    "linear_expansion": 0,
+    "young_modulus": 0.09646171146,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1142,
+    "temperature": 1005.0000000000001,
+    "thermal_conductivity": 29.27287237,
+    "specfic_heat": 688.8,
+    "density": 7430.124901,
+    "enthalpy": 648531,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7716933948636895,
+    "poisson_ratio": 0.3347310744,
+    "linear_expansion": 0,
+    "young_modulus": 0.09715816059,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1143,
+    "temperature": 1000.0000000000001,
+    "thermal_conductivity": 29.24588761,
+    "specfic_heat": 689,
+    "density": 7432.389912,
+    "enthalpy": 645086,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.770504494047823,
+    "poisson_ratio": 0.3345096297,
+    "linear_expansion": 0,
+    "young_modulus": 0.097855155,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1144,
+    "temperature": 995.0000000000001,
+    "thermal_conductivity": 29.21987466,
+    "specfic_heat": 689.2,
+    "density": 7434.653282,
+    "enthalpy": 641640,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.769317393704538,
+    "poisson_ratio": 0.3342881857,
+    "linear_expansion": 0,
+    "young_modulus": 0.09855265869999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1145,
+    "temperature": 990.0000000000001,
+    "thermal_conductivity": 29.19484487,
+    "specfic_heat": 689.6,
+    "density": 7436.915005000001,
+    "enthalpy": 638192,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7681320950634918,
+    "poisson_ratio": 0.3340667424,
+    "linear_expansion": 0,
+    "young_modulus": 0.0992506358,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1146,
+    "temperature": 985.0000000000001,
+    "thermal_conductivity": 29.17080919,
+    "specfic_heat": 690,
+    "density": 7439.17508,
+    "enthalpy": 634742,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7669485988448679,
+    "poisson_ratio": 0.3338452998,
+    "linear_expansion": 0,
+    "young_modulus": 0.0999490505,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1147,
+    "temperature": 980.0000000000001,
+    "thermal_conductivity": 29.14777822,
+    "specfic_heat": 690.6,
+    "density": 7441.433503,
+    "enthalpy": 631289,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.765766905324469,
+    "poisson_ratio": 0.3336238579,
+    "linear_expansion": 0,
+    "young_modulus": 0.1006478671,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1148,
+    "temperature": 975.0000000000001,
+    "thermal_conductivity": 29.12576212,
+    "specfic_heat": 690.8,
+    "density": 7443.69027,
+    "enthalpy": 627835,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7645870143905706,
+    "poisson_ratio": 0.3334024168,
+    "linear_expansion": 0,
+    "young_modulus": 0.1013470499,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1149,
+    "temperature": 970.0000000000001,
+    "thermal_conductivity": 29.10477068,
+    "specfic_heat": 691.4,
+    "density": 7445.94538,
+    "enthalpy": 624378,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7634089255935745,
+    "poisson_ratio": 0.3331809765,
+    "linear_expansion": 0,
+    "young_modulus": 0.1020465635,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1150,
+    "temperature": 965.0000000000001,
+    "thermal_conductivity": 29.08481322,
+    "specfic_heat": 692,
+    "density": 7448.198829,
+    "enthalpy": 620918,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7622326381893756,
+    "poisson_ratio": 0.332959537,
+    "linear_expansion": 0,
+    "young_modulus": 0.1027463724,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1151,
+    "temperature": 960.0000000000001,
+    "thermal_conductivity": 29.06589864,
+    "specfic_heat": 692.6,
+    "density": 7450.450613,
+    "enthalpy": 617455,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7610581511772337,
+    "poisson_ratio": 0.3327380983,
+    "linear_expansion": 0,
+    "young_modulus": 0.1034464411,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1152,
+    "temperature": 955.0000000000001,
+    "thermal_conductivity": 29.04803536,
+    "specfic_heat": 693.2,
+    "density": 7452.700731,
+    "enthalpy": 613989,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.759885463332848,
+    "poisson_ratio": 0.3325166606,
+    "linear_expansion": 0,
+    "young_modulus": 0.10414673449999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1153,
+    "temperature": 950.0000000000001,
+    "thermal_conductivity": 29.03123132,
+    "specfic_heat": 693.8,
+    "density": 7454.949178,
+    "enthalpy": 610520,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7587145732372391,
+    "poisson_ratio": 0.3322952237,
+    "linear_expansion": 0,
+    "young_modulus": 0.10484721720000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1154,
+    "temperature": 945.0000000000001,
+    "thermal_conductivity": 29.015494,
+    "specfic_heat": 694.6,
+    "density": 7457.195952,
+    "enthalpy": 607047,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7575454793019711,
+    "poisson_ratio": 0.3320737877,
+    "linear_expansion": 0,
+    "young_modulus": 0.1055478542,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1155,
+    "temperature": 940.0000000000001,
+    "thermal_conductivity": 29.00083032,
+    "specfic_heat": 695.4,
+    "density": 7459.441049,
+    "enthalpy": 603570,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7563781797911754,
+    "poisson_ratio": 0.3318523527,
+    "linear_expansion": 0,
+    "young_modulus": 0.1062486104,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1156,
+    "temperature": 935.0000000000001,
+    "thermal_conductivity": 28.98724672,
+    "specfic_heat": 696.2,
+    "density": 7461.684467,
+    "enthalpy": 600089,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7552126728407835,
+    "poisson_ratio": 0.3316309187,
+    "linear_expansion": 0,
+    "young_modulus": 0.1069494509,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1157,
+    "temperature": 930.0000000000001,
+    "thermal_conductivity": 28.97474909,
+    "specfic_heat": 697,
+    "density": 7463.926203,
+    "enthalpy": 596604,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7540489564753194,
+    "poisson_ratio": 0.3314094856,
+    "linear_expansion": 0,
+    "young_modulus": 0.1076503406,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1158,
+    "temperature": 925.0000000000001,
+    "thermal_conductivity": 28.96334276,
+    "specfic_heat": 698.2,
+    "density": 7466.166253,
+    "enthalpy": 593113,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7528870286225637,
+    "poisson_ratio": 0.3311880536,
+    "linear_expansion": 0,
+    "young_modulus": 0.1083512447,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1159,
+    "temperature": 920.0000000000001,
+    "thermal_conductivity": 28.9530325,
+    "specfic_heat": 699,
+    "density": 7468.404614,
+    "enthalpy": 589618,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7517268871263572,
+    "poisson_ratio": 0.3309666227,
+    "linear_expansion": 0,
+    "young_modulus": 0.1090521286,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1160,
+    "temperature": 915.0000000000001,
+    "thermal_conductivity": 28.94382252,
+    "specfic_heat": 700.2,
+    "density": 7470.641284,
+    "enthalpy": 586117,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7505685297577798,
+    "poisson_ratio": 0.3307451928,
+    "linear_expansion": 0,
+    "young_modulus": 0.1097529574,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1161,
+    "temperature": 910.0000000000001,
+    "thermal_conductivity": 28.93571642,
+    "specfic_heat": 701.2,
+    "density": 7472.87626,
+    "enthalpy": 582611,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7494119542249122,
+    "poisson_ratio": 0.3305237641,
+    "linear_expansion": 0,
+    "young_modulus": 0.1104536966,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1162,
+    "temperature": 905.0000000000001,
+    "thermal_conductivity": 28.92871721,
+    "specfic_heat": 702.6,
+    "density": 7475.109538,
+    "enthalpy": 579098,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7482571581813585,
+    "poisson_ratio": 0.3303023364,
+    "linear_expansion": 0,
+    "young_modulus": 0.1111543116,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1163,
+    "temperature": 900.0000000000001,
+    "thermal_conductivity": 28.92282727,
+    "specfic_heat": 704,
+    "density": 7477.341115,
+    "enthalpy": 575578,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7471041392336869,
+    "poisson_ratio": 0.33008091,
+    "linear_expansion": 0,
+    "young_modulus": 0.1118547678,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1164,
+    "temperature": 895.0000000000001,
+    "thermal_conductivity": 28.91804839,
+    "specfic_heat": 705.2,
+    "density": 7479.5709879999995,
+    "enthalpy": 572052,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7459528949479263,
+    "poisson_ratio": 0.3298594847,
+    "linear_expansion": 0,
+    "young_modulus": 0.1125550308,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1165,
+    "temperature": 890.0000000000001,
+    "thermal_conductivity": 28.91438168,
+    "specfic_heat": 706.8,
+    "density": 7481.799155,
+    "enthalpy": 568518,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7448034228552382,
+    "poisson_ratio": 0.3296380606,
+    "linear_expansion": 0,
+    "young_modulus": 0.1132550663,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1166,
+    "temperature": 885.0000000000001,
+    "thermal_conductivity": 28.91182765,
+    "specfic_heat": 708.4,
+    "density": 7484.025612,
+    "enthalpy": 564976,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7436557204568687,
+    "poisson_ratio": 0.3294166378,
+    "linear_expansion": 0,
+    "young_modulus": 0.1139548399,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1167,
+    "temperature": 880.0000000000001,
+    "thermal_conductivity": 28.91038612,
+    "specfic_heat": 710,
+    "density": 7486.2503560000005,
+    "enthalpy": 561426,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7425097852284716,
+    "poisson_ratio": 0.3291952163,
+    "linear_expansion": 0,
+    "young_modulus": 0.1146543174,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1168,
+    "temperature": 875.0000000000001,
+    "thermal_conductivity": 28.91005627,
+    "specfic_heat": 711.8,
+    "density": 7488.473384,
+    "enthalpy": 557867,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7413656146238815,
+    "poisson_ratio": 0.328973796,
+    "linear_expansion": 0,
+    "young_modulus": 0.1153534646,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1169,
+    "temperature": 870.0000000000001,
+    "thermal_conductivity": 28.91083659,
+    "specfic_heat": 713.8,
+    "density": 7490.694694,
+    "enthalpy": 554298,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7402232060784091,
+    "poisson_ratio": 0.3287523771,
+    "linear_expansion": 0,
+    "young_modulus": 0.11605224730000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1170,
+    "temperature": 865.0000000000001,
+    "thermal_conductivity": 28.9127249,
+    "specfic_heat": 715.6,
+    "density": 7492.914281,
+    "enthalpy": 550720,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7390825570117162,
+    "poisson_ratio": 0.3285309595,
+    "linear_expansion": 0,
+    "young_modulus": 0.1167506315,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1171,
+    "temperature": 860.0000000000001,
+    "thermal_conductivity": 28.91571835,
+    "specfic_heat": 718,
+    "density": 7495.132144,
+    "enthalpy": 547130,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7379436648303268,
+    "poisson_ratio": 0.3283095433,
+    "linear_expansion": 0,
+    "young_modulus": 0.11744858309999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1172,
+    "temperature": 855.0000000000001,
+    "thermal_conductivity": 28.91981337,
+    "specfic_heat": 720.1999999999999,
+    "density": 7497.348279,
+    "enthalpy": 543529,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7368065269298173,
+    "poisson_ratio": 0.3280881285,
+    "linear_expansion": 0,
+    "young_modulus": 0.1181460682,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1173,
+    "temperature": 850.0000000000001,
+    "thermal_conductivity": 28.92500571,
+    "specfic_heat": 722.6,
+    "density": 7499.562683,
+    "enthalpy": 539916,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7356711406967293,
+    "poisson_ratio": 0.3278667151,
+    "linear_expansion": 0,
+    "young_modulus": 0.11884305290000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1174,
+    "temperature": 845.0000000000001,
+    "thermal_conductivity": 28.93129041,
+    "specfic_heat": 725.1999999999999,
+    "density": 7501.775353,
+    "enthalpy": 536290,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7345375035102387,
+    "poisson_ratio": 0.3276453032,
+    "linear_expansion": 0,
+    "young_modulus": 0.1195395106,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1175,
+    "temperature": 840.0000000000001,
+    "thermal_conductivity": 28.93866181,
+    "specfic_heat": 728,
+    "density": 7503.986286,
+    "enthalpy": 532650,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7334056127436117,
+    "poisson_ratio": 0.3274238928,
+    "linear_expansion": 0,
+    "young_modulus": 0.1202353919,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1176,
+    "temperature": 835.0000000000001,
+    "thermal_conductivity": 28.94711353,
+    "specfic_heat": 731,
+    "density": 7506.195479,
+    "enthalpy": 528995,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7322754657654761,
+    "poisson_ratio": 0.3272024839,
+    "linear_expansion": 0,
+    "young_modulus": 0.1209306693,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1177,
+    "temperature": 830.0000000000001,
+    "thermal_conductivity": 28.95663849,
+    "specfic_heat": 734.1999999999999,
+    "density": 7508.40293,
+    "enthalpy": 525324,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.73114705994093,
+    "poisson_ratio": 0.3269810765,
+    "linear_expansion": 0,
+    "young_modulus": 0.12162530889999999,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1178,
+    "temperature": 825.0000000000001,
+    "thermal_conductivity": 28.96722888,
+    "specfic_heat": 737.4000000000001,
+    "density": 7510.608633999999,
+    "enthalpy": 521636.99999999994,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7300203926325095,
+    "poisson_ratio": 0.3267596707,
+    "linear_expansion": 0,
+    "young_modulus": 0.12231927640000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1179,
+    "temperature": 820.0000000000001,
+    "thermal_conductivity": 28.9788762,
+    "specfic_heat": 741,
+    "density": 7512.812589,
+    "enthalpy": 517932,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7288954612010324,
+    "poisson_ratio": 0.3265382665,
+    "linear_expansion": 0,
+    "young_modulus": 0.1230125381,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1180,
+    "temperature": 815.0000000000001,
+    "thermal_conductivity": 28.9915712,
+    "specfic_heat": 745,
+    "density": 7515.014792999999,
+    "enthalpy": 514207,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7277722630063347,
+    "poisson_ratio": 0.3263168639,
+    "linear_expansion": 0,
+    "young_modulus": 0.1237050599,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1181,
+    "temperature": 810.0000000000001,
+    "thermal_conductivity": 29.00530394,
+    "specfic_heat": 749,
+    "density": 7517.215242,
+    "enthalpy": 510462,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7266507954079119,
+    "poisson_ratio": 0.3260954629,
+    "linear_expansion": 0,
+    "young_modulus": 0.124396808,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1182,
+    "temperature": 805.0000000000001,
+    "thermal_conductivity": 29.02006376,
+    "specfic_heat": 753.4,
+    "density": 7519.413932,
+    "enthalpy": 506695,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7255310557654794,
+    "poisson_ratio": 0.3258740637,
+    "linear_expansion": 0,
+    "young_modulus": 0.1250877487,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1183,
+    "temperature": 800.0000000000001,
+    "thermal_conductivity": 29.03583928,
+    "specfic_heat": 758.1999999999999,
+    "density": 7521.610862,
+    "enthalpy": 502904,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.72441304143946,
+    "poisson_ratio": 0.3256526661,
+    "linear_expansion": 0,
+    "young_modulus": 0.1257778483,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1184,
+    "temperature": 795.0000000000001,
+    "thermal_conductivity": 29.05261842,
+    "specfic_heat": 763.2,
+    "density": 7523.806028,
+    "enthalpy": 499088,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7232967497914091,
+    "poisson_ratio": 0.3254312703,
+    "linear_expansion": 0,
+    "young_modulus": 0.1264670731,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1185,
+    "temperature": 790.0000000000001,
+    "thermal_conductivity": 29.07038838,
+    "specfic_heat": 768.5999999999999,
+    "density": 7525.999427000001,
+    "enthalpy": 495245,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7221821781843857,
+    "poisson_ratio": 0.3252098762,
+    "linear_expansion": 0,
+    "young_modulus": 0.1271553896,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1186,
+    "temperature": 785.0000000000001,
+    "thermal_conductivity": 29.08913567,
+    "specfic_heat": 774.4,
+    "density": 7528.191056,
+    "enthalpy": 491373,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7210693239832745,
+    "poisson_ratio": 0.324988484,
+    "linear_expansion": 0,
+    "young_modulus": 0.1278427644,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1187,
+    "temperature": 780.0000000000001,
+    "thermal_conductivity": 29.1088461,
+    "specfic_heat": 780.8000000000001,
+    "density": 7530.380912,
+    "enthalpy": 487469,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7199581845550674,
+    "poisson_ratio": 0.3247670935,
+    "linear_expansion": 0,
+    "young_modulus": 0.1285291639,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1188,
+    "temperature": 775.0000000000001,
+    "thermal_conductivity": 29.1295048,
+    "specfic_heat": 787.6,
+    "density": 7532.5689919999995,
+    "enthalpy": 483531,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7188487572691078,
+    "poisson_ratio": 0.3245457049,
+    "linear_expansion": 0,
+    "young_modulus": 0.12921455499999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1189,
+    "temperature": 770.0000000000001,
+    "thermal_conductivity": 29.15109619,
+    "specfic_heat": 795,
+    "density": 7534.755294,
+    "enthalpy": 479556,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.717741039497303,
+    "poisson_ratio": 0.3243243181,
+    "linear_expansion": 0,
+    "young_modulus": 0.1298989043,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1190,
+    "temperature": 765.0000000000001,
+    "thermal_conductivity": 29.17360403,
+    "specfic_heat": 802.8,
+    "density": 7536.939813,
+    "enthalpy": 475542,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7166350286143099,
+    "poisson_ratio": 0.3241029333,
+    "linear_expansion": 0,
+    "young_modulus": 0.1305821786,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1191,
+    "temperature": 760.0000000000001,
+    "thermal_conductivity": 29.19701141,
+    "specfic_heat": 811.6,
+    "density": 7539.122548,
+    "enthalpy": 471484,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7155307219976955,
+    "poisson_ratio": 0.3238815504,
+    "linear_expansion": 0,
+    "young_modulus": 0.1312643447,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1192,
+    "temperature": 755.0000000000001,
+    "thermal_conductivity": 29.22130076,
+    "specfic_heat": 820.8,
+    "density": 7541.303495,
+    "enthalpy": 467380,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7144281170280763,
+    "poisson_ratio": 0.3236601694,
+    "linear_expansion": 0,
+    "young_modulus": 0.13194536969999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1193,
+    "temperature": 750,
+    "thermal_conductivity": 29.24645386,
+    "specfic_heat": 888.8000000000001,
+    "density": 7543.482652,
+    "enthalpy": 462936,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7133272110892392,
+    "poisson_ratio": 0.3234387905,
+    "linear_expansion": 0,
+    "young_modulus": 0.1326252204,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1194,
+    "temperature": 745,
+    "thermal_conductivity": 29.27245183,
+    "specfic_heat": 921,
+    "density": 7545.660015,
+    "enthalpy": 458331,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7122280015682468,
+    "poisson_ratio": 0.3232174135,
+    "linear_expansion": 0,
+    "young_modulus": 0.1333038641,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1195,
+    "temperature": 740,
+    "thermal_conductivity": 29.29927519,
+    "specfic_heat": 910.8000000000001,
+    "density": 7547.835581,
+    "enthalpy": 453777,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.711130485855528,
+    "poisson_ratio": 0.3229960386,
+    "linear_expansion": 0,
+    "young_modulus": 0.1339812677,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1196,
+    "temperature": 735,
+    "thermal_conductivity": 29.32690382,
+    "specfic_heat": 901.2,
+    "density": 7550.009346999999,
+    "enthalpy": 449271,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7100346613449566,
+    "poisson_ratio": 0.3227746657,
+    "linear_expansion": 0,
+    "young_modulus": 0.1346573986,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1197,
+    "temperature": 730,
+    "thermal_conductivity": 29.35531701,
+    "specfic_heat": 892,
+    "density": 7552.181311,
+    "enthalpy": 444811,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7089405254339195,
+    "poisson_ratio": 0.322553295,
+    "linear_expansion": 0,
+    "young_modulus": 0.1353322239,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1198,
+    "temperature": 725,
+    "thermal_conductivity": 29.38449344,
+    "specfic_heat": 882.8000000000001,
+    "density": 7554.3514700000005,
+    "enthalpy": 440397,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7078480755233743,
+    "poisson_ratio": 0.3223319263,
+    "linear_expansion": 0,
+    "young_modulus": 0.1360057111,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1199,
+    "temperature": 720,
+    "thermal_conductivity": 29.41441122,
+    "specfic_heat": 874.1999999999999,
+    "density": 7556.51982,
+    "enthalpy": 436026,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7067573090178998,
+    "poisson_ratio": 0.3221105599,
+    "linear_expansion": 0,
+    "young_modulus": 0.1366778274,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1200,
+    "temperature": 715,
+    "thermal_conductivity": 29.44504789,
+    "specfic_heat": 865.8000000000001,
+    "density": 7558.686358,
+    "enthalpy": 431697,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7056682233257401,
+    "poisson_ratio": 0.3218891956,
+    "linear_expansion": 0,
+    "young_modulus": 0.1373485404,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1201,
+    "temperature": 710,
+    "thermal_conductivity": 29.47638044,
+    "specfic_heat": 857.6,
+    "density": 7560.851082,
+    "enthalpy": 427409,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7045808158588398,
+    "poisson_ratio": 0.3216678335,
+    "linear_expansion": 0,
+    "young_modulus": 0.1380178176,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1202,
+    "temperature": 705,
+    "thermal_conductivity": 29.50838533,
+    "specfic_heat": 849.6,
+    "density": 7563.013989,
+    "enthalpy": 423161,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7034950840328762,
+    "poisson_ratio": 0.3214464736,
+    "linear_expansion": 0,
+    "young_modulus": 0.1386856266,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1203,
+    "temperature": 700,
+    "thermal_conductivity": 29.54103848,
+    "specfic_heat": 841.8,
+    "density": 7565.175076,
+    "enthalpy": 418952,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7024110252672867,
+    "poisson_ratio": 0.3212251161,
+    "linear_expansion": 0,
+    "young_modulus": 0.139351935,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1204,
+    "temperature": 695,
+    "thermal_conductivity": 29.57431533,
+    "specfic_heat": 834.6,
+    "density": 7567.334339,
+    "enthalpy": 414779,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7013286369852896,
+    "poisson_ratio": 0.3210037608,
+    "linear_expansion": 0,
+    "young_modulus": 0.1400167107,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1205,
+    "temperature": 690,
+    "thermal_conductivity": 29.60819081,
+    "specfic_heat": 827.2,
+    "density": 7569.491776,
+    "enthalpy": 410643,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.7002479166139046,
+    "poisson_ratio": 0.3207824079,
+    "linear_expansion": 0,
+    "young_modulus": 0.14067992129999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1206,
+    "temperature": 685,
+    "thermal_conductivity": 29.64263939,
+    "specfic_heat": 820.4,
+    "density": 7571.647384,
+    "enthalpy": 406541,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6991688615839674,
+    "poisson_ratio": 0.3205610573,
+    "linear_expansion": 0,
+    "young_modulus": 0.14134153470000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1207,
+    "temperature": 680,
+    "thermal_conductivity": 29.67763509,
+    "specfic_heat": 813.4,
+    "density": 7573.80116,
+    "enthalpy": 402474,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6980914693301433,
+    "poisson_ratio": 0.320339709,
+    "linear_expansion": 0,
+    "young_modulus": 0.1420015189,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1208,
+    "temperature": 675,
+    "thermal_conductivity": 29.71315148,
+    "specfic_heat": 806.8,
+    "density": 7575.953101,
+    "enthalpy": 398440,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6970157372909374,
+    "poisson_ratio": 0.3201183632,
+    "linear_expansion": 0,
+    "young_modulus": 0.14265984180000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1209,
+    "temperature": 670,
+    "thermal_conductivity": 29.74916172,
+    "specfic_heat": 800.6,
+    "density": 7578.103204,
+    "enthalpy": 394437,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.695941662908703,
+    "poisson_ratio": 0.3198970199,
+    "linear_expansion": 0,
+    "young_modulus": 0.1433164716,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1210,
+    "temperature": 665,
+    "thermal_conductivity": 29.78563857,
+    "specfic_heat": 794.2,
+    "density": 7580.251467,
+    "enthalpy": 390466,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6948692436296487,
+    "poisson_ratio": 0.319675679,
+    "linear_expansion": 0,
+    "young_modulus": 0.1439713763,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1211,
+    "temperature": 660,
+    "thermal_conductivity": 29.82255441,
+    "specfic_heat": 788,
+    "density": 7582.397884999999,
+    "enthalpy": 386526,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6937984769038427,
+    "poisson_ratio": 0.3194543406,
+    "linear_expansion": 0,
+    "young_modulus": 0.1446245241,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1212,
+    "temperature": 655,
+    "thermal_conductivity": 29.85988125,
+    "specfic_heat": 782.2,
+    "density": 7584.5424570000005,
+    "enthalpy": 382615,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.692729360185217,
+    "poisson_ratio": 0.3192330047,
+    "linear_expansion": 0,
+    "young_modulus": 0.1452758834,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1213,
+    "temperature": 650,
+    "thermal_conductivity": 29.89759076,
+    "specfic_heat": 776.5999999999999,
+    "density": 7586.685179,
+    "enthalpy": 378732,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6916618909315696,
+    "poisson_ratio": 0.3190116714,
+    "linear_expansion": 0,
+    "young_modulus": 0.1459254224,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1214,
+    "temperature": 645,
+    "thermal_conductivity": 29.93565429,
+    "specfic_heat": 770.8000000000001,
+    "density": 7588.826048999999,
+    "enthalpy": 374878,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6905960666045654,
+    "poisson_ratio": 0.3187903407,
+    "linear_expansion": 0,
+    "young_modulus": 0.1465731095,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1215,
+    "temperature": 640,
+    "thermal_conductivity": 29.9740429,
+    "specfic_heat": 765.2,
+    "density": 7590.965064,
+    "enthalpy": 371052,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6895318846697374,
+    "poisson_ratio": 0.3185690126,
+    "linear_expansion": 0,
+    "young_modulus": 0.1472189133,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1216,
+    "temperature": 635,
+    "thermal_conductivity": 30.01272732,
+    "specfic_heat": 760.1999999999999,
+    "density": 7593.10222,
+    "enthalpy": 367251,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6884693425964855,
+    "poisson_ratio": 0.3183476872,
+    "linear_expansion": 0,
+    "young_modulus": 0.14786280229999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1217,
+    "temperature": 630,
+    "thermal_conductivity": 30.05167807,
+    "specfic_heat": 754.8000000000001,
+    "density": 7595.2375139999995,
+    "enthalpy": 363477,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6874084378580763,
+    "poisson_ratio": 0.3181263644,
+    "linear_expansion": 0,
+    "young_modulus": 0.14850474500000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1218,
+    "temperature": 625,
+    "thermal_conductivity": 30.09086538,
+    "specfic_heat": 749.6,
+    "density": 7597.370945,
+    "enthalpy": 359729,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6863491679316401,
+    "poisson_ratio": 0.3179050443,
+    "linear_expansion": 0,
+    "young_modulus": 0.1491447103,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1219,
+    "temperature": 620,
+    "thermal_conductivity": 30.13025929,
+    "specfic_heat": 744.8000000000001,
+    "density": 7599.502508,
+    "enthalpy": 356005,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6852915302981704,
+    "poisson_ratio": 0.3176837269,
+    "linear_expansion": 0,
+    "young_modulus": 0.1497826668,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1220,
+    "temperature": 615,
+    "thermal_conductivity": 30.16982962,
+    "specfic_heat": 739.8000000000001,
+    "density": 7601.632202,
+    "enthalpy": 352306,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6842355224425191,
+    "poisson_ratio": 0.3174624123,
+    "linear_expansion": 0,
+    "young_modulus": 0.1504185834,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1221,
+    "temperature": 610,
+    "thermal_conductivity": 30.20954599,
+    "specfic_heat": 735.1999999999999,
+    "density": 7603.760023000001,
+    "enthalpy": 348630,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.683181141853395,
+    "poisson_ratio": 0.3172411006,
+    "linear_expansion": 0,
+    "young_modulus": 0.151052429,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1222,
+    "temperature": 605,
+    "thermal_conductivity": 30.24937788,
+    "specfic_heat": 730.6,
+    "density": 7605.885968,
+    "enthalpy": 344977,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6821283860233597,
+    "poisson_ratio": 0.3170197916,
+    "linear_expansion": 0,
+    "young_modulus": 0.1516841726,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1223,
+    "temperature": 600,
+    "thermal_conductivity": 30.28929462,
+    "specfic_heat": 726,
+    "density": 7608.010034,
+    "enthalpy": 341347,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6810772524488241,
+    "poisson_ratio": 0.3167984854,
+    "linear_expansion": 0,
+    "young_modulus": 0.1523137833,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1224,
+    "temperature": 595,
+    "thermal_conductivity": 30.3292654,
+    "specfic_heat": 721.6,
+    "density": 7610.132218999999,
+    "enthalpy": 337739,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6800277386300434,
+    "poisson_ratio": 0.3165771822,
+    "linear_expansion": 0,
+    "young_modulus": 0.1529412303,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1225,
+    "temperature": 590,
+    "thermal_conductivity": 30.36925932,
+    "specfic_heat": 717.1999999999999,
+    "density": 7612.252519,
+    "enthalpy": 334153,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6789798420711145,
+    "poisson_ratio": 0.3163558819,
+    "linear_expansion": 0,
+    "young_modulus": 0.1535664828,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1226,
+    "temperature": 585,
+    "thermal_conductivity": 30.40924539,
+    "specfic_heat": 712.8,
+    "density": 7614.370932,
+    "enthalpy": 330589,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6779335602799696,
+    "poisson_ratio": 0.3161345845,
+    "linear_expansion": 0,
+    "young_modulus": 0.1541895101,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1227,
+    "temperature": 580,
+    "thermal_conductivity": 30.44919255,
+    "specfic_heat": 708.8,
+    "density": 7616.4874549999995,
+    "enthalpy": 327045,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6768888907683732,
+    "poisson_ratio": 0.31591329,
+    "linear_expansion": 0,
+    "young_modulus": 0.1548102817,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1228,
+    "temperature": 575,
+    "thermal_conductivity": 30.4890697,
+    "specfic_heat": 704.6,
+    "density": 7618.602084,
+    "enthalpy": 323522,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6758458310519163,
+    "poisson_ratio": 0.3156919986,
+    "linear_expansion": 0,
+    "young_modulus": 0.1554287669,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1229,
+    "temperature": 570,
+    "thermal_conductivity": 30.52884572,
+    "specfic_heat": 700.8,
+    "density": 7620.7148179999995,
+    "enthalpy": 320018,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6748043786500115,
+    "poisson_ratio": 0.3154707102,
+    "linear_expansion": 0,
+    "young_modulus": 0.1560449355,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1230,
+    "temperature": 565,
+    "thermal_conductivity": 30.56848945,
+    "specfic_heat": 696.6,
+    "density": 7622.825653,
+    "enthalpy": 316535,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6737645310858884,
+    "poisson_ratio": 0.3152494249,
+    "linear_expansion": 0,
+    "young_modulus": 0.1566587571,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1231,
+    "temperature": 560,
+    "thermal_conductivity": 30.60796978,
+    "specfic_heat": 692.8,
+    "density": 7624.934586,
+    "enthalpy": 313071,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6727262858865883,
+    "poisson_ratio": 0.3150281426,
+    "linear_expansion": 0,
+    "young_modulus": 0.1572702014,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1232,
+    "temperature": 555,
+    "thermal_conductivity": 30.6472556,
+    "specfic_heat": 689.2,
+    "density": 7627.041615,
+    "enthalpy": 309625,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6716896405829588,
+    "poisson_ratio": 0.3148068635,
+    "linear_expansion": 0,
+    "young_modulus": 0.15787923839999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1233,
+    "temperature": 550,
+    "thermal_conductivity": 30.68631587,
+    "specfic_heat": 685.2,
+    "density": 7629.146736,
+    "enthalpy": 306199,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6706545927096482,
+    "poisson_ratio": 0.3145855875,
+    "linear_expansion": 0,
+    "young_modulus": 0.158485838,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1234,
+    "temperature": 545,
+    "thermal_conductivity": 30.7251196,
+    "specfic_heat": 681.8,
+    "density": 7631.249946999999,
+    "enthalpy": 302790,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6696211398051011,
+    "poisson_ratio": 0.3143643147,
+    "linear_expansion": 0,
+    "young_modulus": 0.1590899702,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1235,
+    "temperature": 540,
+    "thermal_conductivity": 30.76363588,
+    "specfic_heat": 678,
+    "density": 7633.351245,
+    "enthalpy": 299400,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6685892794115518,
+    "poisson_ratio": 0.3141430451,
+    "linear_expansion": 0,
+    "young_modulus": 0.15969160529999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1236,
+    "temperature": 535,
+    "thermal_conductivity": 30.80183391,
+    "specfic_heat": 674.6,
+    "density": 7635.450626,
+    "enthalpy": 296027,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.66755900907502,
+    "poisson_ratio": 0.3139217787,
+    "linear_expansion": 0,
+    "young_modulus": 0.16029071350000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1237,
+    "temperature": 530,
+    "thermal_conductivity": 30.83968302,
+    "specfic_heat": 671,
+    "density": 7637.548089,
+    "enthalpy": 292672,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6665303263453038,
+    "poisson_ratio": 0.3137005156,
+    "linear_expansion": 0,
+    "young_modulus": 0.1608872652,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1238,
+    "temperature": 525,
+    "thermal_conductivity": 30.87715265,
+    "specfic_heat": 667.6,
+    "density": 7639.6436300000005,
+    "enthalpy": 289334,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.665503228775976,
+    "poisson_ratio": 0.3134792558,
+    "linear_expansion": 0,
+    "young_modulus": 0.161481231,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1239,
+    "temperature": 520,
+    "thermal_conductivity": 30.9142124,
+    "specfic_heat": 664.4,
+    "density": 7641.737247,
+    "enthalpy": 286012,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6644777139243767,
+    "poisson_ratio": 0.3132579994,
+    "linear_expansion": 0,
+    "young_modulus": 0.1620725813,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1240,
+    "temperature": 515,
+    "thermal_conductivity": 30.95083205,
+    "specfic_heat": 661,
+    "density": 7643.828936,
+    "enthalpy": 282707,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6634537793516094,
+    "poisson_ratio": 0.3130367463,
+    "linear_expansion": 0,
+    "young_modulus": 0.1626612871,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1241,
+    "temperature": 510,
+    "thermal_conductivity": 30.98698156,
+    "specfic_heat": 657.5999999999999,
+    "density": 7645.918694999999,
+    "enthalpy": 279419,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.662431422622534,
+    "poisson_ratio": 0.3128154966,
+    "linear_expansion": 0,
+    "young_modulus": 0.1632473191,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1242,
+    "temperature": 505,
+    "thermal_conductivity": 31.02263107,
+    "specfic_heat": 654.5999999999999,
+    "density": 7648.00652,
+    "enthalpy": 276146,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6614106413057614,
+    "poisson_ratio": 0.3125942503,
+    "linear_expansion": 0,
+    "young_modulus": 0.16383064830000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1243,
+    "temperature": 500,
+    "thermal_conductivity": 31.05775095,
+    "specfic_heat": 651.2,
+    "density": 7650.09241,
+    "enthalpy": 272890,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6603914329736492,
+    "poisson_ratio": 0.3123730074,
+    "linear_expansion": 0,
+    "young_modulus": 0.1644112459,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1244,
+    "temperature": 495,
+    "thermal_conductivity": 31.0923118,
+    "specfic_heat": 648.2,
+    "density": 7652.176361000001,
+    "enthalpy": 269649,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6593737952022944,
+    "poisson_ratio": 0.3121517681,
+    "linear_expansion": 0,
+    "young_modulus": 0.1649890831,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1245,
+    "temperature": 490,
+    "thermal_conductivity": 31.12628447,
+    "specfic_heat": 645.2,
+    "density": 7654.258371,
+    "enthalpy": 266423,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6583577255715284,
+    "poisson_ratio": 0.3119305322,
+    "linear_expansion": 0,
+    "young_modulus": 0.1655641313,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1246,
+    "temperature": 485,
+    "thermal_conductivity": 31.15964005,
+    "specfic_heat": 642.2,
+    "density": 7656.338435000001,
+    "enthalpy": 263212,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6573432216649113,
+    "poisson_ratio": 0.3117092999,
+    "linear_expansion": 0,
+    "young_modulus": 0.16613636199999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1247,
+    "temperature": 480,
+    "thermal_conductivity": 31.1923499,
+    "specfic_heat": 639,
+    "density": 7658.416553,
+    "enthalpy": 260017,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6563302810697267,
+    "poisson_ratio": 0.3114880712,
+    "linear_expansion": 0,
+    "young_modulus": 0.1667057471,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1248,
+    "temperature": 475,
+    "thermal_conductivity": 31.2243857,
+    "specfic_heat": 636.1999999999999,
+    "density": 7660.492721,
+    "enthalpy": 256836,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.655318901376975,
+    "poisson_ratio": 0.3112668461,
+    "linear_expansion": 0,
+    "young_modulus": 0.1672722583,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1249,
+    "temperature": 470,
+    "thermal_conductivity": 31.25571937,
+    "specfic_heat": 633.4,
+    "density": 7662.566935,
+    "enthalpy": 253669,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6543090801813689,
+    "poisson_ratio": 0.3110456246,
+    "linear_expansion": 0,
+    "young_modulus": 0.1678358676,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1250,
+    "temperature": 465,
+    "thermal_conductivity": 31.2863232,
+    "specfic_heat": 630.4,
+    "density": 7664.639194,
+    "enthalpy": 250517,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6533008150813268,
+    "poisson_ratio": 0.3108244067,
+    "linear_expansion": 0,
+    "young_modulus": 0.1683965472,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1251,
+    "temperature": 460,
+    "thermal_conductivity": 31.31616976,
+    "specfic_heat": 627.6,
+    "density": 7666.709495,
+    "enthalpy": 247379,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6522941036789676,
+    "poisson_ratio": 0.3106031926,
+    "linear_expansion": 0,
+    "young_modulus": 0.1689542695,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1252,
+    "temperature": 455,
+    "thermal_conductivity": 31.34523197,
+    "specfic_heat": 624.8000000000001,
+    "density": 7668.777834,
+    "enthalpy": 244255,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.651288943580105,
+    "poisson_ratio": 0.3103819822,
+    "linear_expansion": 0,
+    "young_modulus": 0.1695090071,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1253,
+    "temperature": 450,
+    "thermal_conductivity": 31.37348309,
+    "specfic_heat": 622,
+    "density": 7670.844209,
+    "enthalpy": 241145,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6502853323942418,
+    "poisson_ratio": 0.3101607756,
+    "linear_expansion": 0,
+    "young_modulus": 0.1700607326,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1254,
+    "temperature": 445,
+    "thermal_conductivity": 31.40089675,
+    "specfic_heat": 619.1999999999999,
+    "density": 7672.908617,
+    "enthalpy": 238049,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6492832677345644,
+    "poisson_ratio": 0.3099395727,
+    "linear_expansion": 0,
+    "young_modulus": 0.1706094191,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1255,
+    "temperature": 440,
+    "thermal_conductivity": 31.42744692,
+    "specfic_heat": 616.8000000000001,
+    "density": 7674.971055,
+    "enthalpy": 234965,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6482827472179364,
+    "poisson_ratio": 0.3097183737,
+    "linear_expansion": 0,
+    "young_modulus": 0.1711550395,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1256,
+    "temperature": 435,
+    "thermal_conductivity": 31.45310797,
+    "specfic_heat": 614,
+    "density": 7677.03152,
+    "enthalpy": 231895,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6472837684648943,
+    "poisson_ratio": 0.3094971785,
+    "linear_expansion": 0,
+    "young_modulus": 0.1716975673,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1257,
+    "temperature": 430,
+    "thermal_conductivity": 31.47785466,
+    "specfic_heat": 611.1999999999999,
+    "density": 7679.090011,
+    "enthalpy": 228839,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6462863290996409,
+    "poisson_ratio": 0.3092759872,
+    "linear_expansion": 0,
+    "young_modulus": 0.1722369761,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1258,
+    "temperature": 425,
+    "thermal_conductivity": 31.50166212,
+    "specfic_heat": 608.8,
+    "density": 7681.146522999999,
+    "enthalpy": 225795,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6452904267500394,
+    "poisson_ratio": 0.3090547998,
+    "linear_expansion": 0,
+    "young_modulus": 0.17277323949999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1259,
+    "temperature": 420,
+    "thermal_conductivity": 31.52450591,
+    "specfic_heat": 606.1999999999999,
+    "density": 7683.201054,
+    "enthalpy": 222764,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6442960590476089,
+    "poisson_ratio": 0.3088336163,
+    "linear_expansion": 0,
+    "young_modulus": 0.17330633169999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1260,
+    "temperature": 415,
+    "thermal_conductivity": 31.54636199,
+    "specfic_heat": 603.8,
+    "density": 7685.253602000001,
+    "enthalpy": 219745,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6433032236275177,
+    "poisson_ratio": 0.3086124369,
+    "linear_expansion": 0,
+    "young_modulus": 0.1738362268,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1261,
+    "temperature": 410,
+    "thermal_conductivity": 31.56720676,
+    "specfic_heat": 601.1999999999999,
+    "density": 7687.304163000001,
+    "enthalpy": 216739,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6423119181285784,
+    "poisson_ratio": 0.3083912614,
+    "linear_expansion": 0,
+    "young_modulus": 0.1743628995,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1262,
+    "temperature": 405,
+    "thermal_conductivity": 31.58701702,
+    "specfic_heat": 598.6,
+    "density": 7689.352734,
+    "enthalpy": 213746,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.641322140193242,
+    "poisson_ratio": 0.30817009,
+    "linear_expansion": 0,
+    "young_modulus": 0.1748863245,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1263,
+    "temperature": 400,
+    "thermal_conductivity": 31.60577004,
+    "specfic_heat": 596.1999999999999,
+    "density": 7691.399314,
+    "enthalpy": 210765,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.640333887467592,
+    "poisson_ratio": 0.3079489226,
+    "linear_expansion": 0,
+    "young_modulus": 0.1754064769,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1264,
+    "temperature": 395,
+    "thermal_conductivity": 31.62344351,
+    "specfic_heat": 594,
+    "density": 7693.443899,
+    "enthalpy": 207795,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6393471576013398,
+    "poisson_ratio": 0.3077277594,
+    "linear_expansion": 0,
+    "young_modulus": 0.17592333210000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1265,
+    "temperature": 390,
+    "thermal_conductivity": 31.6400156,
+    "specfic_heat": 591.4000000000001,
+    "density": 7695.486486,
+    "enthalpy": 204838,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6383619482478176,
+    "poisson_ratio": 0.3075066003,
+    "linear_expansion": 0,
+    "young_modulus": 0.17643686579999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1266,
+    "temperature": 385,
+    "thermal_conductivity": 31.65546491,
+    "specfic_heat": 589,
+    "density": 7697.527073,
+    "enthalpy": 201893,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6373782570639742,
+    "poisson_ratio": 0.3072854453,
+    "linear_expansion": 0,
+    "young_modulus": 0.1769470538,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1267,
+    "temperature": 380,
+    "thermal_conductivity": 31.66977051,
+    "specfic_heat": 586.8,
+    "density": 7699.565657,
+    "enthalpy": 198959,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6363960817103692,
+    "poisson_ratio": 0.3070642946,
+    "linear_expansion": 0,
+    "young_modulus": 0.1774538726,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1268,
+    "temperature": 375,
+    "thermal_conductivity": 31.68291196,
+    "specfic_heat": 584.4,
+    "density": 7701.602234,
+    "enthalpy": 196037,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6354154198511665,
+    "poisson_ratio": 0.306843148,
+    "linear_expansion": 0,
+    "young_modulus": 0.1779572987,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1269,
+    "temperature": 370,
+    "thermal_conductivity": 31.69486929,
+    "specfic_heat": 582,
+    "density": 7703.636804000001,
+    "enthalpy": 193127,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6344362691541297,
+    "poisson_ratio": 0.3066220058,
+    "linear_expansion": 0,
+    "young_modulus": 0.17845730929999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1270,
+    "temperature": 365,
+    "thermal_conductivity": 31.705623,
+    "specfic_heat": 580,
+    "density": 7705.669361,
+    "enthalpy": 190227,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6334586272906162,
+    "poisson_ratio": 0.3064008678,
+    "linear_expansion": 0,
+    "young_modulus": 0.1789538817,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1271,
+    "temperature": 360,
+    "thermal_conductivity": 31.71515407,
+    "specfic_heat": 577.6,
+    "density": 7707.699905,
+    "enthalpy": 187339,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6324824919355719,
+    "poisson_ratio": 0.3061797341,
+    "linear_expansion": 0,
+    "young_modulus": 0.1794469937,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1272,
+    "temperature": 355,
+    "thermal_conductivity": 31.72344401,
+    "specfic_heat": 575.2,
+    "density": 7709.728432000001,
+    "enthalpy": 184463,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6315078607675255,
+    "poisson_ratio": 0.3059586048,
+    "linear_expansion": 0,
+    "young_modulus": 0.1799366234,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1273,
+    "temperature": 350,
+    "thermal_conductivity": 31.73047478,
+    "specfic_heat": 573.2,
+    "density": 7711.754939,
+    "enthalpy": 181597,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6305347314685826,
+    "poisson_ratio": 0.3057374799,
+    "linear_expansion": 0,
+    "young_modulus": 0.18042274960000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1274,
+    "temperature": 345,
+    "thermal_conductivity": 31.73622888,
+    "specfic_heat": 571,
+    "density": 7713.779424,
+    "enthalpy": 178742,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6295631017244211,
+    "poisson_ratio": 0.3055163594,
+    "linear_expansion": 0,
+    "young_modulus": 0.18090535130000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1275,
+    "temperature": 340,
+    "thermal_conductivity": 31.74068927,
+    "specfic_heat": 568.8,
+    "density": 7715.801883,
+    "enthalpy": 175898,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6285929692242848,
+    "poisson_ratio": 0.3052952433,
+    "linear_expansion": 0,
+    "young_modulus": 0.181384408,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1276,
+    "temperature": 335,
+    "thermal_conductivity": 31.74383947,
+    "specfic_heat": 566.6,
+    "density": 7717.822315,
+    "enthalpy": 173065,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6276243316609783,
+    "poisson_ratio": 0.3050741318,
+    "linear_expansion": 0,
+    "young_modulus": 0.1818598997,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1277,
+    "temperature": 330,
+    "thermal_conductivity": 31.74566346,
+    "specfic_heat": 564.6,
+    "density": 7719.840716000001,
+    "enthalpy": 170242,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6266571867308616,
+    "poisson_ratio": 0.3048530247,
+    "linear_expansion": 0,
+    "young_modulus": 0.1823318071,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1278,
+    "temperature": 325,
+    "thermal_conductivity": 31.74614577,
+    "specfic_heat": 562.4,
+    "density": 7721.857084,
+    "enthalpy": 167430,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6256915321338445,
+    "poisson_ratio": 0.3046319222,
+    "linear_expansion": 0,
+    "young_modulus": 0.1828001111,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1279,
+    "temperature": 320,
+    "thermal_conductivity": 31.74527142,
+    "specfic_heat": 560.4,
+    "density": 7723.871416,
+    "enthalpy": 164628,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6247273655733813,
+    "poisson_ratio": 0.3044108243,
+    "linear_expansion": 0,
+    "young_modulus": 0.18326479340000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1280,
+    "temperature": 315,
+    "thermal_conductivity": 31.74302598,
+    "specfic_heat": 558.2,
+    "density": 7725.883709,
+    "enthalpy": 161837,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6237646847564646,
+    "poisson_ratio": 0.3041897309,
+    "linear_expansion": 0,
+    "young_modulus": 0.1837258363,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1281,
+    "temperature": 310,
+    "thermal_conductivity": 31.7393955,
+    "specfic_heat": 556.2,
+    "density": 7727.893961000001,
+    "enthalpy": 159056,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6228034873936213,
+    "poisson_ratio": 0.3039686423,
+    "linear_expansion": 0,
+    "young_modulus": 0.1841832225,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1282,
+    "temperature": 305,
+    "thermal_conductivity": 31.73436659,
+    "specfic_heat": 554.2,
+    "density": 7729.902169,
+    "enthalpy": 156285,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6218437711989057,
+    "poisson_ratio": 0.3037475582,
+    "linear_expansion": 0,
+    "young_modulus": 0.1846369357,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1283,
+    "temperature": 300,
+    "thermal_conductivity": 31.72792636,
+    "specfic_heat": 552.2,
+    "density": 7731.908329000001,
+    "enthalpy": 153524,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6208855338898944,
+    "poisson_ratio": 0.3035264789,
+    "linear_expansion": 0,
+    "young_modulus": 0.18508695990000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1284,
+    "temperature": 295,
+    "thermal_conductivity": 31.72006246,
+    "specfic_heat": 550.2,
+    "density": 7733.91244,
+    "enthalpy": 150773,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6199287731876819,
+    "poisson_ratio": 0.3033054044,
+    "linear_expansion": 0,
+    "young_modulus": 0.18553328,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1285,
+    "temperature": 290,
+    "thermal_conductivity": 31.71076306,
+    "specfic_heat": 548,
+    "density": 7735.9144989999995,
+    "enthalpy": 148033,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6189734868168739,
+    "poisson_ratio": 0.3030843346,
+    "linear_expansion": 0,
+    "young_modulus": 0.1859758817,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1286,
+    "temperature": 285,
+    "thermal_conductivity": 31.70001685,
+    "specfic_heat": 546.2,
+    "density": 7737.914503,
+    "enthalpy": 145302,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6180196725055825,
+    "poisson_ratio": 0.3028632696,
+    "linear_expansion": 0,
+    "young_modulus": 0.18641475130000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1287,
+    "temperature": 280,
+    "thermal_conductivity": 31.68781308,
+    "specfic_heat": 544.4,
+    "density": 7739.912449,
+    "enthalpy": 142580,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6170673279854206,
+    "poisson_ratio": 0.3026422095,
+    "linear_expansion": 0,
+    "young_modulus": 0.18684987620000001,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1288,
+    "temperature": 275,
+    "thermal_conductivity": 31.67414149,
+    "specfic_heat": 542.2,
+    "density": 7741.908334,
+    "enthalpy": 139869,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6161164509914969,
+    "poisson_ratio": 0.3024211542,
+    "linear_expansion": 0,
+    "young_modulus": 0.1872812443,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1289,
+    "temperature": 270,
+    "thermal_conductivity": 31.65899238,
+    "specfic_heat": 540.4,
+    "density": 7743.9021569999995,
+    "enthalpy": 137167,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6151670392624096,
+    "poisson_ratio": 0.3022001038,
+    "linear_expansion": 0,
+    "young_modulus": 0.18770884459999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1290,
+    "temperature": 265,
+    "thermal_conductivity": 31.64235656,
+    "specfic_heat": 538.4,
+    "density": 7745.893914,
+    "enthalpy": 134475,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6142190905402424,
+    "poisson_ratio": 0.3019790583,
+    "linear_expansion": 0,
+    "young_modulus": 0.1881326672,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1291,
+    "temperature": 260,
+    "thermal_conductivity": 31.62422538,
+    "specfic_heat": 536.5999999999999,
+    "density": 7747.883602,
+    "enthalpy": 131792,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6132726025705577,
+    "poisson_ratio": 0.3017580179,
+    "linear_expansion": 0,
+    "young_modulus": 0.1885527029,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1292,
+    "temperature": 255,
+    "thermal_conductivity": 31.60459072,
+    "specfic_heat": 534.5999999999999,
+    "density": 7749.87122,
+    "enthalpy": 129119,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6123275731023923,
+    "poisson_ratio": 0.3015369824,
+    "linear_expansion": 0,
+    "young_modulus": 0.1889689438,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1293,
+    "temperature": 250,
+    "thermal_conductivity": 31.58344498,
+    "specfic_heat": 532.8000000000001,
+    "density": 7751.856763,
+    "enthalpy": 126455,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6113839998882513,
+    "poisson_ratio": 0.3013159519,
+    "linear_expansion": 0,
+    "young_modulus": 0.1893813829,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1294,
+    "temperature": 245,
+    "thermal_conductivity": 31.56078109,
+    "specfic_heat": 531,
+    "density": 7753.84023,
+    "enthalpy": 123800,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6104418806841039,
+    "poisson_ratio": 0.3010949265,
+    "linear_expansion": 0,
+    "young_modulus": 0.18979001450000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1295,
+    "temperature": 240,
+    "thermal_conductivity": 31.53659253,
+    "specfic_heat": 529,
+    "density": 7755.821618,
+    "enthalpy": 121155,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.609501213249376,
+    "poisson_ratio": 0.3008739062,
+    "linear_expansion": 0,
+    "young_modulus": 0.19019483399999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1296,
+    "temperature": 235,
+    "thermal_conductivity": 31.51087326,
+    "specfic_heat": 527.4,
+    "density": 7757.800923999999,
+    "enthalpy": 118518,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6085619953469472,
+    "poisson_ratio": 0.3006528911,
+    "linear_expansion": 0,
+    "young_modulus": 0.1905958384,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1297,
+    "temperature": 230,
+    "thermal_conductivity": 31.48361782,
+    "specfic_heat": 525.4,
+    "density": 7759.778146000001,
+    "enthalpy": 115891,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.607624224743144,
+    "poisson_ratio": 0.3004318811,
+    "linear_expansion": 0,
+    "young_modulus": 0.1909930256,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1298,
+    "temperature": 225,
+    "thermal_conductivity": 31.45482123,
+    "specfic_heat": 523.5999999999999,
+    "density": 7761.75328,
+    "enthalpy": 113273,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.606687899207735,
+    "poisson_ratio": 0.3002108763,
+    "linear_expansion": 0,
+    "young_modulus": 0.1913863952,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1299,
+    "temperature": 220,
+    "thermal_conductivity": 31.42447905,
+    "specfic_heat": 521.5999999999999,
+    "density": 7763.7263250000005,
+    "enthalpy": 110665,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6057530165139253,
+    "poisson_ratio": 0.2999898767,
+    "linear_expansion": 0,
+    "young_modulus": 0.1917759484,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1300,
+    "temperature": 215,
+    "thermal_conductivity": 31.39258737,
+    "specfic_heat": 520,
+    "density": 7765.697278000001,
+    "enthalpy": 108065,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6048195744383517,
+    "poisson_ratio": 0.2997688824,
+    "linear_expansion": 0,
+    "young_modulus": 0.1921616877,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1301,
+    "temperature": 210,
+    "thermal_conductivity": 31.35914276,
+    "specfic_heat": 518.2,
+    "density": 7767.6661349999995,
+    "enthalpy": 105474,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6038875707610768,
+    "poisson_ratio": 0.2995478933,
+    "linear_expansion": 0,
+    "young_modulus": 0.1925436175,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1302,
+    "temperature": 205,
+    "thermal_conductivity": 31.32414236,
+    "specfic_heat": 516.4,
+    "density": 7769.632895,
+    "enthalpy": 102892,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6029570032655843,
+    "poisson_ratio": 0.2993269096,
+    "linear_expansion": 0,
+    "young_modulus": 0.1929217439,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1303,
+    "temperature": 200,
+    "thermal_conductivity": 31.28758377,
+    "specfic_heat": 514.5999999999999,
+    "density": 7771.597554000001,
+    "enthalpy": 100319,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6020278697387734,
+    "poisson_ratio": 0.2991059313,
+    "linear_expansion": 0,
+    "young_modulus": 0.1932960749,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1304,
+    "temperature": 195,
+    "thermal_conductivity": 31.24946515,
+    "specfic_heat": 513,
+    "density": 7773.56011,
+    "enthalpy": 97754,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6011001679709534,
+    "poisson_ratio": 0.2988849584,
+    "linear_expansion": 0,
+    "young_modulus": 0.1936666204,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1305,
+    "temperature": 190,
+    "thermal_conductivity": 31.20978513,
+    "specfic_heat": 511,
+    "density": 7775.520561,
+    "enthalpy": 95199,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.6001738957558392,
+    "poisson_ratio": 0.2986639908,
+    "linear_expansion": 0,
+    "young_modulus": 0.1940333924,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1306,
+    "temperature": 185,
+    "thermal_conductivity": 31.16854286,
+    "specfic_heat": 509.4,
+    "density": 7777.478903,
+    "enthalpy": 92652,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5992490508905448,
+    "poisson_ratio": 0.2984430288,
+    "linear_expansion": 0,
+    "young_modulus": 0.1943964052,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1307,
+    "temperature": 180,
+    "thermal_conductivity": 31.12573799,
+    "specfic_heat": 507.6,
+    "density": 7779.435135,
+    "enthalpy": 90114,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5983256311755791,
+    "poisson_ratio": 0.2982220722,
+    "linear_expansion": 0,
+    "young_modulus": 0.1947556754,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1308,
+    "temperature": 175,
+    "thermal_conductivity": 31.08137069,
+    "specfic_heat": 505.8,
+    "density": 7781.389253,
+    "enthalpy": 87585,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5974036344148405,
+    "poisson_ratio": 0.2980011212,
+    "linear_expansion": 0,
+    "young_modulus": 0.195111222,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1309,
+    "temperature": 170,
+    "thermal_conductivity": 31.03544159,
+    "specfic_heat": 504,
+    "density": 7783.341255,
+    "enthalpy": 85065,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5964830584156112,
+    "poisson_ratio": 0.2977801757,
+    "linear_expansion": 0,
+    "young_modulus": 0.19546306670000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1310,
+    "temperature": 165,
+    "thermal_conductivity": 30.98795183,
+    "specfic_heat": 502.4,
+    "density": 7785.291139,
+    "enthalpy": 82553,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5955639009885524,
+    "poisson_ratio": 0.2975592358,
+    "linear_expansion": 0,
+    "young_modulus": 0.195811234,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1311,
+    "temperature": 160,
+    "thermal_conductivity": 30.93890305,
+    "specfic_heat": 500.6,
+    "density": 7787.238901000001,
+    "enthalpy": 80050,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.594646159947699,
+    "poisson_ratio": 0.2973383016,
+    "linear_expansion": 0,
+    "young_modulus": 0.1961557511,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1312,
+    "temperature": 155,
+    "thermal_conductivity": 30.88829735,
+    "specfic_heat": 498.8,
+    "density": 7789.184539,
+    "enthalpy": 77556,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5937298331104545,
+    "poisson_ratio": 0.297117373,
+    "linear_expansion": 0,
+    "young_modulus": 0.1964966486,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1313,
+    "temperature": 150,
+    "thermal_conductivity": 30.83613734,
+    "specfic_heat": 497.2,
+    "density": 7791.12805,
+    "enthalpy": 75070,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5928149182975854,
+    "poisson_ratio": 0.2968964501,
+    "linear_expansion": 0,
+    "young_modulus": 0.1968339604,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1314,
+    "temperature": 145,
+    "thermal_conductivity": 30.78242608,
+    "specfic_heat": 495.40000000000003,
+    "density": 7793.069433000001,
+    "enthalpy": 72593,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5919014133332167,
+    "poisson_ratio": 0.2966755329,
+    "linear_expansion": 0,
+    "young_modulus": 0.19716772359999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1315,
+    "temperature": 140,
+    "thermal_conductivity": 30.72716712,
+    "specfic_heat": 493.59999999999997,
+    "density": 7795.008684,
+    "enthalpy": 70125,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5909893160448261,
+    "poisson_ratio": 0.2964546215,
+    "linear_expansion": 0,
+    "young_modulus": 0.1974979795,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1316,
+    "temperature": 135,
+    "thermal_conductivity": 30.67036448,
+    "specfic_heat": 492,
+    "density": 7796.9457999999995,
+    "enthalpy": 67665,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5900786242632389,
+    "poisson_ratio": 0.2962337158,
+    "linear_expansion": 0,
+    "young_modulus": 0.19782477299999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1317,
+    "temperature": 130,
+    "thermal_conductivity": 30.61202263,
+    "specfic_heat": 490.20000000000005,
+    "density": 7798.88078,
+    "enthalpy": 65214,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5891693358226235,
+    "poisson_ratio": 0.296012816,
+    "linear_expansion": 0,
+    "young_modulus": 0.1981481533,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1318,
+    "temperature": 125,
+    "thermal_conductivity": 30.5521465,
+    "specfic_heat": 488.4,
+    "density": 7800.81362,
+    "enthalpy": 62772,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5882614485604855,
+    "poisson_ratio": 0.2957919221,
+    "linear_expansion": 0,
+    "young_modulus": 0.1984681743,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1319,
+    "temperature": 120,
+    "thermal_conductivity": 30.4907415,
+    "specfic_heat": 486.8,
+    "density": 7802.744318,
+    "enthalpy": 60338,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5873549603176627,
+    "poisson_ratio": 0.2955710341,
+    "linear_expansion": 0,
+    "young_modulus": 0.1987848945,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1320,
+    "temperature": 115,
+    "thermal_conductivity": 30.42781345,
+    "specfic_heat": 485,
+    "density": 7804.672871,
+    "enthalpy": 57913,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5864498689383201,
+    "poisson_ratio": 0.2953501519,
+    "linear_expansion": 0,
+    "young_modulus": 0.1990983775,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1321,
+    "temperature": 110,
+    "thermal_conductivity": 30.36336865,
+    "specfic_heat": 483.20000000000005,
+    "density": 7806.599278000001,
+    "enthalpy": 55497,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5855461722699451,
+    "poisson_ratio": 0.2951292758,
+    "linear_expansion": 0,
+    "young_modulus": 0.1994086924,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1322,
+    "temperature": 105,
+    "thermal_conductivity": 30.29741382,
+    "specfic_heat": 481.4,
+    "density": 7808.523534,
+    "enthalpy": 53090,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5846438681633417,
+    "poisson_ratio": 0.2949084056,
+    "linear_expansion": 0,
+    "young_modulus": 0.19971591419999998,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1323,
+    "temperature": 100,
+    "thermal_conductivity": 30.22995612,
+    "specfic_heat": 479.6,
+    "density": 7810.445638,
+    "enthalpy": 50692,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5837429544726256,
+    "poisson_ratio": 0.2946875415,
+    "linear_expansion": 0,
+    "young_modulus": 0.20002012400000002,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1324,
+    "temperature": 95,
+    "thermal_conductivity": 30.16100314,
+    "specfic_heat": 478,
+    "density": 7812.365587,
+    "enthalpy": 48302,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5828434290552199,
+    "poisson_ratio": 0.2944666835,
+    "linear_expansion": 0,
+    "young_modulus": 0.2003214096,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1325,
+    "temperature": 90,
+    "thermal_conductivity": 30.09056288,
+    "specfic_heat": 476.2,
+    "density": 7814.2833789999995,
+    "enthalpy": 45921,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5819452897718486,
+    "poisson_ratio": 0.2942458315,
+    "linear_expansion": 0,
+    "young_modulus": 0.2006198659,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1326,
+    "temperature": 85,
+    "thermal_conductivity": 30.01864378,
+    "specfic_heat": 474.2,
+    "density": 7816.199011,
+    "enthalpy": 43550,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5810485344865325,
+    "poisson_ratio": 0.2940249857,
+    "linear_expansion": 0,
+    "young_modulus": 0.2009155955,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1327,
+    "temperature": 80,
+    "thermal_conductivity": 29.94525467,
+    "specfic_heat": 472.6,
+    "density": 7818.11248,
+    "enthalpy": 41187,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5801531610665839,
+    "poisson_ratio": 0.293804146,
+    "linear_expansion": 0,
+    "young_modulus": 0.2012087089,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1328,
+    "temperature": 75,
+    "thermal_conductivity": 29.8704048,
+    "specfic_heat": 470.6,
+    "density": 7820.023785,
+    "enthalpy": 38834,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5792591673826015,
+    "poisson_ratio": 0.2935833126,
+    "linear_expansion": 0,
+    "young_modulus": 0.2014993257,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1329,
+    "temperature": 70,
+    "thermal_conductivity": 29.79410382,
+    "specfic_heat": 468.8,
+    "density": 7821.9329210000005,
+    "enthalpy": 36490,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5783665513084654,
+    "poisson_ratio": 0.2933624853,
+    "linear_expansion": 0,
+    "young_modulus": 0.2017875747,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1330,
+    "temperature": 65,
+    "thermal_conductivity": 29.71636176,
+    "specfic_heat": 467,
+    "density": 7823.839888,
+    "enthalpy": 34155,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5774753107213318,
+    "poisson_ratio": 0.2931416644,
+    "linear_expansion": 0,
+    "young_modulus": 0.2020735949,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1331,
+    "temperature": 60,
+    "thermal_conductivity": 29.63718905,
+    "specfic_heat": 465.2,
+    "density": 7825.744682,
+    "enthalpy": 31829,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5765854435016282,
+    "poisson_ratio": 0.2929208497,
+    "linear_expansion": 0,
+    "young_modulus": 0.2023575361,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1332,
+    "temperature": 55,
+    "thermal_conductivity": 29.55659649,
+    "specfic_heat": 463,
+    "density": 7827.6473,
+    "enthalpy": 29514,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5756969475330482,
+    "poisson_ratio": 0.2927000414,
+    "linear_expansion": 0,
+    "young_modulus": 0.2026395599,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1333,
+    "temperature": 50,
+    "thermal_conductivity": 29.47459527,
+    "specfic_heat": 461.4,
+    "density": 7829.547740999999,
+    "enthalpy": 27207,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5748098207025466,
+    "poisson_ratio": 0.2924792395,
+    "linear_expansion": 0,
+    "young_modulus": 0.2029198405,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1334,
+    "temperature": 45,
+    "thermal_conductivity": 29.39119693,
+    "specfic_heat": 459.2,
+    "density": 7831.446002,
+    "enthalpy": 24911,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5739240609003344,
+    "poisson_ratio": 0.2922584439,
+    "linear_expansion": 0,
+    "young_modulus": 0.2031985658,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1335,
+    "temperature": 40,
+    "thermal_conductivity": 29.30641339,
+    "specfic_heat": 457.4,
+    "density": 7833.342079,
+    "enthalpy": 22624,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5730396660198738,
+    "poisson_ratio": 0.2920376548,
+    "linear_expansion": 0,
+    "young_modulus": 0.2034759382,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1336,
+    "temperature": 35,
+    "thermal_conductivity": 29.22025691,
+    "specfic_heat": 455.2,
+    "density": 7835.235972,
+    "enthalpy": 20348,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5721566339578725,
+    "poisson_ratio": 0.2918168722,
+    "linear_expansion": 0,
+    "young_modulus": 0.2037521762,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1337,
+    "temperature": 30,
+    "thermal_conductivity": 29.13274009,
+    "specfic_heat": 453.2,
+    "density": 7837.1276769999995,
+    "enthalpy": 18082,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.5712749626142802,
+    "poisson_ratio": 0.2915960961,
+    "linear_expansion": 0,
+    "young_modulus": 0.2040275155,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  },
+  {
+    "id": 1338,
+    "temperature": 25,
+    "thermal_conductivity": 29.0438759,
+    "specfic_heat": 0,
+    "density": 7839.017191,
+    "enthalpy": 15826,
+    "liquid_phase_fraction": 0,
+    "emissivity": 0.570394649892282,
+    "poisson_ratio": 0.2913753265,
+    "linear_expansion": 0,
+    "young_modulus": 0.2043022107,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  }
+]

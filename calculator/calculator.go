@@ -15,7 +15,7 @@ type Calculator interface {
 	InitSteel(steelValue int, castingMachine *CastingMachine)
 
 	// 初始化铸机
-	InitCastingMachine(castingMachineNumber int)
+	InitCastingMachine()
 
 	// 获取钢种
 	GetCastingMachine() *CastingMachine

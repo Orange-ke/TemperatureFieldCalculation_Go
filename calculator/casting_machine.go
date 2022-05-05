@@ -40,42 +40,32 @@ var (
 )
 
 type CastingMachine struct {
-	Number                 int
-	Name                   string
-	CrystallizerLength     int         // 结晶器长度
+	MdLength               int         // 结晶器长度
 	SecondaryCoolingConfig map[int]int // 二冷区冷却区尺寸的起始位置
 	CoolerConfig           CoolerCfg
 }
 type CoolerCfg struct {
-	Meniscus int // 弯月面高度
+	LevelHeight int // 弯月面高度
 
 	StartTemperature float32 // 初始浇铸温度
 
-	NarrowSurfaceIn        float32 // 窄面入水温度
-	NarrowSurfaceOut       float32 // 窄面出水温度
-	NarrowWaterConsumption float32 // 窄面水量
+	NarrowSurfaceIn   float32 // 窄面入水温度
+	NarrowSurfaceOut  float32 // 窄面出水温度
+	NarrowWaterVolume float32 // 窄面水量
 
-	WideSurfaceIn        float32 // 宽面入水温度
-	WideSurfaceOut       float32 // 宽面出水温度
-	WideWaterConsumption float32 // 宽面水量
+	WideSurfaceIn   float32 // 宽面入水温度
+	WideSurfaceOut  float32 // 宽面出水温度
+	WideWaterVolume float32 // 宽面水量
 
-	SprayTemperature      float32 // 二冷区喷淋水温度
-	SprayWaterConsumption float32 // 水量
-	SprayAirConsumption   float32 // 气量
-
-	RollerWaterTemperature float32 // 棍子内冷水温度
-
+	// todo
 	TargetTemperature map[string]float32 // 每个冷却区的目标温度
 
 	V int64 // 拉速
 }
 
-func NewCastingMachine(number int) *CastingMachine {
+func NewCastingMachine() *CastingMachine {
 	// 根据 铸机 编号获取铸机配置
 	castingMachine := CastingMachine{
-		Number:                 number,
-		Name:                   "铸机1",
-		CrystallizerLength:     100, // mm
 		SecondaryCoolingConfig: make(map[int]int),
 		CoolerConfig: CoolerCfg{
 			TargetTemperature: make(map[string]float32),
@@ -85,22 +75,28 @@ func NewCastingMachine(number int) *CastingMachine {
 	return &castingMachine
 }
 
+func (c *CastingMachine) SetFromJson(coordinate model.Coordinate) {
+	c.MdLength = coordinate.MdLength
+	log.Info("结晶器长度为: ", c.MdLength)
+}
+
 func (c *CastingMachine) SetCoolerConfig(env model.Env) {
 	c.CoolerConfig.StartTemperature = env.StartTemperature
-	c.CoolerConfig.NarrowSurfaceIn = env.NarrowSurfaceIn
-	c.CoolerConfig.NarrowSurfaceOut = env.NarrowSurfaceOut
-	c.CoolerConfig.WideSurfaceIn = env.WideSurfaceIn
-	c.CoolerConfig.WideSurfaceOut = env.WideSurfaceOut
-	c.CoolerConfig.SprayTemperature = env.SprayTemperature
-	c.CoolerConfig.RollerWaterTemperature = env.RollerWaterTemperature
+	c.CoolerConfig.NarrowSurfaceIn = env.Md.NarrowSurfaceIn
+	c.CoolerConfig.NarrowSurfaceOut = env.Md.NarrowSurfaceOut
+	c.CoolerConfig.NarrowWaterVolume = env.Md.NarrowSurfaceVolume
+	c.CoolerConfig.WideSurfaceIn = env.Md.WideSurfaceIn
+	c.CoolerConfig.WideSurfaceOut = env.Md.WideSurfaceOut
+	c.CoolerConfig.WideWaterVolume = env.Md.WideSurfaceVolume
 	log.WithFields(log.Fields{
-		"StartTemperature": env.StartTemperature,
-		"NarrowSurfaceIn": env.NarrowSurfaceIn,
-		"NarrowSurfaceOut": env.NarrowSurfaceOut,
-		"WideSurfaceIn": env.WideSurfaceIn,
-		"WideSurfaceOut": env.WideSurfaceOut,
-		"SprayTemperature": env.SprayTemperature,
-		"RollerWaterTemperature": env.RollerWaterTemperature,
+		"StartTemperature":  env.StartTemperature,
+		"NarrowSurfaceIn":   env.Md.NarrowSurfaceIn,
+		"NarrowSurfaceOut":  env.Md.NarrowSurfaceOut,
+		"NarrowWaterVolume": env.Md.NarrowSurfaceVolume,
+		"WideSurfaceIn":     env.Md.WideSurfaceIn,
+		"WideSurfaceOut":    env.Md.WideSurfaceOut,
+		"WideWaterVolume":   env.Md.WideSurfaceVolume,
+		// todo
 	}).Info("设置冷却参数")
 }
 
@@ -132,14 +128,6 @@ func (c *CastingMachine) SetWideSurfaceIn(wideSurfaceIn float32) {
 
 func (c *CastingMachine) SetWideSurfaceOut(wideSurfaceOut float32) {
 	c.CoolerConfig.WideSurfaceOut = wideSurfaceOut
-}
-
-func (c *CastingMachine) SetSprayTemperature(sprayTemperature float32) {
-	c.CoolerConfig.SprayTemperature = sprayTemperature
-}
-
-func (c *CastingMachine) SetRollerWaterTemperature(rollerWaterTemperature float32) {
-	c.CoolerConfig.RollerWaterTemperature = rollerWaterTemperature
 }
 
 // 获取在那个冷却区

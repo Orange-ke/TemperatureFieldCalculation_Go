@@ -1,0 +1,15 @@
+[
+  {
+    "id": 3,
+    "liquid_phase_temperature": 1499.1,
+    "solid_phase_temperature": 1429.76,
+    "steel_type": {
+      "id": 3,
+      "name": "Q345B",
+      "steel_type_category": {
+        "id": 2,
+        "name": "General Steel"
+      }
+    }
+  }
+]

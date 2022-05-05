@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gopkg.in/ini.v1"
 )
-
+// 暂时没用到该功能
 var calCfg Config
 
 type Config struct {

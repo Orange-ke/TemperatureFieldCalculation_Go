@@ -11,15 +11,15 @@ import (
 func TestCalculator1(t *testing.T) {
 	runtime.GOMAXPROCS(12)
 	calculator := NewCalculatorWithArrDeque(newExecutorBaseOnBlock(0))
-	calculator.castingMachine = NewCastingMachine(1)
+	calculator.castingMachine = NewCastingMachine()
 	calculator.GetCastingMachine().SetCoolerConfig(model.Env{
-		StartTemperature:       1600.0,
-		NarrowSurfaceIn:        20.0,
-		NarrowSurfaceOut:       38.0,
-		WideSurfaceIn:          20.0,
-		WideSurfaceOut:         38.0,
-		SprayTemperature:       20.0,
-		RollerWaterTemperature: 20.0,
+		StartTemperature: 1600.0,
+		Md: model.Md{
+			NarrowSurfaceIn:  20.0,
+			NarrowSurfaceOut: 38.0,
+			WideSurfaceIn:    20.0,
+			WideSurfaceOut:   38.0,
+		},
 	})
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)
@@ -29,16 +29,25 @@ func TestCalculator1(t *testing.T) {
 
 func TestCalculator2(t *testing.T) {
 	runtime.GOMAXPROCS(12)
+	ZLength = 31860
+	Length = 1260.0 / 2
+	Width = 230.0 / 2
 	calculator := NewCalculatorWithArrDeque(nil)
-	calculator.castingMachine = NewCastingMachine(1)
+	calculator.castingMachine = NewCastingMachine()
 	calculator.GetCastingMachine().SetCoolerConfig(model.Env{
-		StartTemperature:       1600.0,
-		NarrowSurfaceIn:        20.0,
-		NarrowSurfaceOut:       38.0,
-		WideSurfaceIn:          20.0,
-		WideSurfaceOut:         38.0,
-		SprayTemperature:       20.0,
-		RollerWaterTemperature: 20.0,
+		StartTemperature: 1600.0,
+		Md: model.Md{
+			NarrowSurfaceIn:     30.0,
+			NarrowSurfaceOut:    38.0,
+			NarrowSurfaceVolume: 300,
+			WideSurfaceIn:       30.0,
+			WideSurfaceOut:      38.0,
+			WideSurfaceVolume:   3000,
+		},
+	})
+	calculator.castingMachine.SetV(1.5)
+	calculator.castingMachine.SetFromJson(model.Coordinate{
+		MdLength: 950,
 	})
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)
@@ -48,15 +57,15 @@ func TestCalculator2(t *testing.T) {
 
 func TestCalculatorWithArrDeque_calculate(t *testing.T) {
 	calculator := NewCalculatorForGenerate()
-	calculator.castingMachine = NewCastingMachine(1)
+	calculator.castingMachine = NewCastingMachine()
 	calculator.GetCastingMachine().SetCoolerConfig(model.Env{
-		StartTemperature:       1600.0,
-		NarrowSurfaceIn:        20.0,
-		NarrowSurfaceOut:       38.0,
-		WideSurfaceIn:          20.0,
-		WideSurfaceOut:         38.0,
-		SprayTemperature:       20.0,
-		RollerWaterTemperature: 20.0,
+		StartTemperature: 1600.0,
+		Md: model.Md{
+			NarrowSurfaceIn:  20.0,
+			NarrowSurfaceOut: 38.0,
+			WideSurfaceIn:    20.0,
+			WideSurfaceOut:   38.0,
+		},
 	})
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)

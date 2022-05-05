@@ -5,7 +5,11 @@
     "arc_start_distance": 4260.0,
     "arc_end_distance": 16297.17,
     "center_start_distance": 3359.7,
-    "center_end_distance": 17497.88
+    "center_end_distance": 17497.88,
+    "md_length": 950.0,
+    "width": 230.0,
+    "length": 1260.0,
+    "z_length": 31860
   },
   "md": {
     "length": 950.0

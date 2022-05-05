@@ -28,19 +28,17 @@ type Hub struct {
 	// request
 	msg chan model.Msg
 	// response
-	selectCaster          chan string
-	envSet                chan model.Env
-	changeInitialTemp     chan float32
-	changeNarrowSurface   chan model.NarrowSurface
-	changeWideSurface     chan model.WideSurface
-	changeSprayTemp       chan float32
-	changeRollerWaterTemp chan float32
-	changeV               chan float32
-	started               chan struct{}
-	stopped               chan struct{}
-	tailStart             chan struct{} // 拉尾坯
-	startPushSliceDetail  chan int
-	stopPushSliceDetail   chan struct{}
+	selectCaster         chan string
+	envSet               chan model.Env
+	changeInitialTemp    chan float32
+	changeNarrowSurface  chan model.NarrowSurface
+	changeWideSurface    chan model.WideSurface
+	changeV              chan float32
+	started              chan struct{}
+	stopped              chan struct{}
+	tailStart            chan struct{} // 拉尾坯
+	startPushSliceDetail chan int
+	stopPushSliceDetail  chan struct{}
 
 	generate      chan struct{}
 	generateSlice chan int
@@ -54,20 +52,18 @@ type Hub struct {
 func NewHub() *Hub {
 	initLog()
 	return &Hub{
-		msg:                   make(chan model.Msg, 10),
-		selectCaster:          make(chan string, 10),
-		envSet:                make(chan model.Env, 10),
-		changeInitialTemp:     make(chan float32, 10),
-		changeNarrowSurface:   make(chan model.NarrowSurface, 10),
-		changeWideSurface:     make(chan model.WideSurface, 10),
-		changeSprayTemp:       make(chan float32, 10),
-		changeRollerWaterTemp: make(chan float32, 10),
-		changeV:               make(chan float32, 10),
-		started:               make(chan struct{}, 10),
-		stopped:               make(chan struct{}, 10),
-		tailStart:             make(chan struct{}, 10),
-		startPushSliceDetail:  make(chan int, 10),
-		stopPushSliceDetail:   make(chan struct{}, 10),
+		msg:                  make(chan model.Msg, 10),
+		selectCaster:         make(chan string, 10),
+		envSet:               make(chan model.Env, 10),
+		changeInitialTemp:    make(chan float32, 10),
+		changeNarrowSurface:  make(chan model.NarrowSurface, 10),
+		changeWideSurface:    make(chan model.WideSurface, 10),
+		changeV:              make(chan float32, 10),
+		started:              make(chan struct{}, 10),
+		stopped:              make(chan struct{}, 10),
+		tailStart:            make(chan struct{}, 10),
+		startPushSliceDetail: make(chan int, 10),
+		stopPushSliceDetail:  make(chan struct{}, 10),
 
 		generate:      make(chan struct{}, 10),
 		generateSlice: make(chan int, 10),
@@ -101,10 +97,14 @@ func (h *Hub) handleResponse() {
 			}
 		case env := <-h.envSet: // 设置计算环境
 			if h.c == nil {
-				//c := calculator.NewCalculator(0)
-				//c := calculator.NewCalculatorWithListDeque(0)
+				// 初始化铸坯尺寸
+				calculator.ZLength = env.Coordinate.ZLength
+				calculator.Length = env.Coordinate.Length / 2
+				calculator.Width = env.Coordinate.Width / 2
+				log.Info("ZLength:", calculator.ZLength, " ,Length:", calculator.Length, " ,Width:", calculator.Width)
 				h.c = calculator.NewCalculatorWithArrDeque(nil)
 			}
+			h.c.GetCastingMachine().SetFromJson(env.Coordinate)    // 初始化铸机尺寸
 			h.c.GetCastingMachine().SetCoolerConfig(env)           // 设置冷却参数
 			h.c.GetCastingMachine().SetV(env.DragSpeed)            // 设置拉速
 			h.c.InitSteel(env.SteelValue, h.c.GetCastingMachine()) // 设置钢种物性参数
@@ -149,30 +149,6 @@ func (h *Hub) handleResponse() {
 			reply := model.Msg{
 				Type:    "wide_surface_temp_set",
 				Content: "wide_surface_temp_set",
-			}
-			h.mu.Lock()
-			err := h.conn.WriteJSON(&reply)
-			h.mu.Unlock()
-			if err != nil {
-				log.WithField("err", err).Error("回复消息失败")
-			}
-		case temp := <-h.changeSprayTemp:
-			h.c.GetCastingMachine().SetSprayTemperature(temp)
-			reply := model.Msg{
-				Type:    "spray_water_temp_set",
-				Content: "spray_water_temp_set",
-			}
-			h.mu.Lock()
-			err := h.conn.WriteJSON(&reply)
-			h.mu.Unlock()
-			if err != nil {
-				log.WithField("err", err).Error("回复消息失败")
-			}
-		case temp := <-h.changeRollerWaterTemp:
-			h.c.GetCastingMachine().SetRollerWaterTemperature(temp)
-			reply := model.Msg{
-				Type:    "roller_water_temp_set",
-				Content: "roller_water_temp_set",
 			}
 			h.mu.Lock()
 			err := h.conn.WriteJSON(&reply)
@@ -392,22 +368,6 @@ func (h *Hub) handleRequest() {
 				}
 				log.WithField("wideSurface", wideSurface).Info("获取到宽面温度参数")
 				h.changeWideSurface <- wideSurface
-			case "change_spray_temp":
-				temp, err := strconv.ParseFloat(msg.Content, 10)
-				if err != nil {
-					log.Println("err", err)
-					return
-				}
-				log.WithField("spray_temp", temp).Info("获取到二冷区喷淋温度")
-				h.changeSprayTemp <- float32(temp)
-			case "change_roller_water_temp":
-				temp, err := strconv.ParseFloat(msg.Content, 10)
-				if err != nil {
-					log.Println("err", err)
-					return
-				}
-				log.WithField("roller_water_temp", temp).Info("获取到二冷区棍子温度")
-				h.changeRollerWaterTemp <- float32(temp)
 			case "change_v":
 				v, err := strconv.ParseFloat(msg.Content, 10)
 				if err != nil {
@@ -508,7 +468,7 @@ LOOP:
 				log.WithField("err", err).Error("温度场推送数据json解析失败")
 				return
 			}
-			start := time.Now()
+			//start := time.Now()
 			reply.Content = string(data)
 			h.mu.Lock()
 			err = h.conn.WriteJSON(&reply)
@@ -516,7 +476,7 @@ LOOP:
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场推送消息失败")
 			}
-			fmt.Println(time.Since(start).Milliseconds())
+			//fmt.Println(time.Since(start).Milliseconds())
 		}
 	}
 }
