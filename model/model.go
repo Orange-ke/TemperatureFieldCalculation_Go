@@ -1,6 +1,7 @@
 package model
 
 type Env struct {
+	LevelHeight      float32    `json:"level_height"`
 	SteelValue       int        `json:"steel_value"`
 	StartTemperature float32    `json:"start_temperature"`
 	Md               Md         `json:"md"`

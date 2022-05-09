@@ -76,7 +76,7 @@ func NewCalculatorWithArrDeque(e executor) *calculatorWithArrDeque {
 	// 初始化推送消息通道
 	c.calcHub = NewCalcHub()
 	if e == nil {
-		c.e = newExecutorBaseOnSlice(8)
+		c.e = newExecutorBaseOnSlice(4)
 	} else {
 		c.e = e
 	}
@@ -105,6 +105,13 @@ func (c *calculatorWithArrDeque) InitSteel(steelValue int, castingMachine *Casti
 		// 还未运行
 		c.steel1 = NewSteel(steelValue, castingMachine)
 	}
+}
+
+func (c *calculatorWithArrDeque) InitPushData(coordinate model.Coordinate) {
+	up := coordinate.CenterStartDistance + coordinate.LevelHeight - c.castingMachine.LevelHeight
+	arc := coordinate.CenterEndDistance - coordinate.CenterStartDistance
+	down := float32(coordinate.ZLength) - coordinate.CenterEndDistance
+	initPushData(up, arc, down)
 }
 
 func (c *calculatorWithArrDeque) getParameter(z int) *Parameter {
@@ -175,8 +182,8 @@ func (c *calculatorWithArrDeque) calculateQ() {
 	start := time.Now()
 	if c.runningState == stateRunning {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
-			//initialQ := 1 / (ROfWater() + ROfCu() + 1/1200.0) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
-			initialQ := 1200.0 * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+			initialQ := 1 / (ROfWater() + ROfCu() + 1/1200.0) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+			//initialQ := 1200.0 * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
 			j := 0
 			for ; j < Length/XStep; j++ {
 				if item[Width/YStep-1][j] > c.steel1.LiquidPhaseTemperature {
@@ -234,7 +241,7 @@ LOOP:
 		//	return
 		//}
 		// 目前只计算到结晶器结束
-		if c.Field.Size() >= 95 {
+		if c.Field.Size() >= 85 {
 			return
 		}
 		select {
@@ -500,9 +507,6 @@ func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slic
 	var index1 = int(slice[0][x-1]) - 1
 	var index2 = int(slice[0][x+1]) - 1
 	var index3 = int(slice[1][x]) - 1
-	if index >= 1600 {
-		index = 1599
-	}
 	var deltaHba = getLambda(index, index1, x, 0, x-1, 0, parameter)*(slice[0][x]-slice[0][x-1])/(stdXStep*(getEx(x-1)+getEx(x))) +
 		getLambda(index, index2, x, 0, x+1, 0, parameter)*(slice[0][x]-slice[0][x+1])/(stdXStep*(getEx(x+1)+getEx(x))) +
 		getLambda(index, index3, x, 0, x, 1, parameter)*(slice[0][x]-slice[1][x])/(stdYStep*(getEy(1)+getEy(0)))
@@ -527,9 +531,6 @@ func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *
 	var index = int(slice[0][0]) - 1
 	var index1 = int(slice[0][1]) - 1
 	var index2 = int(slice[1][0]) - 1
-	if index >= 1600 {
-		index = 1599
-	}
 	var deltaHlb = getLambda(index, index1, 1, 0, 0, 0, parameter)*(slice[0][0]-slice[0][1])/(stdXStep*(getEx(0)+getEx(1))) +
 		getLambda(index, index2, 0, 1, 0, 0, parameter)*(slice[0][0]-slice[1][0])/(stdYStep*(getEy(1)+getEy(0)))
 	deltaHlb = deltaHlb * (2 * deltaT / parameter.Density[index])
@@ -553,9 +554,6 @@ func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slic
 	var index1 = int(slice[y][1]) - 1
 	var index2 = int(slice[y-1][0]) - 1
 	var index3 = int(slice[y+1][0]) - 1
-	if index >= 1600 {
-		index = 1599
-	}
 	var deltaHla = getLambda(index, index1, 1, y, 0, y, parameter)*(slice[y][0]-slice[y][1])/(stdXStep*(getEx(0)+getEx(1))) +
 		getLambda(index, index2, 0, y-1, 0, y, parameter)*(slice[y][0]-slice[y-1][0])/(stdYStep*(getEy(y)+getEy(y-1))) +
 		getLambda(index, index3, 0, y+1, 0, y, parameter)*(slice[y][0]-slice[y+1][0])/(stdYStep*(getEy(y)+getEy(y+1)))
@@ -637,6 +635,7 @@ func (c *calculatorWithArrDeque) GenerateResult() *TemperatureFieldData {
 	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
+	UpLength := int(UpLength)
 	for i := UpLength - 1; i >= 0; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
@@ -715,6 +714,7 @@ func (c *calculatorWithArrDeque) GenerateResultForEncoder() *MiddleState {
 	for i := 0; i < 4000; i++ {
 		c.Field.AddFirst(initialTemp)
 	}
+	UpLength := int(UpLength)
 	for i := UpLength - 1; i >= 0; i-- {
 		slice = c.Field.GetSlice(i)
 		// 从右向左减少
@@ -1050,8 +1050,8 @@ func (c *calculatorWithArrDeque) Calculate() {
 		deltaT, _ := c.calculateTimeStep()
 		c.calculateQ()
 		c.calculateHeff()
-		fmt.Println(c.steel1.Parameter.Q[0][:Length/XStep + Width/YStep])
-		fmt.Println(c.steel1.Parameter.Heff[0][:Length/XStep + Width/YStep])
+		fmt.Println(c.steel1.Parameter.Q[0][:Length/XStep+Width/YStep])
+		fmt.Println(c.steel1.Parameter.Heff[0][:Length/XStep+Width/YStep])
 		cost := c.e.dispatchTask(deltaT, 0, c.Field.Size())
 
 		if c.alternating {

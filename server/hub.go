@@ -108,6 +108,7 @@ func (h *Hub) handleResponse() {
 			h.c.GetCastingMachine().SetCoolerConfig(env)           // 设置冷却参数
 			h.c.GetCastingMachine().SetV(env.DragSpeed)            // 设置拉速
 			h.c.InitSteel(env.SteelValue, h.c.GetCastingMachine()) // 设置钢种物性参数
+			h.c.InitPushData(env.Coordinate)
 			reply := model.Msg{
 				Type:    "env_set",
 				Content: "env is set",

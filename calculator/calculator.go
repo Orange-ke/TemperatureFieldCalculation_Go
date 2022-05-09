@@ -1,5 +1,7 @@
 package calculator
 
+import "lz/model"
+
 // calculator 的接口定义
 
 type Calculator interface {
@@ -16,6 +18,9 @@ type Calculator interface {
 
 	// 初始化铸机
 	InitCastingMachine()
+
+	// 初始化推送数据容器
+	InitPushData(coordinate model.Coordinate)
 
 	// 获取钢种
 	GetCastingMachine() *CastingMachine

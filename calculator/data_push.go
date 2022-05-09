@@ -1,46 +1,28 @@
 package calculator
 
 import (
+	"fmt"
 	"lz/model"
-	"strconv"
-)
-
-var (
-	upUp    = model.ItemType{}
-	downDown  = model.ItemType{}
 )
 
 type TemperatureFieldData struct {
-	Start  int        `json:"start"`   // 切片开始位置
-	End    int        `json:"end"`     // 切片结束位置
-	IsFull bool       `json:"is_full"` // 切片是否充满铸机
-	IsTail bool       `json:"is_tail"` // 是否拉尾坯
-	Up     *UpSides   `json:"up"`
-	Arc    *ArcSides  `json:"arc"`
-	Down   *DownSides `json:"down"`
+	XScale int    `json:"x_scale"`
+	YScale int    `json:"y_scale"`
+	ZScale int    `json:"z_scale"`
+	Start  int    `json:"start"`   // 切片开始位置
+	End    int    `json:"end"`     // 切片结束位置
+	IsFull bool   `json:"is_full"` // 切片是否充满铸机
+	IsTail bool   `json:"is_tail"` // 是否拉尾坯
+	Sides  *Sides `json:"sides"`
 }
 
-type UpSides struct {
-	Up    *model.ItemType             `json:"up"`
-	Left  [][UpLength / StepZ]float32 `json:"left"`
-	Right [][UpLength / StepZ]float32 `json:"right"`
-	Front [][UpLength / StepZ]float32 `json:"front"`
-	Back  [][UpLength / StepZ]float32 `json:"back"`
-}
-
-type ArcSides struct {
-	Left  [][ArcLength / StepZ]float32 `json:"left"`
-	Right [][ArcLength / StepZ]float32 `json:"right"`
-	Front [][ArcLength / StepZ]float32 `json:"front"`
-	Back  [][ArcLength / StepZ]float32 `json:"back"`
-}
-
-type DownSides struct {
-	Left  [][UpLength / StepZ]float32 `json:"left"`
-	Right [][UpLength / StepZ]float32 `json:"right"`
-	Front [][UpLength / StepZ]float32 `json:"front"`
-	Back  [][UpLength / StepZ]float32 `json:"back"`
-	Down  *model.ItemType             `json:"down"`
+type Sides struct {
+	Up    [][]float32 `json:"up"`
+	Left  [][]float32 `json:"left"`
+	Right [][]float32 `json:"right"`
+	Front [][]float32 `json:"front"`
+	Back  [][]float32 `json:"back"`
+	Down  [][]float32 `json:"down"`
 }
 
 type PushData struct {
@@ -61,58 +43,59 @@ type Decoding struct {
 	Max   []int
 }
 
+var (
+	UpLength   float32
+	ArcLength  float32
+	DownLength float32
+
+	StepX = 1
+	StepY = 1
+	StepZ = 1
+
+	width  int
+	length int
+
+	sides = &Sides{}
+)
+
+func initPushData(up, arc, down float32) {
+	UpLength, ArcLength, DownLength = up, arc, down
+	width = Width / YStep / StepY * 2
+	length = Length / XStep / StepX * 2
+	fmt.Println("pushData:", width, length, ZLength/ZStep/StepZ)
+	sides = &Sides{
+		Up:    make([][]float32, width),
+		Left:  make([][]float32, ZLength/ZStep/StepZ),
+		Right: make([][]float32, ZLength/ZStep/StepZ),
+		Front: make([][]float32, ZLength/ZStep/StepZ),
+		Back:  make([][]float32, ZLength/ZStep/StepZ),
+		Down:  make([][]float32, width),
+	}
+
+	for i := 0; i < width; i++ {
+		sides.Up[i] = make([]float32, length)
+		sides.Down[i] = make([]float32, length)
+	}
+	for i := 0; i < ZLength/ZStep/StepZ; i++ {
+		sides.Left[i] = make([]float32, width)
+		sides.Right[i] = make([]float32, width)
+		sides.Front[i] = make([]float32, length)
+		sides.Back[i] = make([]float32, length)
+	}
+}
+
 func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
-	upSides := &UpSides{
-		Up:    &upUp,
-		Left:  make([][UpLength / StepZ]float32, Width/YStep),
-		Right: make([][UpLength / StepZ]float32, Width/YStep),
-		Front: make([][UpLength / StepZ]float32, Length/XStep),
-		Back:  make([][UpLength / StepZ]float32, Length/XStep),
-	}
-	arcSides := &ArcSides{
-		Left:  make([][ArcLength / StepZ]float32, Width/YStep),
-		Right: make([][ArcLength / StepZ]float32, Width/YStep),
-		Front: make([][ArcLength / StepZ]float32, Length/XStep),
-		Back:  make([][ArcLength / StepZ]float32, Length/XStep),
-	}
-	downSides := &DownSides{
-		Down:  &downDown,
-		Left:  make([][DownLength / StepZ]float32, Width/YStep),
-		Right: make([][DownLength / StepZ]float32, Width/YStep),
-		Front: make([][DownLength / StepZ]float32, Length/XStep),
-		Back:  make([][DownLength / StepZ]float32, Length/XStep),
-	}
+	fmt.Println("buildData", c.Field.Size())
+	sides.Left = sides.Left[:c.Field.Size()]
+	sides.Right = sides.Right[:c.Field.Size()]
+	sides.Front = sides.Front[:c.Field.Size()]
+	sides.Back = sides.Back[:c.Field.Size()]
 	temperatureData := &TemperatureFieldData{
-		Up:   upSides,
-		Arc:  arcSides,
-		Down: downSides,
+		Sides: sides,
 	}
-
-	ThermalField := &ThermalFieldStruct{
-		Field: make([]model.ItemType, ZLength/ZStep),
-	}
-
-	z := 0
 	//for i := 0; i < 2000; i++ {
 	//	c.Field.RemoveLast()
 	//}
-	c.Field.Traverse(func(_ int, item *model.ItemType) {
-		ThermalField.Field[z] = *item
-		z++
-	})
-
-	if c.isFull {
-		ThermalField.Start = 0
-		ThermalField.End = ZLength / model.ZStep
-		ThermalField.IsFull = true
-	} else {
-		ThermalField.Start = 0
-		ThermalField.End = z
-	}
-
-	if c.isTail {
-		ThermalField.IsTail = true
-	}
 	//fmt.Println("BuildData 温度场的长度：", z)
 	//if !c.Field.IsEmpty() {
 	//	for i := casting_machine.Width/casting_machine.YStep - 1; i > casting_machine.Width/casting_machine.YStep-6; i-- {
@@ -124,142 +107,60 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
 	//	}
 	//}
 
-	buildDataHelper(ThermalField, temperatureData)
-	temperatureData.Start = ThermalField.Start
-	temperatureData.End = ThermalField.End
-	temperatureData.IsFull = ThermalField.IsFull
-	temperatureData.IsTail = ThermalField.IsTail
-	return temperatureData
-}
-
-// 构建温度场push data
-func buildDataHelper(ThermalField *ThermalFieldStruct, temperatureData *TemperatureFieldData) {
-	// 跳过为空的切片
-	for ThermalField.Field[ThermalField.Start][0][0] == -1 {
-		ThermalField.Start++
-		if ThermalField.Start == ZLength/model.ZStep {
-			return
-		}
-	}
 	//startTime := time.Now()
-	// up
+	startSlice := c.Field.GetSlice(0)
+	EndSlice := c.Field.GetSlice(c.Field.Size() - 1)
 	for y := Width/YStep - 1; y >= 0; y -= StepY {
 		for x := Length/XStep - 1; x >= 0; x -= StepX {
-			temperatureData.Up.Up[Width/YStep/2+y/StepY][Length/XStep/2+x/StepX] = ThermalField.Field[ThermalField.Start][y][x]
-			temperatureData.Up.Up[(Width/YStep-1)/2-y/StepY][(Length/XStep-1)/2-x/StepX] = ThermalField.Field[ThermalField.Start][y][x]
-			temperatureData.Up.Up[Width/YStep/2+y/StepY][(Length/XStep-1)/2-x/StepX] = ThermalField.Field[ThermalField.Start][y][x]
-			temperatureData.Up.Up[(Width/YStep-1)/2-y/StepY][Length/XStep/2+x/StepX] = ThermalField.Field[ThermalField.Start][y][x]
-		}
-	}
-	start := 0
-	zStart := ThermalField.Start
-	zEnd := UpLength
-	if ThermalField.End < zEnd {
-		zEnd = ThermalField.End
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Up.Left[Width/YStep/2+y/StepY][x/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Up.Left[(Width/YStep-1)/2-y/StepY][x/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-		}
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Up.Right[Width/YStep/2+y/StepY][x/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Up.Right[(Width/YStep-1)/2-y/StepY][x/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Up.Front[Length/XStep/2+y/StepX][x/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Up.Front[(Length/XStep-1)/2-y/StepX][x/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Up.Back[Length/XStep/2+y/StepX][x/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Up.Back[(Length/XStep-1)/2-y/StepX][x/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
+			temperatureData.Sides.Up[width/2+y/StepY][length/2+x/StepX] = startSlice[y][x]
+			temperatureData.Sides.Up[(width/2-1)-y/StepY][(length/2-1)-x/StepX] = startSlice[y][x]
+			temperatureData.Sides.Up[width/2+y/StepY][(length/2-1)-x/StepX] = startSlice[y][x]
+			temperatureData.Sides.Up[(width/2-1)-y/StepY][length/2+x/StepX] = startSlice[y][x]
 		}
 	}
 
-	start = UpLength
-	zStart = max(UpLength, ThermalField.Start)
-	zEnd = UpLength + ArcLength
-	if ThermalField.End < zEnd {
-		zEnd = ThermalField.End
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Arc.Left[Width/YStep/2+y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Arc.Left[(Width/YStep-1)/2-y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
+	for z := c.Field.Size() - 1; z >= 0; z -= StepZ {
+		slice := c.Field.GetSlice(z)
+		for x := Length/XStep - 1; x >= 0; x -= StepX {
+			temperatureData.Sides.Front[z/StepZ][length/2+x/StepX] = slice[Width/YStep-1][x]
+			temperatureData.Sides.Front[z/StepZ][length/2-1-x/StepX] = slice[Width/YStep-1][x]
+
+			temperatureData.Sides.Back[z/StepZ][length/2+x/StepX] = slice[Width/YStep-1][x]
+			temperatureData.Sides.Back[z/StepZ][length/2-1-x/StepX] = slice[Width/YStep-1][x]
 		}
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Arc.Right[Width/YStep/2+y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Arc.Right[(Width/YStep-1)/2-y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Arc.Front[Length/XStep/2+y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Arc.Front[(Length/XStep-1)/2-y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Arc.Back[Length/XStep/2+y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Arc.Back[(Length/XStep-1)/2-y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
+
+		for y := Width/YStep - 1; y >= 0; y -= StepY {
+			temperatureData.Sides.Left[z/StepZ][width/2+y/StepY] = slice[y][Length/XStep-1]
+			temperatureData.Sides.Left[z/StepZ][width/2-1-y/StepY] = slice[y][Length/XStep-1]
+
+			temperatureData.Sides.Right[z/StepZ][width/2+y/StepY] = slice[y][Length/XStep-1]
+			temperatureData.Sides.Right[z/StepZ][width/2-1-y/StepY] = slice[y][Length/XStep-1]
 		}
 	}
 
-	start = UpLength + ArcLength
-	zStart = max(UpLength+ArcLength, ThermalField.Start)
-	zEnd = UpLength + ArcLength + DownLength
-	if ThermalField.End < zEnd {
-		zEnd = ThermalField.End
-	}
 	for y := Width/YStep - 1; y >= 0; y -= StepY {
 		for x := Length/XStep - 1; x >= 0; x -= StepX {
-			temperatureData.Down.Down[Width/YStep/2+y/StepY][Length/XStep/2+x/StepX] = ThermalField.Field[ThermalField.End-1][y][x]
-			temperatureData.Down.Down[(Width/YStep-1)/2-y/StepY][(Length/XStep-1)/2-x/StepX] = ThermalField.Field[ThermalField.End-1][y][x]
-			temperatureData.Down.Down[Width/YStep/2+y/StepY][(Length/XStep-1)/2-x/StepX] = ThermalField.Field[ThermalField.End-1][y][x]
-			temperatureData.Down.Down[(Width/YStep-1)/2-y/StepY][Length/XStep/2+x/StepX] = ThermalField.Field[ThermalField.End-1][y][x]
-		}
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Down.Left[Width/YStep/2+y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Down.Left[(Width/YStep-1)/2-y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-		}
-	}
-	for y := Width/YStep - 1; y >= 0; y -= StepY {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Down.Right[Width/YStep/2+y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-			temperatureData.Down.Right[(Width/YStep-1)/2-y/StepY][(x-start)/StepZ] = ThermalField.Field[x][y][Length/XStep-1]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Down.Front[Length/XStep/2+y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Down.Front[(Length/XStep-1)/2-y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-		}
-	}
-	for y := Length/XStep - 1; y >= 0; y -= StepX {
-		for x := zEnd - 1; x >= zStart; x -= StepZ {
-			temperatureData.Down.Back[Length/XStep/2+y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
-			temperatureData.Down.Back[(Length/XStep-1)/2-y/StepX][(x-start)/StepZ] = ThermalField.Field[x][Width/YStep-1][y]
+			temperatureData.Sides.Down[width/2+y/StepY][length/2+x/StepX] = EndSlice[y][x]
+			temperatureData.Sides.Down[(width/2-1)-y/StepY][(length/2-1)-x/StepX] = EndSlice[y][x]
+			temperatureData.Sides.Down[width/2+y/StepY][(length/2-1)-x/StepX] = EndSlice[y][x]
+			temperatureData.Sides.Down[(width/2-1)-y/StepY][length/2+x/StepX] = EndSlice[y][x]
 		}
 	}
 
-	//fmt.Printf("up up: 长%d 宽%d")
-	//fmt.Println("build data cost: ", time.Since(startTime))
-	// temperatureData
+	temperatureData.XScale = StepX
+	temperatureData.YScale = StepY
+	temperatureData.ZScale = StepZ
+	temperatureData.Start = c.start
+	temperatureData.End = c.end
+	temperatureData.IsFull = c.Field.IsFull()
+	temperatureData.IsTail = c.isTail
+	// fmt.Println("build data cost: ", time.Since(startTime))
+	return temperatureData
 }
 
 // 横切面推送数据
 func (c *calculatorWithArrDeque) BuildSliceData(index int) *SlicePushDataStruct {
-	res := SlicePushDataStruct{Marks: make(map[int]string)}
+	res := SlicePushDataStruct{}
 	slice := make([][]float32, Width/YStep*2)
 	for i := 0; i < len(slice); i++ {
 		slice[i] = make([]float32, Length/XStep*2)
@@ -290,9 +191,6 @@ func (c *calculatorWithArrDeque) BuildSliceData(index int) *SlicePushDataStruct 
 	res.Start = c.getFieldStart()
 	res.End = ZLength / model.ZStep
 	res.Current = c.getFieldEnd()
-	res.Marks[0] = "结晶器"
-	res.Marks[res.End] = strconv.Itoa(res.End)
-	res.Marks[UpLength] = "二冷区"
 	return &res
 }
 

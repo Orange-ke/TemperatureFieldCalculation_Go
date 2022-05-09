@@ -29,12 +29,6 @@ func getEy(y int) float32 {
 
 // 计算实际传热系数
 func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter) float32 {
-	if index1 >= 1600 {
-		index1 = 1599
-	}
-	if index2 >= 1600 {
-		index2 = 1599
-	}
 	var K = float32(0.9) // 修正系数K
 	// 等效空间步长
 	var ex1 = getEx(x1)
@@ -60,9 +54,6 @@ func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter) float32
 // 计算时间步长 case1 -> 左下角
 func getDeltaTCase1(x, y int, slice *model.ItemType, parameter *Parameter) float32 {
 	var t = slice[y][x]
-	if t >= 1600 {
-		t = 1599
-	}
 	var index = int(t) - 1
 	var index1, index2 int
 	index1 = int(slice[y][x+1]) - 1
@@ -249,18 +240,19 @@ func abs(x time.Duration) time.Duration {
 
 // 计算冷却水在结晶器铜板冷却水道中产生的换热系数
 func ROfWater() float32 {
-	Dh := 0.95 //水力直径
-	Vwt := 3000.0 / 1000.0 / 60.0 * (Dh * 0.05) // 流速
-	v := 0.0000007689 // 粘性力
-	Pr := 5.13 // 普朗特数
+	Dh := 4 * (math.Pi*3 + 15 + 15 + 6) / (15*6 + math.Pi*9/2)
+	//Vwt := 3000.0 / 1000.0 / 60.0 * (Dh * 0.05) // 流速
+	Vwt := 8.0
+	v := 0.0000007689   // 粘性力
+	Pr := 5.13          // 普朗特数
 	Red := Vwt * Dh / v // 雷诺数
-	f := math.Pow(0.790 * math.Log(Red) - 1.64, -2)
-	Nud := (f / 8) * (Red - 1000) * Pr / (1 + 12.7 * math.Pow(f/8, 0.5) * (math.Pow(Pr, 2 / 3) - 1))
+	f := math.Pow(0.790*math.Log(Red)-1.64, -2)
+	Nud := (f / 8) * (Red - 1000) * Pr / (1 + 12.7*math.Pow(f/8, 0.5)*(math.Pow(Pr, 2/3)-1))
 	k := 0.623
-	return 1 / float32(k * Nud / Dh)
+	return 1 / float32(k*Nud/Dh)
 }
 
 // 计算铜板的换热系数
 func ROfCu() float32 {
-	return 1 / 365.0
+	return 0.02 / 365.0
 }

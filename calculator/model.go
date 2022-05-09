@@ -12,7 +12,6 @@ type ThermalFieldStruct struct {
 
 type SlicePushDataStruct struct {
 	Slice   [][]float32    `json:"slice"`
-	Marks   map[int]string `json:"marks"`
 	Start   int            `json:"start"`
 	End     int            `json:"end"`
 	Current int            `json:"current"`

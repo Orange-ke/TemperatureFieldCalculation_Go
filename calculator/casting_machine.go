@@ -23,14 +23,6 @@ import (
 // 步长 和 铸坯的尺寸，单位mm
 
 const (
-	UpLength   = 500
-	DownLength = 500
-	ArcLength  = 3000
-
-	StepX = 2
-	StepY = 2
-	StepZ = 10
-
 	Zone0 = 0 // 结晶区
 	Zone1 = 1 // 二冷区
 )
@@ -40,13 +32,12 @@ var (
 )
 
 type CastingMachine struct {
+	LevelHeight            float32     // 弯月面高度
 	MdLength               int         // 结晶器长度
 	SecondaryCoolingConfig map[int]int // 二冷区冷却区尺寸的起始位置
 	CoolerConfig           CoolerCfg
 }
 type CoolerCfg struct {
-	LevelHeight int // 弯月面高度
-
 	StartTemperature float32 // 初始浇铸温度
 
 	NarrowSurfaceIn   float32 // 窄面入水温度
@@ -77,10 +68,12 @@ func NewCastingMachine() *CastingMachine {
 
 func (c *CastingMachine) SetFromJson(coordinate model.Coordinate) {
 	c.MdLength = coordinate.MdLength
+	c.LevelHeight = coordinate.LevelHeight
 	log.Info("结晶器长度为: ", c.MdLength)
 }
 
 func (c *CastingMachine) SetCoolerConfig(env model.Env) {
+	c.LevelHeight = env.LevelHeight
 	c.CoolerConfig.StartTemperature = env.StartTemperature
 	c.CoolerConfig.NarrowSurfaceIn = env.Md.NarrowSurfaceIn
 	c.CoolerConfig.NarrowSurfaceOut = env.Md.NarrowSurfaceOut
@@ -133,7 +126,7 @@ func (c *CastingMachine) SetWideSurfaceOut(wideSurfaceOut float32) {
 // 获取在那个冷却区
 func (c *CastingMachine) WhichZone(z int) int {
 	z = z * model.ZStep / StepZ // stepZ代表Z方向的缩放比例
-	if z <= UpLength {          // upLength 代表结晶器的长度 R
+	if z <= c.MdLength {
 		return Zone0
 	} else {
 		// todo 不同的区域返回不同的代号

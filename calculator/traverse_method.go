@@ -7,7 +7,7 @@ import (
 )
 
 func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque) {
-	//start := time.Now()
+	start := time.Now()
 	count := 0
 	var parameter *Parameter
 	c.Field.TraverseSpirally(t.start, t.end, func(z int, item *model.ItemType) {
@@ -68,12 +68,12 @@ func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque
 							c.calculatePointIN(t.deltaT, column, bottom, z, item, parameter)
 							count++
 						}
-						if item[bottom][0] == item[bottom+1][0] ||
-							item[bottom][0] == item[bottom-1][0] ||
-							item[bottom][0] == item[bottom][1] {
-							c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
-							count++
-						}
+					}
+					if item[bottom][0] != item[bottom+1][0] ||
+						item[bottom][0] != item[bottom-1][0] ||
+						item[bottom][0] != item[bottom][1] {
+						c.calculatePointLA(t.deltaT, bottom, z, item, parameter)
+						count++
 					}
 				}
 				if top == bottom {
@@ -94,8 +94,8 @@ func (e *executorBaseOnSlice) traverseSpirally(t task, c *calculatorWithArrDeque
 				bottom--
 			}
 		}
-		//fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*11340)
 	})
+	fmt.Println("消耗时间: ", time.Since(start), "计算的点数: ", count, "实际需要遍历的点数: ", (t.end-t.start)*(Width/YStep*Length/XStep), t.end, t.start)
 }
 
 // 分块遍历
