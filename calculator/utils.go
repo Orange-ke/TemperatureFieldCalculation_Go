@@ -3,7 +3,6 @@ package calculator
 import (
 	"lz/model"
 	"math"
-	"time"
 )
 
 // 标准单位为m 将mm 转化为m * 1000
@@ -231,7 +230,7 @@ func max(x, y int) int {
 	return x
 }
 
-func abs(x time.Duration) time.Duration {
+func abs(x float32) float32 {
 	if x < 0 {
 		return -x
 	}

@@ -21,6 +21,9 @@ type Coordinate struct {
 	Width               int     `json:"width"`
 	Length              int     `json:"length"`
 	ZLength             int     `json:"z_length"`
+	ZScale              int     `json:"z_scale"`
+	XScale              int     `json:"x_scale"`
+	YScale              int     `json:"y_scale"`
 }
 
 // 结晶器冷却参数
@@ -101,7 +104,7 @@ const (
 	Width  = 420 / 2  // 最大窄面长度
 
 	// 存放热流密度和综合换热系数容器的元素最大长度
-	WL = Length/XStep + Width/YStep - 1
+	WL = Length/XStep + Width/YStep
 )
 
 // 元素类型

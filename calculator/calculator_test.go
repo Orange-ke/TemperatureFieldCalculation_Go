@@ -35,11 +35,11 @@ func TestCalculator2(t *testing.T) {
 	calculator := NewCalculatorWithArrDeque(nil)
 	calculator.castingMachine = NewCastingMachine()
 	calculator.GetCastingMachine().SetCoolerConfig(model.Env{
-		StartTemperature: 1600.0,
+		StartTemperature: 1530.0,
 		Md: model.Md{
 			NarrowSurfaceIn:     30.0,
 			NarrowSurfaceOut:    38.0,
-			NarrowSurfaceVolume: 300,
+			NarrowSurfaceVolume: 540,
 			WideSurfaceIn:       30.0,
 			WideSurfaceOut:      38.0,
 			WideSurfaceVolume:   3000,
@@ -52,7 +52,9 @@ func TestCalculator2(t *testing.T) {
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)
 	calculator.runningState = stateRunning
-	calculator.Calculate()
+	//calculator.Calculate(
+	calculator.TestCalculateQ()
+
 }
 
 func TestCalculatorWithArrDeque_calculate(t *testing.T) {

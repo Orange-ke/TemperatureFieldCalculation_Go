@@ -26,8 +26,8 @@ var (
 	ZLength int
 	ZStep   = model.ZStep
 
-	//densityOfWater = float32(1000.0) // kg/m3
-	//cOfWater       = float32(4179.0)
+	densityOfWater = float32(1000.0) // kg/m3
+	cOfWater       = float32(4179.0)
 )
 
 type calculatorWithArrDeque struct {
@@ -170,20 +170,12 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	return min, time.Since(start)
 }
 
-// 计算能量
-//energy := c.castingMachine.CoolerConfig.WideWaterVolume/1000*deltaT*densityOfWater*cOfWater*
-//	(c.castingMachine.CoolerConfig.WideSurfaceOut-c.castingMachine.CoolerConfig.WideSurfaceIn) +
-//	c.castingMachine.CoolerConfig.NarrowWaterVolume/1000*deltaT*densityOfWater*cOfWater +
-//	(c.castingMachine.CoolerConfig.NarrowSurfaceOut - c.castingMachine.CoolerConfig.NarrowSurfaceIn)
-// 计算水在铜板中的换热系数
-
 // 计算热流密度
 func (c *calculatorWithArrDeque) calculateQ() {
 	start := time.Now()
 	if c.runningState == stateRunning {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
-			initialQ := 1 / (ROfWater() + ROfCu() + 1/1200.0) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
-			//initialQ := 1200.0 * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+			initialQ := 1 / (ROfWater() + ROfCu() + 1/2220.0) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
 			j := 0
 			for ; j < Length/XStep; j++ {
 				if item[Width/YStep-1][j] > c.steel1.LiquidPhaseTemperature {
@@ -210,6 +202,98 @@ func (c *calculatorWithArrDeque) calculateQ() {
 			}
 		})
 	}
+	fmt.Println("计算热流密度所需时间：", time.Since(start).Milliseconds())
+}
+
+func (c *calculatorWithArrDeque) calculateWideSurfaceEnergy(wideSurfaceH float32) float32 {
+	var wideSurfaceEnergy float32
+	var initialQ float32
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		initialQ = 1 / (ROfWater() + ROfCu() + 1/wideSurfaceH) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+		j := 0
+		for ; j < Length/XStep; j++ {
+			if item[Width/YStep-1][j] > c.steel1.LiquidPhaseTemperature {
+				c.steel1.Parameter.Q[z][j] = initialQ
+				wideSurfaceEnergy += c.steel1.Parameter.Q[z][j] * float32(XStep*ZStep) / 1e6
+			} else {
+				break
+			}
+		}
+		start := j - 1
+		for ; j < Length/XStep; j++ {
+			c.steel1.Parameter.Q[z][j] = initialQ - (initialQ*0.7)*float32(j-start)/float32(Length/XStep-1-start)
+			wideSurfaceEnergy += c.steel1.Parameter.Q[z][j] * float32(XStep*ZStep) / 1e6
+		}
+	})
+	return wideSurfaceEnergy
+}
+
+func (c *calculatorWithArrDeque) calculateNarrowSurfaceEnergy(narrowSurfaceH float32) float32 {
+	var narrowSurfaceEnergy float32
+	var initialQ float32
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		initialQ = 1 / (ROfWater() + ROfCu() + 1/narrowSurfaceH) * (item[0][Length/XStep-1] - c.castingMachine.CoolerConfig.NarrowSurfaceIn)
+		i := 0
+		for ; i < Width/YStep; i++ {
+			if item[i][Length/XStep-1] > c.steel1.LiquidPhaseTemperature {
+				c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ
+				narrowSurfaceEnergy += c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] * float32(YStep*ZStep) / 1e6
+			} else {
+				break
+			}
+		}
+		start := i - 1
+		for ; i < Width/YStep; i++ {
+			c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ - (initialQ*0.7)*float32(i-start)/float32(Width/YStep-1-start)
+			narrowSurfaceEnergy += c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] * float32(YStep*ZStep) / 1e6
+		}
+	})
+	return narrowSurfaceEnergy
+}
+
+// 在线计算Q
+func (c *calculatorWithArrDeque) calculateQOnline() {
+	start := time.Now()
+	energyScale := float32(c.Field.Size()) / ((float32(c.castingMachine.MdLength) - c.castingMachine.LevelHeight) / float32(ZStep))
+	fmt.Println("energyScale: ", energyScale)
+	left, right := float32(500.0), float32(5000.0)
+	var wideSurfaceH float32
+	err := float32(0.0001)
+	var calculateErr float32
+	targetWideSurfaceEnergy := c.castingMachine.CoolerConfig.WideWaterVolume / 1000 / 60 / 2 * densityOfWater * cOfWater * (c.castingMachine.CoolerConfig.WideSurfaceOut - c.castingMachine.CoolerConfig.WideSurfaceIn) * energyScale
+	for left < right {
+		wideSurfaceH = left + (right-left)/2
+		calculateErr = 1 - c.calculateWideSurfaceEnergy(wideSurfaceH)/targetWideSurfaceEnergy
+		if abs(calculateErr) <= err {
+			break
+		} else {
+			if calculateErr < 0 {
+				right = wideSurfaceH - 1
+			} else {
+				left = wideSurfaceH + 1
+			}
+		}
+	}
+	fmt.Println("targetWideSurfaceEnergy:", targetWideSurfaceEnergy, "wideSurfaceEnergy:", c.calculateWideSurfaceEnergy(wideSurfaceH), wideSurfaceH)
+
+	var narrowSurfaceH float32
+	targetNarrowSurfaceEnergy := c.castingMachine.CoolerConfig.NarrowWaterVolume / 1000 / 60 / 2 * densityOfWater * cOfWater * (c.castingMachine.CoolerConfig.NarrowSurfaceOut - c.castingMachine.CoolerConfig.NarrowSurfaceIn) * energyScale
+	left, right = float32(500.0), float32(5000.0)
+	for left < right {
+		narrowSurfaceH = left + (right-left)/2
+		calculateErr = 1 - c.calculateNarrowSurfaceEnergy(narrowSurfaceH)/targetNarrowSurfaceEnergy
+		if abs(calculateErr) <= err {
+			break
+		} else {
+			if calculateErr < 0 {
+				right = narrowSurfaceH - 1
+			} else {
+				left = narrowSurfaceH + 1
+			}
+		}
+	}
+	fmt.Println("targetNarrowSurfaceEnergy:", targetNarrowSurfaceEnergy, "narrowSurfaceEnergy:", c.calculateNarrowSurfaceEnergy(narrowSurfaceH), narrowSurfaceH)
+
 	fmt.Println("计算热流密度所需时间：", time.Since(start).Milliseconds())
 }
 
@@ -255,7 +339,7 @@ LOOP:
 				gap = OneSliceDuration
 				deltaT = float32(OneSliceDuration.Seconds())
 			} else {
-				c.calculateQ()
+				c.calculateQOnline()
 				c.calculateHeff()
 				fmt.Println("Q: ", c.steel1.Parameter.Q[c.Field.Size()-1][:Length/XStep+Width/YStep])
 				fmt.Println("Heff: ", c.steel1.Parameter.Heff[c.Field.Size()-1][:Length/XStep+Width/YStep])
@@ -580,9 +664,6 @@ func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, s
 	var index2 = int(slice[y][x+1]) - 1
 	var index3 = int(slice[y-1][x]) - 1
 	var index4 = int(slice[y+1][x]) - 1
-	if index >= 1600 {
-		index = 1599
-	}
 	var deltaHin = getLambda(index, index1, x-1, y, x, y, parameter)*(slice[y][x]-slice[y][x-1])/(stdXStep*(getEx(x)+getEx(x-1))) +
 		getLambda(index, index2, x+1, y, x, y, parameter)*(slice[y][x]-slice[y][x+1])/(stdXStep*(getEx(x)+getEx(x+1))) +
 		getLambda(index, index3, x, y-1, x, y, parameter)*(slice[y][x]-slice[y-1][x])/(stdYStep*(getEy(y)+getEy(y-1))) +
@@ -881,8 +962,8 @@ func (c *calculatorWithArrDeque) GenerateSLiceInfo(index int) *SliceInfo {
 }
 
 func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
-	solidTemp := float32(1445.69)
-	liquidTemp := float32(1506.77)
+	solidTemp := c.steel1.SolidPhaseTemperature
+	liquidTemp := c.steel1.LiquidPhaseTemperature
 	sliceInfo := &SliceInfo{}
 	slice := make([][]float32, Width/YStep*2)
 	for i := 0; i < len(slice); i++ {
@@ -919,9 +1000,8 @@ func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
 		}
 	}
 	for i := length; i >= 0; i-- {
-		if originData[0][i] >= liquidTemp {
+		if originData[0][i] <= liquidTemp {
 			sliceInfo.HorizontalLiquidThickness = XStep * (length - i + 1)
-			break
 		}
 	}
 
@@ -931,9 +1011,8 @@ func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
 		}
 	}
 	for j := width; j >= 0; j-- {
-		if originData[j][0] >= liquidTemp {
+		if originData[j][0] <= liquidTemp {
 			sliceInfo.VerticalLiquidThickness = YStep * (width - j + 1)
-			break
 		}
 	}
 	return sliceInfo
@@ -945,6 +1024,9 @@ type VerticalSliceData1 struct {
 }
 
 func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *VerticalSliceData1 {
+	if index >= Width/YStep-1 {
+		index = Width/YStep - 1
+	}
 	res := &VerticalSliceData1{
 		Outer: make([][2]float32, 0),
 		Inner: make([][2]float32, 0),
@@ -952,9 +1034,9 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *Vertical
 	step := 0
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		step++
-		if step == 20 {
-			res.Outer = append(res.Outer, [2]float32{float32(z * 10), item[Width/YStep-1][Length/XStep-1-index]})
-			res.Inner = append(res.Inner, [2]float32{float32(z * 10), item[0][Length/XStep-1-index]})
+		if step == 5 {
+			res.Outer = append(res.Outer, [2]float32{float32((z + 1) * model.ZStep), item[Width/YStep-1][Length/XStep-1-index]})
+			res.Inner = append(res.Inner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
 			step = 0
 		}
 	})
@@ -1075,4 +1157,13 @@ func (c *calculatorWithArrDeque) Calculate() {
 
 	// 一个核心计算
 	//c.CalculateSerially()
+}
+
+func (c *calculatorWithArrDeque) TestCalculateQ() {
+	for z := 0; z < 1; z++ {
+		c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+		c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+	}
+
+	c.calculateQOnline()
 }

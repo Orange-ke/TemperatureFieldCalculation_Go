@@ -9,14 +9,13 @@
     "md_length": 950.0,
     "width": 230.0,
     "length": 1260.0,
-    "z_length": 31860
+    "z_length": 31860.0,
+    "z_scale": 10,
+    "x_scale": 5,
+    "y_scale": 5
   },
   "md": {
     "length": 950.0
-  },
-  "cross_profile": {
-    "width": 230.0,
-    "length": 1260.0
   },
   "cooling_zone": [
     {
