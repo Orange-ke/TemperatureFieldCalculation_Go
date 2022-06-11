@@ -145,14 +145,16 @@ func (ad *ArrDeque) Set(z, y, x int, number float32, bottom float32) {
 	}
 }
 
-func (ad *ArrDeque) Traverse(f func(z int, item *model.ItemType)) {
-	// todo 加入分块
-	k := 0
-	for z := ad.container.start; z < ad.container.end; z++ {
+func (ad *ArrDeque) Traverse(f func(z int, item *model.ItemType), start int, end int) {
+	if start >= end {
+		return
+	}
+	k := start
+	for z := ad.container.start; z < ad.container.end && k < end; z++ {
 		f(k, &ad.container.arr[z])
 		k++
 	}
-	for z := ad.container1.start; z < ad.container1.end; z++ {
+	for z := ad.container1.start; z < ad.container1.end && k < end; z++ {
 		f(k, &ad.container1.arr[z])
 		k++
 	}

@@ -27,7 +27,7 @@ type Deque interface {
 	Set(z, y, x int, number float32, bottom float32)
 
 	// 正向遍历
-	Traverse(f func(z int, item *model.ItemType))
+	Traverse(f func(z int, item *model.ItemType), start int, end int)
 
 	// 螺旋遍历
 	TraverseSpirally(start, end int, f func(z int, item *model.ItemType))

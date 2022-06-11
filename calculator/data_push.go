@@ -5,6 +5,13 @@ import (
 	"lz/model"
 )
 
+type SlicePushDataStruct struct {
+	Slice   [][]float32    `json:"slice"`
+	Start   int            `json:"start"`
+	End     int            `json:"end"`
+	Current int            `json:"current"`
+}
+
 type TemperatureFieldData struct {
 	XScale int    `json:"x_scale"`
 	YScale int    `json:"y_scale"`
@@ -93,9 +100,7 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
 	temperatureData := &TemperatureFieldData{
 		Sides: sides,
 	}
-	//for i := 0; i < 2000; i++ {
-	//	c.Field.RemoveLast()
-	//}
+
 	//fmt.Println("BuildData 温度场的长度：", z)
 	//if !c.Field.IsEmpty() {
 	//	for i := casting_machine.Width/casting_machine.YStep - 1; i > casting_machine.Width/casting_machine.YStep-6; i-- {

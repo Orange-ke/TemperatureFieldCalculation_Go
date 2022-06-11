@@ -20,7 +20,7 @@ func TestArrDeque_Traverse(t *testing.T) {
 					item[i][j] += 1
 				}
 			}
-		})
+		}, 0, 0)
 	}
 
 	fmt.Println(time.Since(start))
@@ -33,13 +33,13 @@ func TestListDeque_Traverse(t *testing.T) {
 	}
 	start := time.Now()
 	for c := 0; c < 100; c++ {
-		deque.Traverse(func(z int,item *model.ItemType) {
+		deque.Traverse(func(z int, item *model.ItemType) {
 			for i := 0; i < len(item); i++ {
 				for j := 0; j < len(item[0]); j++ {
 					item[i][j]++
 				}
 			}
-		})
+		}, 0, 0)
 	}
 	fmt.Println(time.Since(start))
 }

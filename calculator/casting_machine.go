@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"encoding/json"
 	log "github.com/sirupsen/logrus"
 	"lz/model"
 	"time"
@@ -24,7 +25,6 @@ import (
 
 const (
 	Zone0 = 0 // 结晶区
-	Zone1 = 1 // 二冷区
 )
 
 var (
@@ -32,64 +32,72 @@ var (
 )
 
 type CastingMachine struct {
-	LevelHeight            float32     // 弯月面高度
-	MdLength               int         // 结晶器长度
-	SecondaryCoolingConfig map[int]int // 二冷区冷却区尺寸的起始位置
-	CoolerConfig           CoolerCfg
-}
-type CoolerCfg struct {
-	StartTemperature float32 // 初始浇铸温度
-
-	NarrowSurfaceIn   float32 // 窄面入水温度
-	NarrowSurfaceOut  float32 // 窄面出水温度
-	NarrowWaterVolume float32 // 窄面水量
-
-	WideSurfaceIn   float32 // 宽面入水温度
-	WideSurfaceOut  float32 // 宽面出水温度
-	WideWaterVolume float32 // 宽面水量
-
-	// todo
-	TargetTemperature map[string]float32 // 每个冷却区的目标温度
-
-	V int64 // 拉速
+	Coordinate   model.Coordinate // 铸机的一些尺寸配置
+	CoolerConfig model.CoolerCfg
 }
 
 func NewCastingMachine() *CastingMachine {
 	// 根据 铸机 编号获取铸机配置
 	castingMachine := CastingMachine{
-		SecondaryCoolingConfig: make(map[int]int),
-		CoolerConfig: CoolerCfg{
+		CoolerConfig: model.CoolerCfg{
 			TargetTemperature: make(map[string]float32),
 			V:                 int64(10 * 1.5 * 1000 / 60), // m / min，默认速度1.5
+			SecondaryCoolingZoneCfg: model.SecondaryCoolingZoneCfg{
+				SecondaryCoolingWaterCfg: make([]model.SecondaryCoolingWaterSection, 0),
+				NozzleCfg: model.NozzleCfg{
+					WideItems:   make([]model.WideItem, 0),
+					NarrowItems: make([]model.NarrowItem, 0),
+				},
+				CoolingZoneCfg: make([]model.CoolingZone, 0),
+			},
 		},
 	}
 	return &castingMachine
 }
 
 func (c *CastingMachine) SetFromJson(coordinate model.Coordinate) {
-	c.MdLength = coordinate.MdLength
-	c.LevelHeight = coordinate.LevelHeight
-	log.Info("结晶器长度为: ", c.MdLength)
+	c.Coordinate = coordinate
+	log.Info("铸机尺寸配置: ", c.Coordinate)
 }
 
-func (c *CastingMachine) SetCoolerConfig(env model.Env) {
-	c.LevelHeight = env.LevelHeight
+func (c *CastingMachine) SetCoolerConfig(env model.Env, nozzleCfgData []byte) {
+	c.Coordinate.LevelHeight = env.LevelHeight
 	c.CoolerConfig.StartTemperature = env.StartTemperature
+	// 结晶器区
 	c.CoolerConfig.NarrowSurfaceIn = env.Md.NarrowSurfaceIn
 	c.CoolerConfig.NarrowSurfaceOut = env.Md.NarrowSurfaceOut
 	c.CoolerConfig.NarrowWaterVolume = env.Md.NarrowSurfaceVolume
 	c.CoolerConfig.WideSurfaceIn = env.Md.WideSurfaceIn
 	c.CoolerConfig.WideSurfaceOut = env.Md.WideSurfaceOut
 	c.CoolerConfig.WideWaterVolume = env.Md.WideSurfaceVolume
+	// 二冷区
+	c.CoolerConfig.SecondaryCoolingZoneCfg.SecondaryCoolingWaterCfg = env.SecondaryCoolingWaterCfg
+	err := json.Unmarshal(nozzleCfgData, &c.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg)
+	if err != nil {
+		log.Error("err:", err)
+		return
+	}
+	var rollerNum int
+	wideItems := c.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg.WideItems
+	for i := range env.CoolingZoneCfg {
+		rollerNum = env.CoolingZoneCfg[i].End
+		if rollerNum <= len(wideItems) {
+			env.CoolingZoneCfg[i].EndDistance = wideItems[rollerNum-1].Distance
+		} else {
+			log.Error("err:", "辊子下标越界")
+			return
+		}
+	}
+	c.CoolerConfig.SecondaryCoolingZoneCfg.CoolingZoneCfg = env.CoolingZoneCfg
 	log.WithFields(log.Fields{
-		"StartTemperature":  env.StartTemperature,
-		"NarrowSurfaceIn":   env.Md.NarrowSurfaceIn,
-		"NarrowSurfaceOut":  env.Md.NarrowSurfaceOut,
-		"NarrowWaterVolume": env.Md.NarrowSurfaceVolume,
-		"WideSurfaceIn":     env.Md.WideSurfaceIn,
-		"WideSurfaceOut":    env.Md.WideSurfaceOut,
-		"WideWaterVolume":   env.Md.WideSurfaceVolume,
-		// todo
+		"StartTemperature":        env.StartTemperature,
+		"NarrowSurfaceIn":         env.Md.NarrowSurfaceIn,
+		"NarrowSurfaceOut":        env.Md.NarrowSurfaceOut,
+		"NarrowWaterVolume":       env.Md.NarrowSurfaceVolume,
+		"WideSurfaceIn":           env.Md.WideSurfaceIn,
+		"WideSurfaceOut":          env.Md.WideSurfaceOut,
+		"WideWaterVolume":         env.Md.WideSurfaceVolume,
+		"SecondaryCoolingZoneCfg": c.CoolerConfig.SecondaryCoolingZoneCfg,
 	}).Info("设置冷却参数")
 }
 
@@ -126,10 +134,14 @@ func (c *CastingMachine) SetWideSurfaceOut(wideSurfaceOut float32) {
 // 获取在那个冷却区
 func (c *CastingMachine) WhichZone(z int) int {
 	z = z * model.ZStep / StepZ // stepZ代表Z方向的缩放比例
-	if z <= c.MdLength {
+	if z <= c.Coordinate.MdLength {
 		return Zone0
-	} else {
-		// todo 不同的区域返回不同的代号
-		return Zone1
 	}
+	coolingZoneCfg := c.CoolerConfig.SecondaryCoolingZoneCfg.CoolingZoneCfg
+	for i, v := range coolingZoneCfg {
+		if float32(z) <= v.EndDistance {
+			return i + 1
+		}
+	}
+	return -1
 }

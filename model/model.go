@@ -1,12 +1,14 @@
 package model
 
 type Env struct {
-	LevelHeight      float32    `json:"level_height"`
-	SteelValue       int        `json:"steel_value"`
-	StartTemperature float32    `json:"start_temperature"`
-	Md               Md         `json:"md"`
-	DragSpeed        float32    `json:"drag_speed"`
-	Coordinate       Coordinate `json:"coordinate"`
+	LevelHeight              float32                        `json:"level_height"`
+	SteelValue               int                            `json:"steel_value"`
+	StartTemperature         float32                        `json:"start_temperature"`
+	Md                       Md                             `json:"md"`
+	DragSpeed                float32                        `json:"drag_speed"`
+	Coordinate               Coordinate                     `json:"coordinate"`
+	SecondaryCoolingWaterCfg []SecondaryCoolingWaterSection `json:"secondary_cooling_water_cfg"`
+	CoolingZoneCfg           []CoolingZone                  `json:"cooling_zone_cfg"`
 }
 
 // 铸机尺寸配置
@@ -24,6 +26,15 @@ type Coordinate struct {
 	ZScale              int     `json:"z_scale"`
 	XScale              int     `json:"x_scale"`
 	YScale              int     `json:"y_scale"`
+}
+
+// 冷却区分区配置
+type CoolingZone struct {
+	ZoneName    string  `json:"zone_name"`
+	Start       int     `json:"start"`
+	End         int     `json:"end"`
+	Medium      int     `json:"medium"`
+	EndDistance float32 `json:"end_distance"`
 }
 
 // 结晶器冷却参数
@@ -54,6 +65,12 @@ type Speed2Water struct {
 	Top    float32 `json:"top"`
 	Bottom float32 `json:"bottom"`
 	Step   float32 `json:"step"`
+}
+
+// 纵切面云图请求结构体
+type VerticalReqData struct {
+	Index  int `json:"index"`
+	ZScale int `json:"z_scale"`
 }
 
 // 物性参数
@@ -91,6 +108,80 @@ type SteelTypeCategory struct {
 	Name string `json:"name"`
 }
 
+// 铸机冷却参数配置
+type CoolerCfg struct {
+	StartTemperature float32 // 初始浇铸温度
+	// 结晶器冷却参数配置 ---- start
+	NarrowSurfaceIn   float32 // 窄面入水温度
+	NarrowSurfaceOut  float32 // 窄面出水温度
+	NarrowWaterVolume float32 // 窄面水量
+
+	WideSurfaceIn   float32 // 宽面入水温度
+	WideSurfaceOut  float32 // 宽面出水温度
+	WideWaterVolume float32 // 宽面水量
+	// 结晶器冷却参数配置 ---- end
+
+	// todo 暂时未用到
+	TargetTemperature map[string]float32 // 每个冷却区的目标温度
+
+	V int64 // 拉速
+
+	// 二冷区冷却参数配置
+	SecondaryCoolingZoneCfg SecondaryCoolingZoneCfg
+}
+
+type SecondaryCoolingZoneCfg struct {
+	SecondaryCoolingWaterCfg []SecondaryCoolingWaterSection `json:"secondary_cooling_water_cfg"`
+	NozzleCfg                NozzleCfg                      `json:"nozzle_cfg"`
+	CoolingZoneCfg           []CoolingZone                  `json:"cooling_zone_cfg"`
+}
+
+type SecondaryCoolingWaterSection struct {
+	SprayWaterTemperature float32 `json:"spray_water_temperature"`
+	InnerArcWaterVolume   float32 `json:"inner_arc_water_volume"`
+	NarrowSideWaterVolume float32 `json:"narrow_side_water_volume"`
+}
+
+// 喷嘴布置配置
+type NozzleCfg struct {
+	WideItems   []WideItem   `json:"wide_items"`
+	NarrowItems []NarrowItem `json:"narrow_items"`
+}
+
+type WideItem struct {
+	RollerNum           int     `json:"roller_num"`
+	CoolingZone         int     `json:"cooling_zone"`
+	OuterDiameter       int     `json:"outer_diameter"`
+	InnerDiameter       int     `json:"inner_diameter"`
+	Medium              int     `json:"medium"`
+	Distance            float32 `json:"distance"`
+	RollerInnerDiameter int     `json:"roller_inner_diameter"`
+	RollerDistance      float32 `json:"roller_distance"`
+	CenterSpraySection  Section `json:"center_spray_section"`
+	AlterSpraySection1  Section `json:"alter_spray_section_1"`
+	AlterSpraySection2  Section `json:"alter_spray_section_2"`
+}
+
+type NarrowItem struct {
+	RollerNum      int           `json:"roller_num"`
+	RollerDistance float32       `json:"roller_distance"`
+	SpraySection1  NarrowSection `json:"spray_section_1"`
+	SpraySection2  NarrowSection `json:"spray_section_2"`
+	SpraySection3  NarrowSection `json:"spray_section_3"`
+}
+
+type Section struct {
+	LeftLimit  float32 `json:"left_limit"`
+	RightLimit float32 `json:"right_limit"`
+	Thickness  float32 `json:"thickness"`
+}
+
+type NarrowSection struct {
+	Width     float32 `json:"width"`
+	Thickness float32 `json:"thickness"`
+}
+
+// 前后端通信消息结构
 type Msg struct {
 	Type    string `json:"type"`
 	Content string `json:"content"`

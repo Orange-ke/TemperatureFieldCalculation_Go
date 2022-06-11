@@ -21,7 +21,7 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
 			parameter := c.getParameter(z)
 			c.calculatePointRT(deltaT, z, item, parameter)
-		})
+		}, 0, 0)
 
 		if c.alternating {
 			c.Field = c.thermalField1
@@ -38,7 +38,7 @@ func TestNewCalculatorWithArrDeque(t *testing.T) {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
 			parameter := c.getParameter(z)
 			c.calculatePointRT(deltaT, z, item, parameter)
-		})
+		}, 0, 0)
 
 		for k := 0; k < 100; k++ {
 			c.thermalField.RemoveLast()

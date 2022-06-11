@@ -142,7 +142,7 @@ func (e *executorBaseOnBlock) calculateCase1(t task, c *calculatorWithArrDeque) 
 				count++
 			}
 		}
-	})
+	}, 0, 0)
 
 	fmt.Println("任务1执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
@@ -190,7 +190,7 @@ func (e *executorBaseOnBlock) calculateCase2(t task, c *calculatorWithArrDeque) 
 				count++
 			}
 		}
-	})
+	}, 0, 0)
 	fmt.Println("任务2执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
@@ -237,7 +237,7 @@ func (e *executorBaseOnBlock) calculateCase3(t task, c *calculatorWithArrDeque) 
 				count++
 			}
 		}
-	})
+	}, 0, 0)
 	fmt.Println("任务3执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }
 
@@ -284,6 +284,6 @@ func (e *executorBaseOnBlock) calculateCase4(t task, c *calculatorWithArrDeque) 
 				count++
 			}
 		}
-	})
+	}, 0, 0)
 	fmt.Println("任务4执行时间: ", time.Since(start), "总共计算：", count, "个点")
 }

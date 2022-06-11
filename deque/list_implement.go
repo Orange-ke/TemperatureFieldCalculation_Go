@@ -80,7 +80,7 @@ func (ld *ListDeque) Set(z, y, x int, number float32, bottom float32) {
 	iter.val[y][x] = number
 }
 
-func (ld *ListDeque) Traverse(f func(z int, item *model.ItemType)) {
+func (ld *ListDeque) Traverse(f func(z int, item *model.ItemType), start int, end int) {
 	iter := &node{}
 	z := 0
 	for iter = ld.head.next; iter != ld.tail; iter = iter.next {

@@ -20,7 +20,7 @@ func TestCalculator1(t *testing.T) {
 			WideSurfaceIn:    20.0,
 			WideSurfaceOut:   38.0,
 		},
-	})
+	}, []byte{})
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)
 	calculator.runningState = stateRunning
@@ -44,7 +44,7 @@ func TestCalculator2(t *testing.T) {
 			WideSurfaceOut:      38.0,
 			WideSurfaceVolume:   3000,
 		},
-	})
+	},  []byte{})
 	calculator.castingMachine.SetV(1.5)
 	calculator.castingMachine.SetFromJson(model.Coordinate{
 		MdLength: 950,
@@ -68,7 +68,7 @@ func TestCalculatorWithArrDeque_calculate(t *testing.T) {
 			WideSurfaceIn:    20.0,
 			WideSurfaceOut:   38.0,
 		},
-	})
+	},  []byte{})
 	calculator.steel1 = NewSteel(1, calculator.castingMachine)
 	fmt.Println(calculator.castingMachine.CoolerConfig.StartTemperature)
 	for i := 0; i < 4000; i++ {

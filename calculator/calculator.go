@@ -40,5 +40,5 @@ type Calculator interface {
 
 	GenerateVerticalSlice1Data(index int) *VerticalSliceData1
 
-	GenerateVerticalSlice2Data(index int) *VerticalSliceData2
+	GenerateVerticalSlice2Data(reqData model.VerticalReqData) *VerticalSliceData2
 }

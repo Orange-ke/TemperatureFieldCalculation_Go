@@ -139,7 +139,7 @@ func NewSteel(number int, castingMachine *CastingMachine) *Steel {
 	// 6. 温度到焓的对应关系
 	steel.Parameter.Temp2Enthalpy = func(temp float32) float32 {
 		t := int(temp) - 1
-		if temp - 1 == float32(t) {
+		if temp-1 == float32(t) {
 			return steel.Parameter.Enthalpy[t]
 		}
 		return steel.Parameter.Enthalpy[t] + (steel.Parameter.Enthalpy[t+1]-steel.Parameter.Enthalpy[t])*(temp-float32(t)-1)
@@ -164,9 +164,14 @@ func NewSteel(number int, castingMachine *CastingMachine) *Steel {
 
 // 获取不同冷却区对应的参数
 func (s *Steel) SetParameter(z int) {
-	if s.CastingMachine.WhichZone(z) == Zone0 {
+	zone := s.CastingMachine.WhichZone(z)
+	if zone == -1 {
+		log.Fatal("err: ", "冷却区超过范围")
+		return
+	}
+	if zone == Zone0 {
 		s.Parameter.TemperatureBottom = s.CastingMachine.CoolerConfig.NarrowSurfaceIn
-	} else if s.CastingMachine.WhichZone(z) == Zone1 {
-		s.Parameter.TemperatureBottom = s.CastingMachine.CoolerConfig.NarrowSurfaceIn
+	} else {
+		s.Parameter.TemperatureBottom = s.CastingMachine.CoolerConfig.SecondaryCoolingZoneCfg.SecondaryCoolingWaterCfg[zone-1].SprayWaterTemperature
 	}
 }

@@ -44,7 +44,7 @@ type Hub struct {
 	generateSlice chan int
 
 	generateVerticalSlice1 chan int
-	generateVerticalSlice2 chan int
+	generateVerticalSlice2 chan model.VerticalReqData
 
 	mu sync.Mutex
 }
@@ -69,7 +69,7 @@ func NewHub() *Hub {
 		generateSlice: make(chan int, 10),
 
 		generateVerticalSlice1: make(chan int, 10),
-		generateVerticalSlice2: make(chan int, 10),
+		generateVerticalSlice2: make(chan model.VerticalReqData, 10),
 	}
 }
 
@@ -104,8 +104,13 @@ func (h *Hub) handleResponse() {
 				log.Info("ZLength:", calculator.ZLength, " ,Length:", calculator.Length, " ,Width:", calculator.Width)
 				h.c = calculator.NewCalculatorWithArrDeque(nil)
 			}
-			h.c.GetCastingMachine().SetFromJson(env.Coordinate)    // 初始化铸机尺寸
-			h.c.GetCastingMachine().SetCoolerConfig(env)           // 设置冷却参数
+			h.c.GetCastingMachine().SetFromJson(env.Coordinate) // 初始化铸机尺寸
+			data, err := ioutil.ReadFile("E:/GoWorkPlace/src/lz/conf/nozzle.json")
+			if err != nil {
+				log.Println("err", err)
+				return
+			}
+			h.c.GetCastingMachine().SetCoolerConfig(env, data)     // 设置冷却参数
 			h.c.GetCastingMachine().SetV(env.DragSpeed)            // 设置拉速
 			h.c.InitSteel(env.SteelValue, h.c.GetCastingMachine()) // 设置钢种物性参数
 			h.c.InitPushData(env.Coordinate)
@@ -114,7 +119,7 @@ func (h *Hub) handleResponse() {
 				Content: "env is set",
 			}
 			h.mu.Lock()
-			err := h.conn.WriteJSON(&reply)
+			err = h.conn.WriteJSON(&reply)
 			h.mu.Unlock()
 			if err != nil {
 				log.WithField("err", err).Error("回复消息失败")
@@ -298,11 +303,11 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("发送纵向切片1推送消息失败")
 			}
-		case index := <-h.generateVerticalSlice2:
+		case reqData := <-h.generateVerticalSlice2:
 			reply := model.Msg{
 				Type: "vertical_slice2_generated",
 			}
-			verticalSliceData := h.c.GenerateVerticalSlice2Data(index)
+			verticalSliceData := h.c.GenerateVerticalSlice2Data(reqData)
 			data, err := json.Marshal(verticalSliceData)
 			if err != nil {
 				log.WithField("err", err).Error("纵向切片2推送数据json解析失败")
@@ -426,24 +431,25 @@ func (h *Hub) handleRequest() {
 					log.WithField("err", err).Error("切片下标不是整数")
 					return
 				}
-				if index < 0 || int(index) >= 270 {
+				if index < 0 || int(index) >= calculator.Length/calculator.XStep {
 					log.Warn("切片下标越界")
 					break
 				}
 				h.generateVerticalSlice1 <- int(index)
 			case "generate_vertical_slice2":
 				log.Info("获取到生成纵向切片2数据的信号")
-				index, err := strconv.ParseInt(msg.Content, 10, 64)
-				log.Info("获取到切片下标：", index)
+				reqData := model.VerticalReqData{}
+				err := json.Unmarshal([]byte(msg.Content), &reqData)
+				log.Info("获取到垂直切片云图请求数据：", reqData)
 				if err != nil {
-					log.WithField("err", err).Error("切片下标不是整数")
+					log.Error("json 解析失败")
 					return
 				}
-				if index < 0 || int(index) >= 270 {
+				if reqData.Index < 0 || reqData.Index >= calculator.Length/calculator.XStep {
 					log.Warn("切片下标越界")
 					break
 				}
-				h.generateVerticalSlice2 <- int(index)
+				h.generateVerticalSlice2 <- reqData
 			default:
 				log.Warn("no such type")
 			}

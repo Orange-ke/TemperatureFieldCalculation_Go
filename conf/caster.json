@@ -21,57 +21,101 @@
     {
       "zone_name": "1 Subarea",
       "start": 1,
-      "end": 2
+      "end": 2,
+      "medium": 1,
+      "inner_arc_volume": 111.5,
+      "narrow_side_volume": 57.5,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "2 Subarea",
       "start": 3,
-      "end": 7
+      "end": 7,
+      "medium": 2,
+      "inner_arc_volume": 207.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "3 Subarea",
       "start": 8,
-      "end": 13
+      "end": 13,
+      "medium": 2,
+      "inner_arc_volume": 197.5,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "4 Subarea",
       "start": 14,
-      "end": 20
+      "end": 20,
+      "medium": 2,
+      "inner_arc_volume": 163.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "5 Subarea",
       "start": 21,
-      "end": 27
+      "end": 27,
+      "medium": 2,
+      "inner_arc_volume": 154.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "6 Subarea",
       "start": 28,
-      "end": 34
+      "end": 34,
+      "medium": 2,
+      "inner_arc_volume": 114.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "7 Subarea",
       "start": 35,
-      "end": 48
+      "end": 48,
+      "medium": 2,
+      "inner_arc_volume": 163.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "8 Subarea",
       "start": 49,
-      "end": 62
+      "end": 62,
+      "medium": 2,
+      "inner_arc_volume": 109.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "9 Subarea",
       "start": 63,
-      "end": 76
+      "end": 76,
+      "medium": 2,
+      "inner_arc_volume": 76.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "10 Subarea",
       "start": 77,
-      "end": 97
+      "end": 97,
+      "medium": 2,
+      "inner_arc_volume": 75.0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     },
     {
       "zone_name": "11 Subarea",
       "start": 98,
-      "end": 118
+      "end": 118,
+      "medium": 2,
+      "inner_arc_volume": 0,
+      "narrow_side_volume": 0.0,
+      "spray_water_temperature": 20.0
     }
   ],
   "segments": [

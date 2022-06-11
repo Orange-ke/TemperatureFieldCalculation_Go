@@ -108,7 +108,7 @@ func (c *calculatorWithArrDeque) InitSteel(steelValue int, castingMachine *Casti
 }
 
 func (c *calculatorWithArrDeque) InitPushData(coordinate model.Coordinate) {
-	up := coordinate.CenterStartDistance + coordinate.LevelHeight - c.castingMachine.LevelHeight
+	up := coordinate.CenterStartDistance
 	arc := coordinate.CenterEndDistance - coordinate.CenterStartDistance
 	down := float32(coordinate.ZLength) - coordinate.CenterEndDistance
 	initPushData(up, arc, down)
@@ -162,7 +162,7 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 		if t < min {
 			min = t
 		}
-	})
+	}, 0, c.Field.Size())
 	if min >= 0.2 {
 		min = 0.2
 	}
@@ -170,8 +170,8 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	return min, time.Since(start)
 }
 
-// 计算热流密度
-func (c *calculatorWithArrDeque) calculateQ() {
+// 离线计算计算热流密度: 暂时未用到
+func (c *calculatorWithArrDeque) calculateQOffline() {
 	start := time.Now()
 	if c.runningState == stateRunning {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
@@ -200,7 +200,7 @@ func (c *calculatorWithArrDeque) calculateQ() {
 			for ; i < Width/YStep; i++ {
 				c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ - (initialQ*0.7)*float32(i-start)/float32(Width/YStep-1-start)
 			}
-		})
+		}, 0, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep)
 	}
 	fmt.Println("计算热流密度所需时间：", time.Since(start).Milliseconds())
 }
@@ -209,10 +209,13 @@ func (c *calculatorWithArrDeque) calculateWideSurfaceEnergy(wideSurfaceH float32
 	var wideSurfaceEnergy float32
 	var initialQ float32
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		if c.castingMachine.WhichZone(z) != Zone0 {
+			return
+		}
 		initialQ = 1 / (ROfWater() + ROfCu() + 1/wideSurfaceH) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
 		j := 0
 		for ; j < Length/XStep; j++ {
-			if item[Width/YStep-1][j] > c.steel1.LiquidPhaseTemperature {
+			if item[0][j] > c.steel1.LiquidPhaseTemperature {
 				c.steel1.Parameter.Q[z][j] = initialQ
 				wideSurfaceEnergy += c.steel1.Parameter.Q[z][j] * float32(XStep*ZStep) / 1e6
 			} else {
@@ -221,10 +224,10 @@ func (c *calculatorWithArrDeque) calculateWideSurfaceEnergy(wideSurfaceH float32
 		}
 		start := j - 1
 		for ; j < Length/XStep; j++ {
-			c.steel1.Parameter.Q[z][j] = initialQ - (initialQ*0.7)*float32(j-start)/float32(Length/XStep-1-start)
+			c.steel1.Parameter.Q[z][j] = initialQ - initialQ*0.7*(float32((j-start)*XStep)-float32(XStep)/2)/float32((Length/XStep-1-start)*XStep)
 			wideSurfaceEnergy += c.steel1.Parameter.Q[z][j] * float32(XStep*ZStep) / 1e6
 		}
-	})
+	}, 0, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep)
 	return wideSurfaceEnergy
 }
 
@@ -232,10 +235,13 @@ func (c *calculatorWithArrDeque) calculateNarrowSurfaceEnergy(narrowSurfaceH flo
 	var narrowSurfaceEnergy float32
 	var initialQ float32
 	c.Field.Traverse(func(z int, item *model.ItemType) {
+		if c.castingMachine.WhichZone(z) != Zone0 {
+			return
+		}
 		initialQ = 1 / (ROfWater() + ROfCu() + 1/narrowSurfaceH) * (item[0][Length/XStep-1] - c.castingMachine.CoolerConfig.NarrowSurfaceIn)
 		i := 0
 		for ; i < Width/YStep; i++ {
-			if item[i][Length/XStep-1] > c.steel1.LiquidPhaseTemperature {
+			if item[i][0] > c.steel1.LiquidPhaseTemperature {
 				c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ
 				narrowSurfaceEnergy += c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] * float32(YStep*ZStep) / 1e6
 			} else {
@@ -244,19 +250,33 @@ func (c *calculatorWithArrDeque) calculateNarrowSurfaceEnergy(narrowSurfaceH flo
 		}
 		start := i - 1
 		for ; i < Width/YStep; i++ {
-			c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ - (initialQ*0.7)*float32(i-start)/float32(Width/YStep-1-start)
+			c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] = initialQ - (initialQ * 0.7 * (float32((i-start)*YStep) - float32(YStep)/2) / float32((Width/YStep-1-start)*YStep))
 			narrowSurfaceEnergy += c.steel1.Parameter.Q[z][Length/XStep+Width/YStep-1-i] * float32(YStep*ZStep) / 1e6
 		}
-	})
+	}, 0, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep)
 	return narrowSurfaceEnergy
 }
 
-// 在线计算Q
-func (c *calculatorWithArrDeque) calculateQOnline() {
+// 在线计算热流密度和综合换热系数
+func (c *calculatorWithArrDeque) calculateQAndHeffOnline() {
+	// 结晶器先计算热流密度Q再计算综合换热系数Heff
+	c.calculateQOnlineAtMd()
+	c.calculateHeffOnlineAtMd()
+	if c.Field.Size() > (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep {
+		// 二冷区先计算平均综合换热系数再计算热流密度
+		c.calculateHeffOnlineAtSecondaryCoolingZone()
+		c.calculateQOnlineAtSecondaryCoolingZone()
+	}
+}
+
+func (c *calculatorWithArrDeque) calculateQOnlineAtMd() {
 	start := time.Now()
-	energyScale := float32(c.Field.Size()) / ((float32(c.castingMachine.MdLength) - c.castingMachine.LevelHeight) / float32(ZStep))
+	energyScale := float32(c.Field.Size()) / (float32(c.castingMachine.Coordinate.MdLength) / float32(ZStep))
+	if energyScale >= (float32(c.castingMachine.Coordinate.MdLength)-c.castingMachine.Coordinate.LevelHeight)/float32(c.castingMachine.Coordinate.MdLength) {
+		energyScale = (float32(c.castingMachine.Coordinate.MdLength) - c.castingMachine.Coordinate.LevelHeight) / float32(c.castingMachine.Coordinate.MdLength)
+	}
 	fmt.Println("energyScale: ", energyScale)
-	left, right := float32(500.0), float32(5000.0)
+	left, right := float32(500.0), float32(5000.0) // 二分的上下界
 	var wideSurfaceH float32
 	err := float32(0.0001)
 	var calculateErr float32
@@ -293,12 +313,161 @@ func (c *calculatorWithArrDeque) calculateQOnline() {
 		}
 	}
 	fmt.Println("targetNarrowSurfaceEnergy:", targetNarrowSurfaceEnergy, "narrowSurfaceEnergy:", c.calculateNarrowSurfaceEnergy(narrowSurfaceH), narrowSurfaceH)
+	fmt.Println("计算结晶器热流密度所需时间：", time.Since(start).Milliseconds())
+}
 
-	fmt.Println("计算热流密度所需时间：", time.Since(start).Milliseconds())
+// 根据二冷区冷区参数计算对应的综合换热系数
+func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
+	// Hi、Hi_1 代表辊子距离结晶器液面高度
+	// D0 cm 铸坯厚度
+	// Lwi 外弧线上辊距 cm
+	// Ri 连铸机圆弧主半径 cm
+	// v 拉速
+	// Hi 第i个辊子处距结晶器液面的垂直高度
+	// Hi_1 第i-1个辊子处距结晶器液面的垂直高度
+	// Si_1 前一个辊子处坯壳厚度
+	// Tm 凝固温度，用液相线温度
+	// Tma 铸坯坯壳平均温度
+	// 宽面，窄面分开计算
+	wideItems := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg.WideItems
+	//narrowItems := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg.NarrowItems
+	coolingZoneCfg := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.CoolingZoneCfg
+	cooingWaterCfg := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.SecondaryCoolingWaterCfg
+	L := float32(c.castingMachine.Coordinate.Length) / 10 // 铸坯宽面尺寸
+	var AB, BC, CD, DE, Ds, sprayWidth, Hbr float32
+	var Deformation, centerRollersDistance, v, Si_1, Tm, Tma, S, Volume, T, R0, Ts_ float64
+	var preDistance = float32(c.castingMachine.Coordinate.MdLength) - c.castingMachine.Coordinate.LevelHeight
+	var curDistance float32
+	var startSliceIndex, endSliceIndex int
+	// 计算宽面
+	for _, item := range wideItems {
+		if c.Field.Size() < int(preDistance)/ZStep {
+			break
+		}
+		// step1. 计算平均综合换热系数
+		Ds = item.CenterSpraySection.Thickness // 喷淋厚度
+		centerRollersDistance = float64(item.RollerDistance / 10.0)
+		AB = (L - Ds) / 2.0
+		v = float64(c.castingMachine.CoolerConfig.V) / 10.0 * 60.0                                             // 拉速 mm/s -> cm/min
+		Si_1 = float64(c.calculateSolidThickness(preDistance))                                                 // 计算当前辊子处对应的坯壳厚度
+		Tm = float64(c.steel1.LiquidPhaseTemperature)                                                          // 液相线温度
+		Tma = float64(c.calculateTma(preDistance))                                                             // 坯壳平均温度
+		Deformation = calculateDeformation(centerRollersDistance, v, float64(item.Distance/10), Si_1, Tm, Tma) // 计算鼓肚量
+		DE = calculateDE(float64(item.InnerDiameter/10), float64(item.OuterDiameter/10), Deformation)          // 计算辊子直接接触宽度
+		BC = Ds
+		CD = AB - DE
+		sprayWidth = item.CenterSpraySection.RightLimit - item.CenterSpraySection.LeftLimit // 喷淋宽度
+		Ts_ = float64(c.calculateTs(preDistance))                                           // 辊子对应铸坯表面平均温度
+		Hbr = calculateHbr(Ts_, 50.0)                                                       // 计算空气换热系数
+		S = float64(sprayWidth*Ds) / 1e6                                                    // 喷淋面积
+		Volume = float64(cooingWaterCfg[item.CoolingZone].InnerArcWaterVolume / float32(coolingZoneCfg[item.CoolingZone-1].End-coolingZoneCfg[item.CoolingZone-1].Start+1) / 60.0)
+		R0 = float64(item.InnerDiameter) / 2.0 / 10.0                                                               // 辊子半径
+		T = float64(c.calculateT(preDistance, item.Distance))                                                       // 计算喷淋区域平均温度
+		heff := calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr, item.Medium, S, Volume, T, float64(Ds), R0, Ts_) // 计算平均综合换热系数
+		log.Info("平均综合换热系数：", heff)
+		// step2. 确定辊间距对应影响的切片范围，然后更新
+		curDistance = item.Distance
+		startSliceIndex = int(preDistance / float32(ZStep))
+		endSliceIndex = int(curDistance / float32(ZStep))
+		for z := startSliceIndex; z <= endSliceIndex; z++ {
+			for j := 0; j < Length/XStep; j++ {
+				c.steel1.Parameter.Heff[z][j] = heff
+				fmt.Print(c.steel1.Parameter.Heff[z][j], " ")
+			}
+			fmt.Println()
+		}
+		preDistance = curDistance
+	}
+	// 计算窄面
+	// todo
+}
+
+func (c *calculatorWithArrDeque) calculateQOnlineAtSecondaryCoolingZone() {
+	start := time.Now()
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		for j := 0; j < Length/XStep; j++ {
+			c.steel1.Parameter.Q[z][j] = c.steel1.Parameter.Heff[z][j] * (item[Width/YStep-1][j] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+		}
+		//for i := 0; i < Width/YStep; i++ {
+		//	c.steel1.Parameter.Q[z][Length/XStep+i] = c.steel1.Parameter.Heff[z][Length/XStep+i] / (item[i][Length/XStep-1] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+		//}
+	}, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep, c.Field.Size())
+	fmt.Println("计算综合换热系数所需时间：", time.Since(start).Milliseconds())
+}
+
+// 计算辊子对应铸坯坯壳平均温度
+func (c *calculatorWithArrDeque) calculateTma(distance float32) float32 {
+	// 前一个辊子
+	sliceIndex := int(distance/float32(ZStep)) - 1
+	slice := c.Field.GetSlice(sliceIndex)
+	var sum float32
+	for i := 0; i < Length/XStep; i++ {
+		sum += (c.steel1.LiquidPhaseTemperature + slice[Width/YStep-1][i]) / 2.0
+	}
+	return sum / float32(Length/XStep)
+}
+
+// 计算辊子对应铸坯表面的平均温度
+func (c *calculatorWithArrDeque) calculateTs(distance float32) float32 {
+	// 前一个辊子
+	sliceIndex := int(distance/float32(ZStep)) - 1
+	slice := c.Field.GetSlice(sliceIndex)
+	var sum float32
+	for i := 0; i < Length/XStep; i++ {
+		sum += slice[width/YStep-1][i]
+	}
+	return sum / float32(Length/XStep)
+}
+
+// 计算喷淋区域平均温度
+func (c *calculatorWithArrDeque) calculateT(preDistance, distance float32) float32 {
+	startIndex := int(preDistance/float32(ZStep)) - 1
+	endIndex := int(distance / float32(ZStep))
+	var sum float32
+	var count int
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		for j := 0; j < Length/XStep; j++ {
+			sum += item[Width/XStep-1][j]
+			count++
+		}
+	}, startIndex, endIndex)
+	return sum / float32(count)
+}
+
+// 计算外弧辊距
+func (c *calculatorWithArrDeque) calculateOuterRollersDistance(rollerDistance, distance float32) float32 {
+	r := c.castingMachine.Coordinate.R
+	halfWidth := float32(c.castingMachine.Coordinate.Width / 2)
+	if distance > c.castingMachine.Coordinate.CenterStartDistance && distance < c.castingMachine.Coordinate.CenterEndDistance {
+		return rollerDistance * r / (r - halfWidth)
+	}
+	return rollerDistance
+}
+
+// 计算平均坯壳厚度
+func (c *calculatorWithArrDeque) calculateSolidThickness(distance float32) float32 {
+	// 前一个辊子
+	sliceIndex := int(distance/float32(ZStep)) - 1
+	slice := c.Field.GetSlice(sliceIndex)
+	liquidTemp := c.steel1.LiquidPhaseTemperature
+	var sum, count float32
+	for i := 0; i < Length/XStep; i++ {
+		count = 0
+		for j := Width/YStep - 1; j >= 0; j-- {
+			if slice[j][i] <= liquidTemp {
+				count++
+			} else {
+				break
+			}
+		}
+		sum += count * float32(YStep)
+	}
+	fmt.Println("calculateSolidThickness: ", sum, float32(Length/XStep))
+	return sum / float32(Length/XStep)
 }
 
 // 计算综合换热系数
-func (c *calculatorWithArrDeque) calculateHeff() {
+func (c *calculatorWithArrDeque) calculateHeffOnlineAtMd() {
 	start := time.Now()
 	if c.runningState == stateRunning {
 		c.Field.Traverse(func(z int, item *model.ItemType) {
@@ -308,7 +477,7 @@ func (c *calculatorWithArrDeque) calculateHeff() {
 			for i := 0; i < Width/YStep; i++ {
 				c.steel1.Parameter.Heff[z][Length/XStep+i] = c.steel1.Parameter.Q[z][Length/XStep+i] / (item[i][Length/XStep-1] - c.castingMachine.CoolerConfig.WideSurfaceIn)
 			}
-		})
+		}, 0, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep)
 	}
 	fmt.Println("计算综合换热系数所需时间：", time.Since(start).Milliseconds())
 }
@@ -325,7 +494,7 @@ LOOP:
 		//	return
 		//}
 		// 目前只计算到结晶器结束
-		if c.Field.Size() >= 85 {
+		if c.Field.Size() >= 85 + 23 {
 			return
 		}
 		select {
@@ -339,8 +508,7 @@ LOOP:
 				gap = OneSliceDuration
 				deltaT = float32(OneSliceDuration.Seconds())
 			} else {
-				c.calculateQOnline()
-				c.calculateHeff()
+				c.calculateQAndHeffOnline()
 				fmt.Println("Q: ", c.steel1.Parameter.Q[c.Field.Size()-1][:Length/XStep+Width/YStep])
 				fmt.Println("Heff: ", c.steel1.Parameter.Heff[c.Field.Size()-1][:Length/XStep+Width/YStep])
 				deltaT, _ = c.calculateTimeStep()
@@ -419,7 +587,7 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 	}
 
 	if c.isFull {
-		fmt.Println("updateSliceInfo: 切片已满")
+		log.Info("updateSliceInfo: 切片已满")
 		// 新加入的切片未组成一个三维数组
 		for i := 0; i < add; i++ {
 			c.thermalField.RemoveLast()
@@ -1039,17 +1207,17 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *Vertical
 			res.Inner = append(res.Inner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
 			step = 0
 		}
-	})
+	}, 0, c.Field.Size())
 	return res
 }
 
 type VerticalSliceData2 struct {
-	Length        int           `json:"length"`
-	VerticalSlice [][84]float32 `json:"vertical_slice"`
-	Solid         []int         `json:"solid"`
-	Liquid        []int         `json:"liquid"`
-	SolidJoin     Join          `json:"solid_join"`
-	LiquidJoin    Join          `json:"liquid_join"`
+	Length        int         `json:"length"`
+	VerticalSlice [][]float32 `json:"vertical_slice"`
+	Solid         []int       `json:"solid"`
+	Liquid        []int       `json:"liquid"`
+	SolidJoin     Join        `json:"solid_join"`
+	LiquidJoin    Join        `json:"liquid_join"`
 }
 
 type Join struct {
@@ -1057,15 +1225,20 @@ type Join struct {
 	JoinIndex int  `json:"join_index"`
 }
 
-func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *VerticalSliceData2 {
-	solidTemp := float32(1445.69)
-	liquidTemp := float32(1506.77)
-	scale := 5
+func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(reqData model.VerticalReqData) *VerticalSliceData2 {
+	solidTemp := c.steel1.SolidPhaseTemperature
+	liquidTemp := c.steel1.LiquidPhaseTemperature
+	index := reqData.Index
+	zScale := reqData.ZScale
 	res := &VerticalSliceData2{
 		Length:        c.Field.Size(),
-		VerticalSlice: make([][84]float32, c.Field.Size()/scale),
-		Solid:         make([]int, c.Field.Size()/scale),
-		Liquid:        make([]int, c.Field.Size()/scale),
+		VerticalSlice: make([][]float32, c.Field.Size()/zScale),
+		Solid:         make([]int, c.Field.Size()),
+		Liquid:        make([]int, c.Field.Size()),
+	}
+
+	for i := 0; i < len(res.VerticalSlice); i++ {
+		res.VerticalSlice[i] = make([]float32, Width/YStep*2)
 	}
 
 	var temp float32
@@ -1074,48 +1247,48 @@ func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(index int) *Vertical
 	zIndex := 0
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		step++
-		if step == scale {
-			for i := 0; i < 42; i++ {
-				res.VerticalSlice[zIndex][42+i] = item[i][Length/XStep-1-index]
+		if step == zScale {
+			for i := 0; i < Width/YStep; i++ {
+				res.VerticalSlice[zIndex][Width/YStep+i] = item[i][Length/XStep-1-index]
 			}
-			for i := 42 - 1; i >= 0; i-- {
-				res.VerticalSlice[zIndex][42-1-i] = item[i][Length/XStep-1-index]
-			}
-			for i := 0; i < 42; i++ {
-				temp = item[i][Length/XStep-1-index]
-				if temp <= solidTemp {
-					res.Solid[zIndex] = 42 - i
-					if res.Solid[zIndex] == 42 && !solidJoinSet {
-						res.SolidJoin.IsJoin = true
-						res.SolidJoin.JoinIndex = zIndex
-						solidJoinSet = true
-						fmt.Println(res.SolidJoin)
-					}
-					break
-				} else {
-					res.Solid[zIndex] = 0
-				}
-			}
-
-			for i := 0; i < 42; i++ {
-				temp = item[i][Length/XStep-1-index]
-				if temp <= liquidTemp {
-					res.Liquid[zIndex] = 42 - i
-					if res.Liquid[zIndex] == 42 && !liquidJoinSet {
-						res.LiquidJoin.IsJoin = true
-						res.LiquidJoin.JoinIndex = zIndex
-						liquidJoinSet = true
-						fmt.Println(res.LiquidJoin)
-					}
-					break
-				} else {
-					res.Liquid[zIndex] = 0
-				}
+			for i := Width/YStep - 1; i >= 0; i-- {
+				res.VerticalSlice[zIndex][Width/YStep-1-i] = item[i][Length/XStep-1-index]
 			}
 			step = 0
 			zIndex++
 		}
-	})
+		for i := 0; i < Width/YStep; i++ {
+			temp = item[i][Length/XStep-1-index]
+			if temp <= solidTemp {
+				res.Solid[z] = Width/YStep - i
+				if res.Solid[z] == Width/YStep && !solidJoinSet {
+					res.SolidJoin.IsJoin = true
+					res.SolidJoin.JoinIndex = z
+					solidJoinSet = true
+					fmt.Println(res.SolidJoin)
+				}
+				break
+			} else {
+				res.Solid[z] = 0
+			}
+		}
+
+		for i := 0; i < Width/YStep; i++ {
+			temp = item[i][Length/XStep-1-index]
+			if temp <= liquidTemp {
+				res.Liquid[z] = Width/YStep - i
+				if res.Liquid[z] == Width/YStep && !liquidJoinSet {
+					res.LiquidJoin.IsJoin = true
+					res.LiquidJoin.JoinIndex = z
+					liquidJoinSet = true
+					fmt.Println(res.LiquidJoin)
+				}
+				break
+			} else {
+				res.Liquid[z] = 0
+			}
+		}
+	}, 0, c.Field.Size())
 	fmt.Println(res)
 	return res
 }
@@ -1130,8 +1303,8 @@ func (c *calculatorWithArrDeque) Calculate() {
 	start := time.Now()
 	for count := 0; count < 10; count++ {
 		deltaT, _ := c.calculateTimeStep()
-		c.calculateQ()
-		c.calculateHeff()
+		c.calculateQOffline()
+		c.calculateHeffOnlineAtMd()
 		fmt.Println(c.steel1.Parameter.Q[0][:Length/XStep+Width/YStep])
 		fmt.Println(c.steel1.Parameter.Heff[0][:Length/XStep+Width/YStep])
 		cost := c.e.dispatchTask(deltaT, 0, c.Field.Size())
@@ -1164,6 +1337,5 @@ func (c *calculatorWithArrDeque) TestCalculateQ() {
 		c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
 		c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
 	}
-
-	c.calculateQOnline()
+	c.calculateQOffline()
 }
