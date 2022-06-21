@@ -6,23 +6,23 @@
       "outer_diameter": 100,
       "inner_diameter": 100,
       "medium": 1,
-      "distance": 930.0,
+      "distance": 930,
       "roller_inner_diameter": 38,
-      "roller_distance": 80.0,
+      "roller_distance": 80,
       "center_spray_section": {
-        "left_limit": -630.0,
-        "right_limit": 630.0,
+        "left_limit": -630,
+        "right_limit": 630,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 0.0
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 0.0
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -33,21 +33,21 @@
       "medium": 1,
       "distance": 1083,
       "roller_inner_diameter": 38,
-      "roller_distance": 153.0,
+      "roller_distance": 153,
       "center_spray_section": {
-        "left_limit": -630.0,
-        "right_limit": 630.0,
+        "left_limit": -630,
+        "right_limit": 630,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 0.0
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 0.0
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -58,21 +58,21 @@
       "medium": 2,
       "distance": 1243,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 160,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -83,21 +83,21 @@
       "medium": 2,
       "distance": 1403,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 160,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -108,21 +108,21 @@
       "medium": 2,
       "distance": 1563,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 160,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -133,21 +133,21 @@
       "medium": 2,
       "distance": 1723,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 160,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -158,21 +158,21 @@
       "medium": 2,
       "distance": 1883,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 160,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -183,21 +183,21 @@
       "medium": 2,
       "distance": 2063,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 180,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -208,21 +208,21 @@
       "medium": 2,
       "distance": 2263,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 200,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -233,21 +233,21 @@
       "medium": 2,
       "distance": 2463,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 200,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -258,21 +258,21 @@
       "medium": 2,
       "distance": 2664,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 201,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -283,21 +283,21 @@
       "medium": 2,
       "distance": 2866,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 202,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -308,21 +308,21 @@
       "medium": 2,
       "distance": 3069,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 203,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -333,21 +333,21 @@
       "medium": 2,
       "distance": 3273,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 204,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -358,21 +358,21 @@
       "medium": 2,
       "distance": 3478,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 205,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -383,21 +383,21 @@
       "medium": 2,
       "distance": 3684,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 206,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -408,21 +408,21 @@
       "medium": 2,
       "distance": 3891,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 207,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -433,21 +433,21 @@
       "medium": 2,
       "distance": 4099,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 208,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -458,21 +458,21 @@
       "medium": 2,
       "distance": 4308,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 209,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -650,
+        "right_limit": 650,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -483,21 +483,21 @@
       "medium": 2,
       "distance": 4518,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 210,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -530,
+        "right_limit": 530,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -508,21 +508,21 @@
       "medium": 2,
       "distance": 4786,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 268,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -533,21 +533,21 @@
       "medium": 2,
       "distance": 5049,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -558,21 +558,21 @@
       "medium": 2,
       "distance": 5302,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -583,21 +583,21 @@
       "medium": 2,
       "distance": 5566,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -608,21 +608,21 @@
       "medium": 2,
       "distance": 5830,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -633,21 +633,21 @@
       "medium": 2,
       "distance": 6083,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -658,21 +658,21 @@
       "medium": 2,
       "distance": 6346,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -683,21 +683,21 @@
       "medium": 2,
       "distance": 6625,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 279,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -708,21 +708,21 @@
       "medium": 2,
       "distance": 6888,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -733,21 +733,21 @@
       "medium": 2,
       "distance": 7141,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -758,21 +758,21 @@
       "medium": 2,
       "distance": 7405,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -783,21 +783,21 @@
       "medium": 2,
       "distance": 7669,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -808,21 +808,21 @@
       "medium": 2,
       "distance": 7922,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -833,21 +833,21 @@
       "medium": 2,
       "distance": 8185,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -858,21 +858,21 @@
       "medium": 2,
       "distance": 8464,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 279,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -883,21 +883,21 @@
       "medium": 2,
       "distance": 8727,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -908,21 +908,21 @@
       "medium": 2,
       "distance": 8980,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -933,21 +933,21 @@
       "medium": 2,
       "distance": 9244,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -958,21 +958,21 @@
       "medium": 2,
       "distance": 9508,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 264,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -983,21 +983,21 @@
       "medium": 2,
       "distance": 9761,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 253,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1008,21 +1008,21 @@
       "medium": 2,
       "distance": 10024,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 263,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1033,21 +1033,21 @@
       "medium": 2,
       "distance": 10307,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 283,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1058,21 +1058,21 @@
       "medium": 2,
       "distance": 10582,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1083,21 +1083,21 @@
       "medium": 2,
       "distance": 10857,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1108,21 +1108,21 @@
       "medium": 2,
       "distance": 11132,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1133,21 +1133,21 @@
       "medium": 2,
       "distance": 11407,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1158,21 +1158,21 @@
       "medium": 2,
       "distance": 11682,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -583,
+        "right_limit": 583,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1183,21 +1183,21 @@
       "medium": 2,
       "distance": 11957,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -475,
+        "right_limit": 475,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1208,21 +1208,21 @@
       "medium": 2,
       "distance": 12240,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 283,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1233,21 +1233,21 @@
       "medium": 2,
       "distance": 12515,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1258,21 +1258,21 @@
       "medium": 2,
       "distance": 12790,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1283,21 +1283,21 @@
       "medium": 2,
       "distance": 13065,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1308,21 +1308,21 @@
       "medium": 2,
       "distance": 13340,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1333,21 +1333,21 @@
       "medium": 2,
       "distance": 13615,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1358,21 +1358,21 @@
       "medium": 2,
       "distance": 13890,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1383,21 +1383,21 @@
       "medium": 2,
       "distance": 14173,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 283,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1408,21 +1408,21 @@
       "medium": 2,
       "distance": 14448,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1433,21 +1433,21 @@
       "medium": 2,
       "distance": 14723,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1458,21 +1458,21 @@
       "medium": 2,
       "distance": 14998,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1483,21 +1483,21 @@
       "medium": 2,
       "distance": 15273,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1508,21 +1508,21 @@
       "medium": 2,
       "distance": 15548,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1533,21 +1533,21 @@
       "medium": 2,
       "distance": 15823,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 275,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1558,21 +1558,21 @@
       "medium": 2,
       "distance": 16119,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 296,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1583,21 +1583,21 @@
       "medium": 2,
       "distance": 16416,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 297,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1608,21 +1608,21 @@
       "medium": 2,
       "distance": 16712,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 296,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1633,21 +1633,21 @@
       "medium": 2,
       "distance": 17007,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 295,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1658,21 +1658,21 @@
       "medium": 2,
       "distance": 17300,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 293,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1683,21 +1683,21 @@
       "medium": 2,
       "distance": 17592,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 292,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1708,21 +1708,21 @@
       "medium": 2,
       "distance": 17883,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 291,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1733,21 +1733,21 @@
       "medium": 2,
       "distance": 18174,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 291,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1758,21 +1758,21 @@
       "medium": 2,
       "distance": 18462,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 288,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1783,21 +1783,21 @@
       "medium": 2,
       "distance": 18749,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 287,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1808,21 +1808,21 @@
       "medium": 2,
       "distance": 19035,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 286,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1833,21 +1833,21 @@
       "medium": 2,
       "distance": 19320,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1858,21 +1858,21 @@
       "medium": 2,
       "distance": 19605,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1883,21 +1883,21 @@
       "medium": 2,
       "distance": 19890,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1908,21 +1908,21 @@
       "medium": 2,
       "distance": 20175,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1933,21 +1933,21 @@
       "medium": 2,
       "distance": 20460,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1958,21 +1958,21 @@
       "medium": 2,
       "distance": 20745,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -1983,21 +1983,21 @@
       "medium": 2,
       "distance": 21030,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2008,21 +2008,21 @@
       "medium": 2,
       "distance": 21315,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2033,21 +2033,21 @@
       "medium": 2,
       "distance": 21600,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2058,21 +2058,21 @@
       "medium": 2,
       "distance": 21885,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2083,21 +2083,21 @@
       "medium": 2,
       "distance": 22170,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2108,21 +2108,21 @@
       "medium": 2,
       "distance": 22455,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2133,21 +2133,21 @@
       "medium": 2,
       "distance": 22740,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2158,21 +2158,21 @@
       "medium": 2,
       "distance": 23025,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2183,21 +2183,21 @@
       "medium": 2,
       "distance": 23310,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2208,21 +2208,21 @@
       "medium": 2,
       "distance": 23595,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2233,21 +2233,21 @@
       "medium": 2,
       "distance": 23880,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2258,21 +2258,21 @@
       "medium": 2,
       "distance": 24165,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2283,21 +2283,21 @@
       "medium": 2,
       "distance": 24450,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2308,21 +2308,21 @@
       "medium": 2,
       "distance": 24735,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2333,21 +2333,21 @@
       "medium": 2,
       "distance": 25020,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2358,21 +2358,21 @@
       "medium": 2,
       "distance": 25305,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2383,21 +2383,21 @@
       "medium": 2,
       "distance": 25590,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2408,21 +2408,21 @@
       "medium": 2,
       "distance": 25875,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2433,21 +2433,21 @@
       "medium": 2,
       "distance": 26160,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2458,21 +2458,21 @@
       "medium": 2,
       "distance": 26445,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2483,21 +2483,21 @@
       "medium": 2,
       "distance": 26730,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2508,21 +2508,21 @@
       "medium": 2,
       "distance": 27015,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2533,21 +2533,21 @@
       "medium": 2,
       "distance": 27300,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2558,21 +2558,21 @@
       "medium": 2,
       "distance": 27585,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2583,21 +2583,21 @@
       "medium": 2,
       "distance": 27870,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2608,21 +2608,21 @@
       "medium": 2,
       "distance": 28155,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2633,21 +2633,21 @@
       "medium": 2,
       "distance": 28440,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2658,21 +2658,21 @@
       "medium": 2,
       "distance": 28725,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2683,21 +2683,21 @@
       "medium": 2,
       "distance": 29010,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2708,21 +2708,21 @@
       "medium": 2,
       "distance": 29295,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2733,21 +2733,21 @@
       "medium": 2,
       "distance": 29580,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2758,21 +2758,21 @@
       "medium": 2,
       "distance": 29865,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2783,21 +2783,21 @@
       "medium": 2,
       "distance": 30150,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2808,21 +2808,21 @@
       "medium": 2,
       "distance": 30435,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2833,21 +2833,21 @@
       "medium": 2,
       "distance": 30720,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2858,21 +2858,21 @@
       "medium": 2,
       "distance": 31005,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2883,21 +2883,21 @@
       "medium": 2,
       "distance": 31290,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2908,21 +2908,21 @@
       "medium": 2,
       "distance": 31575,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 285,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -456,
+        "right_limit": 456,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     },
     {
@@ -2933,55 +2933,113 @@
       "medium": 2,
       "distance": 31860,
       "roller_inner_diameter": 38,
-      "roller_distance": 0.0,
+      "roller_distance": 0,
       "center_spray_section": {
-        "left_limit": -800.0,
-        "right_limit": 800.0,
+        "left_limit": -564,
+        "right_limit": 564,
         "thickness": 22.3
       },
-      "alter_spray_section1": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_1": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       },
-      "alter_spray_section2": {
-        "left_limit": 0.0,
-        "right_limit": 0.0,
-        "thickness": 22.3
+      "alter_spray_section_2": {
+        "left_limit": 0,
+        "right_limit": 0,
+        "thickness": 0
       }
     }
   ],
   "narrow_items": [
     {
       "roller_num": 1,
-      "roller_distance": 80.0,
-      "spray_section1": {
-        "width": 200.0,
+      "cooling_zone": 1,
+      "diameter": 100,
+      "roller_distance": 46.6,
+      "spray_section_1": {
+        "width": 240.0,
         "thickness": 22.3
       },
-      "spray_section2": {
-        "width": 230.0,
-        "thickness": 22.3
+      "spray_section_2": {
+        "width": 0,
+        "thickness": 0
       },
-      "spray_section3": {
-        "width": 250.0,
-        "thickness": 22.3
+      "spray_section_3": {
+        "width": 0,
+        "thickness": 0
       }
     },
     {
       "roller_num": 2,
-      "roller_distance": 153.0,
-      "spray_section1": {
-        "width": 200.0,
+      "cooling_zone": 1,
+      "diameter": 100,
+      "roller_distance": 46.6,
+      "spray_section_1": {
+        "width": 240.0,
         "thickness": 22.3
       },
-      "spray_section2": {
-        "width": 230.0,
+      "spray_section_2": {
+        "width": 0,
+        "thickness": 0
+      },
+      "spray_section_3": {
+        "width": 0,
+        "thickness": 0
+      }
+    },
+    {
+      "roller_num": 3,
+      "cooling_zone": 1,
+      "diameter": 100,
+      "roller_distance": 46.6,
+      "spray_section_1": {
+        "width": 240.0,
         "thickness": 22.3
       },
-      "spray_section3": {
-        "width": 250.0,
+      "spray_section_2": {
+        "width": 0,
+        "thickness": 0
+      },
+      "spray_section_3": {
+        "width": 0,
+        "thickness": 0
+      }
+    },
+    {
+      "roller_num": 4,
+      "cooling_zone": 1,
+      "diameter": 100,
+      "roller_distance": 46.6,
+      "spray_section_1": {
+        "width": 240.0,
         "thickness": 22.3
+      },
+      "spray_section_2": {
+        "width": 0,
+        "thickness": 0
+      },
+      "spray_section_3": {
+        "width": 0,
+        "thickness": 0
+      }
+    },
+    {
+      "roller_num": 5,
+      "cooling_zone": 1,
+      "diameter": 100,
+      "roller_distance": 46.6,
+      "spray_section_1": {
+        "width": 240.0,
+        "thickness": 22.3
+      },
+      "spray_section_2": {
+        "width": 0,
+        "thickness": 0
+      },
+      "spray_section_3": {
+        "width": 0,
+        "thickness": 0
       }
     }
   ]

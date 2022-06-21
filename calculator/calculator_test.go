@@ -208,3 +208,50 @@ func TestCalculatorExecutor(t *testing.T) {
 	}
 	fmt.Println("计算的点数: ", count, "实际需要遍历的点数: ", Width/YStep*Length/XStep)
 }
+
+// 测试用
+func (c *calculatorWithArrDeque) Calculate() {
+	for z := 0; z < 1; z++ {
+		c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+		c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+	}
+
+	start := time.Now()
+	for count := 0; count < 10; count++ {
+		deltaT, _ := c.calculateTimeStep()
+		c.calculateQOffline()
+		c.calculateHeffOnlineAtMd()
+		fmt.Println(c.steel1.Parameter.Q[0][:Length/XStep+Width/YStep])
+		fmt.Println(c.steel1.Parameter.Heff[0][:Length/XStep+Width/YStep])
+		cost := c.e.dispatchTask(deltaT, 0, c.Field.Size())
+
+		if c.alternating {
+			c.Field = c.thermalField1
+		} else {
+			c.Field = c.thermalField
+		}
+
+		for i := Width/YStep - 1; i > Width/YStep-6; i-- {
+			for j := Length/XStep - 5; j <= Length/XStep-1; j++ {
+				fmt.Printf("%.4f ", float64(c.Field.Get(c.Field.Size()-1, i, j)))
+			}
+			fmt.Print(i)
+			fmt.Println()
+		}
+		c.alternating = !c.alternating
+		fmt.Println("单此计算时间：", cost.Milliseconds())
+	}
+
+	fmt.Println("arr deque 总共消耗时间：", time.Since(start), "平均消耗时间: ", time.Since(start)/100)
+
+	// 一个核心计算
+	//c.CalculateSerially()
+}
+
+func (c *calculatorWithArrDeque) TestCalculateQ() {
+	for z := 0; z < 1; z++ {
+		c.thermalField.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+		c.thermalField1.AddFirst(c.castingMachine.CoolerConfig.StartTemperature)
+	}
+	c.calculateQOffline()
+}

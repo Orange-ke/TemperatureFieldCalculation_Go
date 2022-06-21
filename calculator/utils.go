@@ -1,7 +1,8 @@
 package calculator
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 	"lz/model"
 	"math"
 )
@@ -29,7 +30,7 @@ func getEy(y int) float32 {
 
 // 计算实际传热系数
 func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter) float32 {
-	var K = float32(0.9) // 修正系数K
+	var K = float32(2.0) // 修正系数K
 	// 等效空间步长
 	var ex1 = getEx(x1)
 	var ex2 = getEx(x2)
@@ -239,10 +240,11 @@ func abs(x float32) float32 {
 }
 
 // 计算冷却水在结晶器铜板冷却水道中产生的换热系数
+// todo
 func ROfWater() float32 {
 	Dh := 4 * (math.Pi*3 + 15 + 15 + 6) / (15*6 + math.Pi*9/2)
 	//Vwt := 3000.0 / 1000.0 / 60.0 * (Dh * 0.05) // 流速
-	Vwt := 8.0
+	Vwt := 8.0 // todo 调节
 	v := 0.0000007689   // 粘性力
 	Pr := 5.13          // 普朗特数
 	Red := Vwt * Dh / v // 雷诺数
@@ -288,10 +290,10 @@ func calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr float32, typ int, S, Volu
 	// 3. 辊子直接接触区
 	Hsr := calculateHsr(R0, float64(DE), Ts_)
 
-	fmt.Printf("L: %f, AB: %f, BC: %f, CD: %f, DE: %f, Hbr: %f, typ: %d, S: %f, Volume: %f, T: %f, Ds: %f, R0: %f, Ts_: %f\n", L, AB, BC, CD, DE, Hbr, typ, S, Volume, T, Ds, R0, Ts_)
-	fmt.Println("1. 直接喷淋区: ", Hs)
-	fmt.Println("2. 间接喷淋区: ", Hs1, Hs2)
-	fmt.Println("3. 辊子直接接触区: ", Hsr)
+	//fmt.Printf("L: %f, AB: %f, BC: %f, CD: %f, DE: %f, Hbr: %f, typ: %d, S: %f, Volume: %f, T: %f, Ds: %f, R0: %f, Ts_: %f\n", L, AB, BC, CD, DE, Hbr, typ, S, Volume, T, Ds, R0, Ts_)
+	//fmt.Println("1. 直接喷淋区: ", Hs)
+	//fmt.Println("2. 间接喷淋区: ", Hs1, Hs2)
+	//fmt.Println("3. 辊子直接接触区: ", Hsr)
 	return (Hs1*AB + Hs*BC + Hs2*CD + Hsr*DE) / L
 }
 
@@ -339,7 +341,7 @@ func calculateHsr(R0, DE, Ts_ float64) float32 {
 	Ri := 3.8                           // 冷却水孔半径按 2 ~ 6cm计算,目前假定都是38mm
 	As_ := DE / (2 * math.Pi * R0) * As // 铸坯到辊子表面换热系数转化成轴对称模型时的等价换热系数
 	Ta := 50.0                          // 环境温度
-	Tw := 20.0                           // 冷却水温度
+	Tw := 20.0                          // 冷却水温度
 
 	part1 := (math.Log(R0/Ri) + LambdaR/(Ri*Aw)) * (As_ + Aa*(Ta-Tw)/(Ts_-Tw))
 	part2 := LambdaR*(1/R0+(As_+Aa)/(Ri*Aw)) + (As_+Aa)*math.Log(R0/Ri)
@@ -388,9 +390,9 @@ func directAreaWaterAndGAir(D, B, Q float64, pre, cur int, Hbr float32) float32 
 func calculateHbr(Ts_, Ta float64) float32 {
 	// Ts_: 上一个辊子处的铸坯表面温度
 	// Ta: 环境温度
-	ar := 0.8 * (5.669 * 1 / 10000.0) / (Ts_ - Ta) * (math.Pow((Ts_+273)/100, 4) - math.Pow((Ta+273)/100, 4))
-	ac := 46.52 * 1 / 10000.0
-	return float32(ar + ac)
+	//ar := 0.8 * 5.669 * 1 / 10000_0000 * (math.Pow(Ts_+273.0, 4) - math.Pow(Ta+273.0, 4))
+	//ac := 46.52
+	return float32(145.0)
 }
 
 // 计算DE长度
@@ -418,7 +420,366 @@ func calculateDeformation(centerRollersDistance, v, Hi float64, Si_1 float64, Tm
 	Pi := 0.1 * 7.0 * Hi
 	E := (Tm - Tma) / (Tm - 100) * 10000.0
 	ts := centerRollersDistance / v // min
-	fmt.Printf("Pi: %f, E: %f, Ts: %f, Hi: %f, Si_1: %f, Tm: %f, Tma: %f\n", Pi, E, ts, Hi, Si_1,Tm, Tma)
-	fmt.Println("鼓肚量为：", Pi * math.Pow(centerRollersDistance, 4) * math.Pow(ts, 0.5) / (32 * E * math.Pow(Si_1, 3)))
+	//fmt.Printf("Pi: %f, E: %f, Ts: %f, Hi: %f, Si_1: %f, Tm: %f, Tma: %f\n", Pi, E, ts, Hi, Si_1, Tm, Tma)
+	//fmt.Println("鼓肚量为：", Pi*math.Pow(centerRollersDistance, 4)*math.Pow(ts, 0.5)/(32*E*math.Pow(Si_1, 3)))
 	return Pi * math.Pow(centerRollersDistance, 4) * math.Pow(ts, 0.5) / (32 * E * math.Pow(Si_1, 3))
+}
+
+func min(x, y float32) float32 {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func handleData(data []byte) {
+	var NozzleCfg = model.NozzleCfg{
+		WideItems:   make([]model.WideItem, 0),
+		NarrowItems: make([]model.NarrowItem, 0),
+	}
+	err := json.Unmarshal(data, &NozzleCfg)
+	if err != nil {
+		return
+	}
+	pre := float32(850.0)
+	for i := 0; i < len(NozzleCfg.WideItems)-1; i++ {
+		cur := NozzleCfg.WideItems[i].Distance
+		NozzleCfg.WideItems[i].RollerDistance = cur - pre
+		pre = cur
+	}
+	// 2 - 4
+	alter := 1
+	for i := 2; i < 20; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -650.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 650.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -530.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 530.0
+		}
+		alter ^= 1
+	}
+	// 5
+	alter = 1
+	for i := 20; i < 24; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 24; i < 27; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	// 6
+	alter = 1
+	for i := 27; i < 31; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 31; i < 34; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	// 7
+	alter = 1
+	for i := 34; i < 38; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 38; i < 41; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 41; i < 45; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 45; i < 48; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -583.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 583.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -475.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 475.0
+		}
+		alter ^= 1
+	}
+	// 8
+	alter = 1
+	for i := 48; i < 52; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 52; i < 55; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 55; i < 59; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 59; i < 62; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	// 9
+	alter = 1
+	for i := 62; i < 66; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 66; i < 69; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 69; i < 73; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 73; i < 76; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	// 10
+	alter = 1
+	for i := 76; i < 80; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 80; i < 83; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 83; i < 87; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 87; i < 90; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 90; i < 94; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 94; i < 97; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	// 11
+	alter = 1
+	for i := 97; i < 101; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 101; i < 104; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 104; i < 107; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 107; i < 111; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 1
+	for i := 111; i < 115; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	alter = 0
+	for i := 115; i < 118; i++ {
+		if alter == 1 {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -456.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 456.0
+		} else {
+			NozzleCfg.WideItems[i].CenterSpraySection.LeftLimit = -564.0
+			NozzleCfg.WideItems[i].CenterSpraySection.RightLimit = 564.0
+		}
+		alter ^= 1
+	}
+	data, err = json.Marshal(NozzleCfg)
+	if err != nil {
+		return
+	}
+	err = ioutil.WriteFile("E:/GoWorkPlace/src/lz/conf/generate.json", data, 0644)
+	if err != nil {
+		return
+	}
 }

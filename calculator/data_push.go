@@ -101,17 +101,6 @@ func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
 		Sides: sides,
 	}
 
-	//fmt.Println("BuildData 温度场的长度：", z)
-	//if !c.Field.IsEmpty() {
-	//	for i := casting_machine.Width/casting_machine.YStep - 1; i > casting_machine.Width/casting_machine.YStep-6; i-- {
-	//		for j := casting_machine.Length/casting_machine.XStep - 5; j <= casting_machine.Length/casting_machine.XStep-1; j++ {
-	//			fmt.Print(Field[z-1][i][j], " ")
-	//		}
-	//		fmt.Print(i, "build data")
-	//		fmt.Println()
-	//	}
-	//}
-
 	//startTime := time.Now()
 	startSlice := c.Field.GetSlice(0)
 	EndSlice := c.Field.GetSlice(c.Field.Size() - 1)
@@ -200,3 +189,178 @@ func (c *calculatorWithArrDeque) BuildSliceData(index int) *SlicePushDataStruct 
 }
 
 // 纵切面推送数据
+type SliceInfo struct {
+	HorizontalSolidThickness  int         `json:"horizontal_solid_thickness"`
+	VerticalSolidThickness    int         `json:"vertical_solid_thickness"`
+	HorizontalLiquidThickness int         `json:"horizontal_liquid_thickness"`
+	VerticalLiquidThickness   int         `json:"vertical_liquid_thickness"`
+	Slice                     [][]float32 `json:"slice"`
+}
+
+func (c *calculatorWithArrDeque) GenerateSLiceInfo(index int) *SliceInfo {
+	return c.buildSliceGenerateData(index)
+}
+
+func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
+	solidTemp := c.steel1.SolidPhaseTemperature
+	liquidTemp := c.steel1.LiquidPhaseTemperature
+	sliceInfo := &SliceInfo{}
+	slice := make([][]float32, Width/YStep*2)
+	for i := 0; i < len(slice); i++ {
+		slice[i] = make([]float32, Length/XStep*2)
+	}
+	originData := c.Field.GetSlice(index)
+	// 从右上角的四分之一还原整个二维数组
+	for i := 0; i < Width/YStep; i++ {
+		for j := 0; j < Length/XStep; j++ {
+			slice[i][j] = originData[Width/YStep-1-i][Length/XStep-1-j]
+		}
+	}
+	for i := 0; i < Width/YStep; i++ {
+		for j := Length / XStep; j < Length/XStep*2; j++ {
+			slice[i][j] = originData[Width/YStep-1-i][j-Length/XStep]
+		}
+	}
+	for i := Width / YStep; i < Width/YStep*2; i++ {
+		for j := Length / XStep; j < Length/XStep*2; j++ {
+			slice[i][j] = originData[i-Width/YStep][j-Length/XStep]
+		}
+	}
+	for i := Width / YStep; i < Width/YStep*2; i++ {
+		for j := 0; j < Length/XStep; j++ {
+			slice[i][j] = originData[i-Width/YStep][Length/XStep-1-j]
+		}
+	}
+	sliceInfo.Slice = slice
+	length := Length/XStep - 1
+	width := Width/YStep - 1
+	for i := length; i >= 0; i-- {
+		if originData[0][i] <= solidTemp {
+			sliceInfo.HorizontalSolidThickness = XStep * (length - i + 1)
+		}
+	}
+	for i := length; i >= 0; i-- {
+		if originData[0][i] <= liquidTemp {
+			sliceInfo.HorizontalLiquidThickness = XStep * (length - i + 1)
+		}
+	}
+
+	for j := width; j >= 0; j-- {
+		if originData[j][0] <= solidTemp {
+			sliceInfo.VerticalSolidThickness = YStep * (width - j + 1)
+		}
+	}
+	for j := width; j >= 0; j-- {
+		if originData[j][0] <= liquidTemp {
+			sliceInfo.VerticalLiquidThickness = YStep * (width - j + 1)
+		}
+	}
+	return sliceInfo
+}
+
+type VerticalSliceData1 struct {
+	Outer [][2]float32 `json:"outer"`
+	Inner [][2]float32 `json:"inner"`
+}
+
+func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *VerticalSliceData1 {
+	if index >= Width/YStep-1 {
+		index = Width/YStep - 1
+	}
+	res := &VerticalSliceData1{
+		Outer: make([][2]float32, 0),
+		Inner: make([][2]float32, 0),
+	}
+	step := 0
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		step++
+		if step == 5 {
+			res.Outer = append(res.Outer, [2]float32{float32((z + 1) * model.ZStep), item[Width/YStep-1][Length/XStep-1-index]})
+			res.Inner = append(res.Inner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
+			step = 0
+		}
+	}, 0, c.Field.Size())
+	return res
+}
+
+type VerticalSliceData2 struct {
+	Length        int         `json:"length"`
+	VerticalSlice [][]float32 `json:"vertical_slice"`
+	Solid         []int       `json:"solid"`
+	Liquid        []int       `json:"liquid"`
+	SolidJoin     Join        `json:"solid_join"`
+	LiquidJoin    Join        `json:"liquid_join"`
+}
+
+type Join struct {
+	IsJoin    bool `json:"is_join"`
+	JoinIndex int  `json:"join_index"`
+}
+
+func (c *calculatorWithArrDeque) GenerateVerticalSlice2Data(reqData model.VerticalReqData) *VerticalSliceData2 {
+	solidTemp := c.steel1.SolidPhaseTemperature
+	liquidTemp := c.steel1.LiquidPhaseTemperature
+	index := reqData.Index
+	zScale := reqData.ZScale
+	res := &VerticalSliceData2{
+		Length:        c.Field.Size(),
+		VerticalSlice: make([][]float32, c.Field.Size()/zScale),
+		Solid:         make([]int, c.Field.Size()),
+		Liquid:        make([]int, c.Field.Size()),
+	}
+
+	for i := 0; i < len(res.VerticalSlice); i++ {
+		res.VerticalSlice[i] = make([]float32, Width/YStep*2)
+	}
+
+	var temp float32
+	var solidJoinSet, liquidJoinSet bool
+	step := 0
+	zIndex := 0
+	c.Field.Traverse(func(z int, item *model.ItemType) {
+		step++
+		if step == zScale {
+			for i := 0; i < Width/YStep; i++ {
+				res.VerticalSlice[zIndex][Width/YStep+i] = item[i][Length/XStep-1-index]
+			}
+			for i := Width/YStep - 1; i >= 0; i-- {
+				res.VerticalSlice[zIndex][Width/YStep-1-i] = item[i][Length/XStep-1-index]
+			}
+			step = 0
+			zIndex++
+		}
+		for i := 0; i < Width/YStep; i++ {
+			temp = item[i][Length/XStep-1-index]
+			if temp <= solidTemp {
+				res.Solid[z] = Width/YStep - i
+				if res.Solid[z] == Width/YStep && !solidJoinSet {
+					res.SolidJoin.IsJoin = true
+					res.SolidJoin.JoinIndex = z
+					solidJoinSet = true
+					fmt.Println(res.SolidJoin)
+				}
+				break
+			} else {
+				res.Solid[z] = 0
+			}
+		}
+
+		for i := 0; i < Width/YStep; i++ {
+			temp = item[i][Length/XStep-1-index]
+			if temp <= liquidTemp {
+				res.Liquid[z] = Width/YStep - i
+				if res.Liquid[z] == Width/YStep && !liquidJoinSet {
+					res.LiquidJoin.IsJoin = true
+					res.LiquidJoin.JoinIndex = z
+					liquidJoinSet = true
+					fmt.Println(res.LiquidJoin)
+				}
+				break
+			} else {
+				res.Liquid[z] = 0
+			}
+		}
+	}, 0, c.Field.Size())
+	fmt.Println(res)
+	return res
+}

@@ -164,6 +164,8 @@ type WideItem struct {
 
 type NarrowItem struct {
 	RollerNum      int           `json:"roller_num"`
+	CoolingZone    int           `json:"cooling_zone"`
+	Diameter       float32       `json:"diameter"`
 	RollerDistance float32       `json:"roller_distance"`
 	SpraySection1  NarrowSection `json:"spray_section_1"`
 	SpraySection2  NarrowSection `json:"spray_section_2"`

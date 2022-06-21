@@ -46,10 +46,6 @@ type ArrType []model.ItemType
 
 // 工厂方法
 func NewArrDeque(capacity int) *ArrDeque {
-	remainder := capacity % base
-	if remainder != 0 {
-		capacity = capacity - remainder + base
-	}
 	arr := make([]model.ItemType, capacity)
 	arr1 := make([]model.ItemType, capacity)
 	container := arrStruct{
@@ -150,7 +146,7 @@ func (ad *ArrDeque) Traverse(f func(z int, item *model.ItemType), start int, end
 		return
 	}
 	k := start
-	for z := ad.container.start; z < ad.container.end && k < end; z++ {
+	for z := ad.container.start + start; z < ad.container.end && k < end; z++ {
 		f(k, &ad.container.arr[z])
 		k++
 	}
