@@ -140,6 +140,8 @@ type SecondaryCoolingWaterSection struct {
 	SprayWaterTemperature float32 `json:"spray_water_temperature"`
 	InnerArcWaterVolume   float32 `json:"inner_arc_water_volume"`
 	NarrowSideWaterVolume float32 `json:"narrow_side_water_volume"`
+	Fuqie1Volume          float32 `json:"fuqie_1_volume"`
+	Fuqie2Volume          float32 `json:"fuqie_2_volume"`
 }
 
 // 喷嘴布置配置
@@ -149,17 +151,18 @@ type NozzleCfg struct {
 }
 
 type WideItem struct {
-	RollerNum           int     `json:"roller_num"`
-	CoolingZone         int     `json:"cooling_zone"`
-	OuterDiameter       int     `json:"outer_diameter"`
-	InnerDiameter       int     `json:"inner_diameter"`
-	Medium              int     `json:"medium"`
-	Distance            float32 `json:"distance"`
-	RollerInnerDiameter int     `json:"roller_inner_diameter"`
-	RollerDistance      float32 `json:"roller_distance"`
-	CenterSpraySection  Section `json:"center_spray_section"`
-	AlterSpraySection1  Section `json:"alter_spray_section_1"`
-	AlterSpraySection2  Section `json:"alter_spray_section_2"`
+	RollerNum                     int     `json:"roller_num"`
+	CoolingZone                   int     `json:"cooling_zone"`
+	OuterDiameter                 int     `json:"outer_diameter"`
+	InnerDiameter                 int     `json:"inner_diameter"`
+	Medium                        int     `json:"medium"`
+	Distance                      float32 `json:"distance"`
+	RollerInnerDiameter           int     `json:"roller_inner_diameter"`
+	RollerDistance                float32 `json:"roller_distance"`
+	CenterSpraySection            Section `json:"center_spray_section"`
+	AlterSpraySection1            Section `json:"alter_spray_section_1"`
+	AlterSpraySection2            Section `json:"alter_spray_section_2"`
+	ElectromagneticStirringFactor float32 `json:"electromagnetic_stirring_factor"`
 }
 
 type NarrowItem struct {

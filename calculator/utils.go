@@ -15,22 +15,29 @@ var (
 
 // 获取等效步长
 func getEx(x int) float32 {
-	if x == 0 || x == Length/XStep-1 {
-		return 2 * stdXStep
-	}
+	//if x == 0 || x == Length/XStep-1 {
+	//	return 2 * stdXStep
+	//}
 	return stdXStep
 }
 
 func getEy(y int) float32 {
-	if y == 0 || y == Width/YStep-1 {
-		return 2 * stdYStep
-	}
+	//if y == 0 || y == Width/YStep-1 {
+	//	return 2 * stdYStep
+	//}
 	return stdYStep
 }
 
 // 计算实际传热系数
-func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter) float32 {
-	var K = float32(2.0) // 修正系数K
+func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
+	electromagneticStirringFactor = 1.0
+	var K float32 // 修正系数K
+	if zone == Zone0 { // 结晶器
+		K = parameter.K[index1 + 1]
+	} else {
+		K = 1.0 * electromagneticStirringFactor
+	}
+	//fmt.Println("修正系数K: ", K)
 	// 等效空间步长
 	var ex1 = getEx(x1)
 	var ex2 = getEx(x2)
@@ -53,136 +60,126 @@ func getLambda(index1, index2, x1, y1, x2, y2 int, parameter *Parameter) float32
 
 // 计算时间步长 ------------------------------------------------------------------------------------------------------------------
 // 计算时间步长 case1 -> 左下角
-func getDeltaTCase1(x, y int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase1(x, y int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2 int
 	index1 = int(slice[y][x+1]) - 1
 	index2 = int(slice[y+1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index2, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1)))
+	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index2, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1)))
 	//fmt.Println(getLambda(index, index1, x, y, x+1, y, parameter), stdXStep*(getEx(x)+getEx(x+1)), getLambda(index, index2, x, y, x, y+1, parameter), stdYStep*(getEy(y)+getEy(y+1)))
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case2 -> 下面边
-func getDeltaTCase2(x, y int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase2(x, y int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2, index3 int
 	index1 = int(slice[y][x-1]) - 1
 	index2 = int(slice[y][x+1]) - 1
 	index3 = int(slice[y+1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index3, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1)))
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor )/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index3, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1)))
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case3 -> 右下角
-func getDeltaTCase3(x, y, z int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase3(x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2 int
 	index1 = int(slice[y][x-1]) - 1
 	index2 = int(slice[y+1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1))) +
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1))) +
 		parameter.GetHeff(x, y, z)/(stdXStep)
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case4 -> 右面边
-func getDeltaTCase4(x, y, z int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase4(x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2, index3 int
 	index1 = int(slice[y][x-1]) - 1
 	index2 = int(slice[y+1][x]) - 1
 	index3 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1))) +
-		2*getLambda(index, index3, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1))) +
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1))) +
+		2*getLambda(index, index3, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1))) +
 		parameter.GetHeff(x, y, z)/(stdXStep)
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case5 -> 右上角
-func getDeltaTCase5(x, y, z int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase5(x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2 int
 	index1 = int(slice[y][x-1]) - 1
 	index2 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1))) +
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1))) +
 		parameter.GetHeff(x, y, z)/(stdXStep) +
 		parameter.GetHeff(x, y, z)/(stdYStep)
-	//fmt.Println(2*getLambda(index, index1, x, y, x-1, y, parameter),
-	//	stdXStep,
-	//	getEx(x)+getEx(x-1),
-	//	2*getLambda(index, index2, x, y, x, y-1, parameter),
-	//	stdYStep,
-	//	getEy(y)+getEy(y-1),
-	//	parameter.GetHeff(t),
-	//	parameter.GetHeff(t),
-	//	t,
-	//)
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case6 -> 上面边
-func getDeltaTCase6(x, y, z int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase6(x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2, index3 int
 	index1 = int(slice[y][x-1]) - 1
 	index2 = int(slice[y][x+1]) - 1
 	index3 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index3, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1))) +
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index3, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1))) +
 		parameter.GetHeff(x, y, z)/(stdYStep)
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case7 -> 左上角
-func getDeltaTCase7(x, y, z int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase7(x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2 int
 	index1 = int(slice[y][x+1]) - 1
 	index2 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index2, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1))) +
+	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index2, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1))) +
 		parameter.GetHeff(x, y, z)/(stdYStep)
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case8 -> 左面边
-func getDeltaTCase8(x, y int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase8(x, y int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2, index3 int
 	index1 = int(slice[y][x+1]) - 1
 	index2 = int(slice[y+1][x]) - 1
 	index3 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index2, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1))) +
-		2*getLambda(index, index3, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1)))
+	denominator := 2*getLambda(index, index1, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index2, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1))) +
+		2*getLambda(index, index3, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1)))
 	//fmt.Println("denominator", denominator, parameter.Density[index]*parameter.Enthalpy[index], "t: ", t)
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 // 计算时间步长 case9 -> 内部点
-func getDeltaTCase9(x, y int, slice *model.ItemType, parameter *Parameter) float32 {
+func getDeltaTCase9(x, y int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	var t = slice[y][x]
 	var index = int(t) - 1
 	var index1, index2, index3, index4 int
@@ -190,28 +187,28 @@ func getDeltaTCase9(x, y int, slice *model.ItemType, parameter *Parameter) float
 	index2 = int(slice[y][x+1]) - 1
 	index3 = int(slice[y+1][x]) - 1
 	index4 = int(slice[y-1][x]) - 1
-	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter)/(stdXStep*(getEx(x)+getEx(x-1))) +
-		2*getLambda(index, index2, x, y, x+1, y, parameter)/(stdXStep*(getEx(x)+getEx(x+1))) +
-		2*getLambda(index, index3, x, y, x, y+1, parameter)/(stdYStep*(getEy(y)+getEy(y+1))) +
-		2*getLambda(index, index4, x, y, x, y-1, parameter)/(stdYStep*(getEy(y)+getEy(y-1)))
+	denominator := 2*getLambda(index, index1, x, y, x-1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x-1))) +
+		2*getLambda(index, index2, x, y, x+1, y, parameter, zone, electromagneticStirringFactor)/(stdXStep*(getEx(x)+getEx(x+1))) +
+		2*getLambda(index, index3, x, y, x, y+1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y+1))) +
+		2*getLambda(index, index4, x, y, x, y-1, parameter, zone, electromagneticStirringFactor)/(stdYStep*(getEy(y)+getEy(y-1)))
 	return (parameter.Density[index] * parameter.Enthalpy[index]) / (t * denominator)
 }
 
 const bigNum = float32(3.0)
 
 // 计算一个切片的时间步长
-func calculateTimeStepOfOneSlice(z int, slice *model.ItemType, parameter *Parameter) float32 {
+func calculateTimeStepOfOneSlice(z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) float32 {
 	// 计算时间步长 - start
 	var deltaTArr = [9]float32{}
-	deltaTArr[0] = getDeltaTCase1(0, 0, slice, parameter)
-	deltaTArr[1] = getDeltaTCase2(Length/XStep-2, 0, slice, parameter)
-	deltaTArr[2] = getDeltaTCase3(Length/XStep-1, 0, z, slice, parameter)
-	deltaTArr[3] = getDeltaTCase4(Length/XStep-1, Width/YStep-2, z, slice, parameter)
-	deltaTArr[4] = getDeltaTCase5(Length/XStep-1, Width/YStep-1, z, slice, parameter)
-	deltaTArr[5] = getDeltaTCase6(Length/XStep-2, Width/YStep-1, z, slice, parameter)
-	deltaTArr[6] = getDeltaTCase7(0, Width/YStep-1, z, slice, parameter)
-	deltaTArr[7] = getDeltaTCase8(0, Width/YStep-2, slice, parameter)
-	deltaTArr[8] = getDeltaTCase9(Length/XStep-2, Width/YStep-2, slice, parameter)
+	deltaTArr[0] = getDeltaTCase1(0, 0, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[1] = getDeltaTCase2(Length/XStep-2, 0, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[2] = getDeltaTCase3(Length/XStep-1, 0, z, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[3] = getDeltaTCase4(Length/XStep-1, Width/YStep-2, z, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[4] = getDeltaTCase5(Length/XStep-1, Width/YStep-1, z, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[5] = getDeltaTCase6(Length/XStep-2, Width/YStep-1, z, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[6] = getDeltaTCase7(0, Width/YStep-1, z, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[7] = getDeltaTCase8(0, Width/YStep-2, slice, parameter, zone, electromagneticStirringFactor)
+	deltaTArr[8] = getDeltaTCase9(Length/XStep-2, Width/YStep-2, slice, parameter, zone, electromagneticStirringFactor)
 	//fmt.Println("时间步长结果：", deltaTArr)
 	var min = bigNum // 模拟一个很大的数
 	for _, i := range deltaTArr {
@@ -225,11 +222,11 @@ func calculateTimeStepOfOneSlice(z int, slice *model.ItemType, parameter *Parame
 
 // 计算时间步长 ------------------------------------------------------------------------------------------------------------------
 
-func max(x, y int) int {
+func min(x, y float32) float32 {
 	if x < y {
-		return y
+		return x
 	}
-	return x
+	return y
 }
 
 func abs(x float32) float32 {
@@ -239,18 +236,35 @@ func abs(x float32) float32 {
 	return x
 }
 
+// 计算流速
+func CalculateVwt(q, s float64) float64 {
+	return 3000.0 / 1000.0 / 60.0 / s
+}
+
+// 32.22摄氏度
+// ********************************[温度 0， 密度 1， 导热系数 2， 比热容 3， 运动粘度 4， 动力粘度 5， 普朗特数 6]
+var parameterOfWaterLow = []float64{32.22, 994.9, 0.623, 4174.0, 0.0000007689, 0.000765, 5.13}
+var parameterOfWaterHigh = []float64{37.78, 993.0, 0.630, 4174.0, 0.0000006868, 0.000682, 4.52}
+
 // 计算冷却水在结晶器铜板冷却水道中产生的换热系数
-// todo
-func ROfWater() float32 {
+func ROfWater(q, s float64, tempOfWater float64) float32 {
 	Dh := 4 * (math.Pi*3 + 15 + 15 + 6) / (15*6 + math.Pi*9/2)
-	//Vwt := 3000.0 / 1000.0 / 60.0 * (Dh * 0.05) // 流速
-	Vwt := 8.0 // todo 调节
-	v := 0.0000007689   // 粘性力
-	Pr := 5.13          // 普朗特数
-	Red := Vwt * Dh / v // 雷诺数
+	Vwt := CalculateVwt(q, s)
+	v := parameterOfWaterHigh[4] +
+		(parameterOfWaterLow[4]-parameterOfWaterHigh[4])/
+			(parameterOfWaterHigh[0]-parameterOfWaterLow[0])*
+			(parameterOfWaterHigh[0]-tempOfWater) // 差值法计算运动粘度
+	Pr := parameterOfWaterHigh[6] +
+		(parameterOfWaterLow[6]-parameterOfWaterHigh[6])/
+			(parameterOfWaterHigh[0]-parameterOfWaterLow[0])*
+			(parameterOfWaterHigh[0]-tempOfWater) // 插值法计算普朗特数
+	Red := Vwt * Dh / v                           // 雷诺数
 	f := math.Pow(0.790*math.Log(Red)-1.64, -2)
 	Nud := (f / 8) * (Red - 1000) * Pr / (1 + 12.7*math.Pow(f/8, 0.5)*(math.Pow(Pr, 2/3)-1))
-	k := 0.623
+	k := parameterOfWaterLow[2] +
+		(parameterOfWaterHigh[2]-parameterOfWaterLow[2])/
+			(parameterOfWaterHigh[0]-parameterOfWaterLow[0])*
+			(tempOfWater-parameterOfWaterLow[0]) // 插值法计算导热系数
 	return 1 / float32(k*Nud/Dh)
 }
 
@@ -387,12 +401,35 @@ func directAreaWaterAndGAir(D, B, Q float64, pre, cur int, Hbr float32) float32 
 }
 
 // 计算空气换热系数
-func calculateHbr(Ts_, Ta float64) float32 {
+func calculateHbr(Ts_, Ta float64, parameter *Parameter) float32 {
 	// Ts_: 上一个辊子处的铸坯表面温度
 	// Ta: 环境温度
-	//ar := 0.8 * 5.669 * 1 / 10000_0000 * (math.Pow(Ts_+273.0, 4) - math.Pow(Ta+273.0, 4))
-	//ac := 46.52
-	return float32(145.0)
+	ar := float64(parameter.Emissivity[int(Ts_)]) * 5.669 / (Ts_ - Ta) * (math.Pow((Ts_+273.0)/100, 4) - math.Pow((Ta+273.0)/100, 4))
+	ac := 46.52
+	return float32(ar + ac)
+}
+
+func calculateHbr_(Ts_, Ta float64) float32 {
+	// Ts_: 上一个辊子处的铸坯表面温度
+	// Ta: 环境温度
+	ar := 0.807 * 5.669 / (Ts_ - Ta) * (math.Pow((Ts_+273.0)/100, 4) - math.Pow((Ta+273.0)/100, 4))
+	ac := 46.52
+	return float32(ar + ac)
+}
+
+// 计算空气换热系数
+func calculateAc() float32 {
+	return 46.52
+}
+
+// 计算辐射换热系数产生的热流密度
+func calculateQar(Ts_, Ta float64) float32 {
+	return float32(0.8 * 5.669 * (math.Pow((Ts_+273.0)/100, 4) - math.Pow((Ta+273.0)/100, 4)))
+}
+
+// 计算自然冷却区综合换热系数
+func calculateHci(Hbr, Hsr, L, DE float32) float32 {
+	return ((L - DE) * Hbr + Hsr * DE) / L
 }
 
 // 计算DE长度
@@ -425,11 +462,11 @@ func calculateDeformation(centerRollersDistance, v, Hi float64, Si_1 float64, Tm
 	return Pi * math.Pow(centerRollersDistance, 4) * math.Pow(ts, 0.5) / (32 * E * math.Pow(Si_1, 3))
 }
 
-func min(x, y float32) float32 {
-	if x < y {
-		return x
-	}
-	return y
+func calculateSolidFraction(T, Ts, Tl float32) float32 {
+	//member := (Ts - T) + (2 / math.Pi) * (Ts - Tl) * (1 - float32(math.Cos(float64(math.Pi / 2 * (T - Tl) / (Ts - Tl)))))
+	//denominator := (Tl - Ts) * (1 - math.Pi / 2)
+	//return member / denominator
+	return (Tl - T) / (Tl - Ts)
 }
 
 func handleData(data []byte) {

@@ -25,7 +25,9 @@
       "medium": 1,
       "inner_arc_volume": 111.5,
       "narrow_side_volume": 57.5,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "2 Subarea",
@@ -34,7 +36,9 @@
       "medium": 2,
       "inner_arc_volume": 207.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "3 Subarea",
@@ -43,7 +47,9 @@
       "medium": 2,
       "inner_arc_volume": 197.5,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "4 Subarea",
@@ -52,7 +58,9 @@
       "medium": 2,
       "inner_arc_volume": 163.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "5 Subarea",
@@ -61,7 +69,9 @@
       "medium": 2,
       "inner_arc_volume": 154.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "6 Subarea",
@@ -70,7 +80,9 @@
       "medium": 2,
       "inner_arc_volume": 114.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "7 Subarea",
@@ -79,7 +91,9 @@
       "medium": 2,
       "inner_arc_volume": 163.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "8 Subarea",
@@ -88,7 +102,9 @@
       "medium": 2,
       "inner_arc_volume": 109.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "9 Subarea",
@@ -97,7 +113,9 @@
       "medium": 2,
       "inner_arc_volume": 76.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "10 Subarea",
@@ -106,16 +124,20 @@
       "medium": 2,
       "inner_arc_volume": 75.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     },
     {
       "zone_name": "11 Subarea",
       "start": 98,
       "end": 118,
       "medium": 2,
-      "inner_arc_volume": 0,
+      "inner_arc_volume": 0.0,
       "narrow_side_volume": 0.0,
-      "spray_water_temperature": 20.0
+      "spray_water_temperature": 20.0,
+      "fuqie_1_volume": 0.0,
+      "fuqie_2_volume":  0.0
     }
   ],
   "segments": [

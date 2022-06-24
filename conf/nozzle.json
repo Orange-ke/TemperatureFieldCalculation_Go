@@ -15,15 +15,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -630,
+        "right_limit": 630,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -630,
+        "right_limit": 630,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 2,
@@ -40,15 +41,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -630,
+        "right_limit": 630,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -630,
+        "right_limit": 630,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 3,
@@ -65,15 +67,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 4,
@@ -90,15 +93,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 5,
@@ -115,15 +119,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 6,
@@ -140,15 +145,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 7,
@@ -165,15 +171,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 8,
@@ -190,15 +197,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 9,
@@ -215,15 +223,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 10,
@@ -240,15 +249,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 11,
@@ -265,15 +275,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 12,
@@ -290,15 +301,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 13,
@@ -315,15 +327,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 14,
@@ -340,15 +353,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 15,
@@ -365,15 +379,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 16,
@@ -390,15 +405,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 17,
@@ -415,15 +431,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 18,
@@ -440,15 +457,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 19,
@@ -465,15 +483,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -650,
+        "right_limit": 650,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 20,
@@ -490,15 +509,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -530,
+        "right_limit": 530,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 21,
@@ -515,15 +535,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 22,
@@ -540,15 +561,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 23,
@@ -565,15 +587,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 24,
@@ -590,15 +613,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 25,
@@ -615,15 +639,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 26,
@@ -640,15 +665,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 27,
@@ -665,15 +691,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 28,
@@ -690,15 +717,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 29,
@@ -715,15 +743,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 30,
@@ -740,15 +769,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 31,
@@ -765,15 +795,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 32,
@@ -790,15 +821,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 33,
@@ -815,15 +847,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 34,
@@ -840,15 +873,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 35,
@@ -865,15 +899,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 36,
@@ -890,15 +925,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 37,
@@ -915,15 +951,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 38,
@@ -940,15 +977,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 39,
@@ -965,15 +1003,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 40,
@@ -990,15 +1029,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 41,
@@ -1015,15 +1055,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 42,
@@ -1040,15 +1081,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 43,
@@ -1065,15 +1107,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 44,
@@ -1090,15 +1133,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 45,
@@ -1115,15 +1159,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 46,
@@ -1140,15 +1185,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 47,
@@ -1165,15 +1211,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -583,
+        "right_limit": 583,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 48,
@@ -1190,15 +1237,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -475,
+        "right_limit": 475,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 49,
@@ -1215,15 +1263,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 50,
@@ -1240,15 +1289,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 51,
@@ -1265,15 +1315,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 52,
@@ -1290,15 +1341,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 53,
@@ -1315,15 +1367,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 54,
@@ -1340,15 +1393,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 55,
@@ -1365,15 +1419,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 56,
@@ -1390,15 +1445,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 57,
@@ -1415,15 +1471,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 58,
@@ -1440,15 +1497,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 59,
@@ -1465,15 +1523,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 60,
@@ -1490,15 +1549,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 61,
@@ -1515,15 +1575,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 62,
@@ -1540,15 +1601,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 63,
@@ -1565,15 +1627,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 64,
@@ -1590,15 +1653,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 65,
@@ -1615,15 +1679,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 66,
@@ -1640,15 +1705,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 67,
@@ -1665,15 +1731,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 68,
@@ -1690,15 +1757,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 69,
@@ -1715,15 +1783,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 70,
@@ -1740,15 +1809,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 71,
@@ -1765,15 +1835,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 72,
@@ -1790,15 +1861,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 73,
@@ -1815,15 +1887,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 74,
@@ -1840,15 +1913,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 75,
@@ -1865,15 +1939,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 76,
@@ -1890,15 +1965,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 77,
@@ -1915,15 +1991,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 78,
@@ -1940,15 +2017,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 79,
@@ -1965,15 +2043,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 80,
@@ -1990,15 +2069,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 81,
@@ -2015,15 +2095,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 82,
@@ -2040,15 +2121,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 83,
@@ -2065,15 +2147,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 84,
@@ -2090,15 +2173,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 85,
@@ -2115,15 +2199,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 86,
@@ -2140,15 +2225,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 87,
@@ -2165,15 +2251,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 88,
@@ -2190,15 +2277,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 89,
@@ -2215,15 +2303,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 90,
@@ -2240,15 +2329,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 91,
@@ -2265,15 +2355,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 92,
@@ -2290,15 +2381,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 93,
@@ -2315,15 +2407,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 94,
@@ -2340,15 +2433,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 95,
@@ -2365,15 +2459,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 96,
@@ -2390,15 +2485,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 97,
@@ -2415,15 +2511,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 98,
@@ -2440,15 +2537,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 99,
@@ -2465,15 +2563,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 100,
@@ -2490,15 +2589,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 101,
@@ -2515,15 +2615,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 102,
@@ -2540,15 +2641,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 103,
@@ -2565,15 +2667,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 104,
@@ -2590,15 +2693,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 105,
@@ -2615,15 +2719,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 106,
@@ -2640,15 +2745,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 107,
@@ -2665,15 +2771,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 108,
@@ -2690,15 +2797,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 109,
@@ -2715,15 +2823,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 110,
@@ -2740,15 +2849,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 111,
@@ -2765,15 +2875,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 112,
@@ -2790,15 +2901,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 113,
@@ -2815,15 +2927,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 114,
@@ -2840,15 +2953,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 115,
@@ -2865,15 +2979,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 116,
@@ -2890,15 +3005,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 117,
@@ -2915,15 +3031,16 @@
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -456,
+        "right_limit": 456,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     },
     {
       "roller_num": 118,
@@ -2933,22 +3050,23 @@
       "medium": 2,
       "distance": 31860,
       "roller_inner_diameter": 38,
-      "roller_distance": 0,
+      "roller_distance": 285,
       "center_spray_section": {
         "left_limit": -564,
         "right_limit": 564,
         "thickness": 22.3
       },
       "alter_spray_section_1": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
       },
       "alter_spray_section_2": {
-        "left_limit": 0,
-        "right_limit": 0,
-        "thickness": 0
-      }
+        "left_limit": -564,
+        "right_limit": 564,
+        "thickness": 22.3
+      },
+      "electromagnetic_stirring_factor": 1.0
     }
   ],
   "narrow_items": [

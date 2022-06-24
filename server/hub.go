@@ -43,7 +43,7 @@ type Hub struct {
 	generate      chan struct{}
 	generateSlice chan int
 
-	generateVerticalSlice1 chan int
+	generateVerticalSlice1 chan struct{}
 	generateVerticalSlice2 chan model.VerticalReqData
 
 	mu sync.Mutex
@@ -68,7 +68,7 @@ func NewHub() *Hub {
 		generate:      make(chan struct{}, 10),
 		generateSlice: make(chan int, 10),
 
-		generateVerticalSlice1: make(chan int, 10),
+		generateVerticalSlice1: make(chan struct{}, 10),
 		generateVerticalSlice2: make(chan model.VerticalReqData, 10),
 	}
 }
@@ -286,11 +286,11 @@ func (h *Hub) handleResponse() {
 			if err != nil {
 				log.WithField("err", err).Error("发送温度场切片推送消息失败")
 			}
-		case index := <-h.generateVerticalSlice1:
+		case <-h.generateVerticalSlice1:
 			reply := model.Msg{
 				Type: "vertical_slice1_generated",
 			}
-			verticalSliceData := h.c.GenerateVerticalSlice1Data(index)
+			verticalSliceData := h.c.GenerateVerticalSlice1Data()
 			data, err := json.Marshal(verticalSliceData)
 			if err != nil {
 				log.WithField("err", err).Error("纵向切片1推送数据json解析失败")
@@ -425,17 +425,7 @@ func (h *Hub) handleRequest() {
 				h.generateSlice <- int(index)
 			case "generate_vertical_slice1":
 				log.Info("获取到生成纵向切片1数据的信号")
-				index, err := strconv.ParseInt(msg.Content, 10, 64)
-				log.Info("获取到切片下标：", index)
-				if err != nil {
-					log.WithField("err", err).Error("切片下标不是整数")
-					return
-				}
-				if index < 0 || int(index) >= calculator.Length/calculator.XStep {
-					log.Warn("切片下标越界")
-					break
-				}
-				h.generateVerticalSlice1 <- int(index)
+				h.generateVerticalSlice1 <- struct{}{}
 			case "generate_vertical_slice2":
 				log.Info("获取到生成纵向切片2数据的信号")
 				reqData := model.VerticalReqData{}

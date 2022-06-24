@@ -11,6 +11,11 @@ import (
 
 const (
 	ArrayLength = 1600
+
+	minTemp = 20
+	maxTemp = 1600
+
+	minSuperheat = float32(10.0) // 最小过热度
 )
 
 type Steel struct {
@@ -23,6 +28,9 @@ type Steel struct {
 }
 
 type Parameter struct {
+	SolidFraction     [ArrayLength + 1]float32       // 固相率与温度的关系
+	Emissivity        [ArrayLength + 1]float32       // 发射率
+	K                 [ArrayLength + 1]float32       // 修正系数K
 	Density           [ArrayLength]float32           // 密度
 	Enthalpy          [ArrayLength]float32           // 焓
 	Lambda            [ArrayLength]float32           // 导热系数
@@ -114,8 +122,22 @@ func NewSteel(number int, castingMachine *CastingMachine) *Steel {
 		for j := 1; j < t2-t1; j++ {
 			steel.Parameter.C[t1+j-1] = steel.Parameter.C[t1-1] + step*float32(j)
 		}
+		// 5. 固相率
+		steel.Parameter.SolidFraction[t1] = 1 - physicalParameter[i].LiquidPhaseFraction
+		steel.Parameter.SolidFraction[t2] = 1 - physicalParameter[i+1].LiquidPhaseFraction
+		step = (steel.Parameter.SolidFraction[t2] - steel.Parameter.SolidFraction[t1]) / 5
+		for j := 1; j < t2-t1; j++ {
+			steel.Parameter.SolidFraction[t1+j] = steel.Parameter.SolidFraction[t1] + step*float32(j)
+		}
+		// 6. 发射率
+		steel.Parameter.Emissivity[t1] = physicalParameter[i].Emissivity
+		steel.Parameter.Emissivity[t2] = physicalParameter[i+1].Emissivity
+		step = (steel.Parameter.Emissivity[t2] - steel.Parameter.Emissivity[t1]) / 5
+		for j := 1; j < t2-t1; j++ {
+			steel.Parameter.Emissivity[t1+j] = steel.Parameter.Emissivity[t1] + step*float32(j)
+		}
 	}
-	// 5. 焓到温度的对应关系
+	// 6. 焓到温度的对应关系
 	steel.Parameter.Enthalpy2Temp = func(enthalpy float32) float32 {
 		left, right := 0, len(steel.Parameter.Enthalpy)-1
 		for left < right {
@@ -136,13 +158,33 @@ func NewSteel(number int, castingMachine *CastingMachine) *Steel {
 		//fmt.Println(left, steel.Parameter.Enthalpy[left+1]-steel.Parameter.Enthalpy[left], enthalpy-steel.Parameter.Enthalpy[left])
 		return float32(left+1) + 1/(steel.Parameter.Enthalpy[left+1]-steel.Parameter.Enthalpy[left])*(enthalpy-steel.Parameter.Enthalpy[left])
 	}
-	// 6. 温度到焓的对应关系
+	// 7. 温度到焓的对应关系
 	steel.Parameter.Temp2Enthalpy = func(temp float32) float32 {
 		t := int(temp) - 1
 		if temp-1 == float32(t) {
 			return steel.Parameter.Enthalpy[t]
 		}
 		return steel.Parameter.Enthalpy[t] + (steel.Parameter.Enthalpy[t+1]-steel.Parameter.Enthalpy[t])*(temp-float32(t)-1)
+	}
+
+	// 8. 根据温度计算固相率
+	//for i := minTemp; i <= maxTemp; i++ {
+	//	steel.Parameter.SolidFraction[i] = calculateSolidFraction(float32(i), steel.SolidPhaseTemperature, steel.LiquidPhaseTemperature)
+	//}
+
+	// 8. 根据温度计算对应的 导热修正系数K
+	var initialK float32
+	for i := minTemp; i <= maxTemp; i++ {
+		if float32(i) >= steel.LiquidPhaseTemperature+minSuperheat {
+			initialK = float32(3.0)
+			steel.Parameter.K[i] = 1.0 + initialK
+		} else if float32(i) >= steel.LiquidPhaseTemperature && float32(i) < steel.LiquidPhaseTemperature+minSuperheat {
+			steel.Parameter.K[i] = 1.0 + 3.0 - 2.0*(steel.LiquidPhaseTemperature+minSuperheat-float32(i))/minSuperheat
+		} else if float32(i) < steel.LiquidPhaseTemperature && float32(i) >= steel.SolidPhaseTemperature {
+			steel.Parameter.K[i] = 1.0 + 1.0 - 1.0*steel.Parameter.SolidFraction[i]
+		} else {
+			steel.Parameter.K[i] = 1.0
+		}
 	}
 	// 设置获取热流密度和综合换热系数函数
 	steel.Parameter.GetHeff = func(x, y, z int) float32 {

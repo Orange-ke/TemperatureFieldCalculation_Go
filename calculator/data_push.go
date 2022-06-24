@@ -6,10 +6,10 @@ import (
 )
 
 type SlicePushDataStruct struct {
-	Slice   [][]float32    `json:"slice"`
-	Start   int            `json:"start"`
-	End     int            `json:"end"`
-	Current int            `json:"current"`
+	Slice   [][]float32 `json:"slice"`
+	Start   int         `json:"start"`
+	End     int         `json:"end"`
+	Current int         `json:"current"`
 }
 
 type TemperatureFieldData struct {
@@ -55,9 +55,9 @@ var (
 	ArcLength  float32
 	DownLength float32
 
-	StepX = 1
+	StepX = 2
 	StepY = 1
-	StepZ = 1
+	StepZ = 2
 
 	width  int
 	length int
@@ -93,10 +93,6 @@ func initPushData(up, arc, down float32) {
 
 func (c *calculatorWithArrDeque) BuildData() *TemperatureFieldData {
 	fmt.Println("buildData", c.Field.Size())
-	sides.Left = sides.Left[:c.Field.Size()]
-	sides.Right = sides.Right[:c.Field.Size()]
-	sides.Front = sides.Front[:c.Field.Size()]
-	sides.Back = sides.Back[:c.Field.Size()]
 	temperatureData := &TemperatureFieldData{
 		Sides: sides,
 	}
@@ -259,24 +255,33 @@ func (c *calculatorWithArrDeque) buildSliceGenerateData(index int) *SliceInfo {
 }
 
 type VerticalSliceData1 struct {
-	Outer [][2]float32 `json:"outer"`
-	Inner [][2]float32 `json:"inner"`
+	CenterOuter [][2]float32 `json:"center_outer"`
+	CenterInner [][2]float32 `json:"center_inner"`
+
+	EdgeOuter [][2]float32 `json:"edge_outer"`
+	EdgeInner [][2]float32 `json:"edge_inner"`
 }
 
-func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data(index int) *VerticalSliceData1 {
-	if index >= Width/YStep-1 {
-		index = Width/YStep - 1
-	}
+func (c *calculatorWithArrDeque) GenerateVerticalSlice1Data() *VerticalSliceData1 {
+	var index int
 	res := &VerticalSliceData1{
-		Outer: make([][2]float32, 0),
-		Inner: make([][2]float32, 0),
+		CenterOuter: make([][2]float32, 0),
+		CenterInner: make([][2]float32, 0),
+		EdgeOuter:   make([][2]float32, 0),
+		EdgeInner:   make([][2]float32, 0),
 	}
 	step := 0
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		step++
 		if step == 5 {
-			res.Outer = append(res.Outer, [2]float32{float32((z + 1) * model.ZStep), item[Width/YStep-1][Length/XStep-1-index]})
-			res.Inner = append(res.Inner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
+			index = Length/XStep - 1
+			res.CenterOuter = append(res.CenterOuter, [2]float32{float32((z + 1) * model.ZStep), item[Width/YStep-1][Length/XStep-1-index]})
+			res.CenterInner = append(res.CenterInner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
+
+			index = 0
+			res.EdgeOuter = append(res.EdgeOuter, [2]float32{float32((z + 1) * model.ZStep), item[Width/YStep-1][Length/XStep-1-index]})
+			res.EdgeInner = append(res.EdgeInner, [2]float32{float32((z + 1) * model.ZStep), item[0][Length/XStep-1-index]})
+
 			step = 0
 		}
 	}, 0, c.Field.Size())

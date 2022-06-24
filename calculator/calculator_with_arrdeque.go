@@ -151,6 +151,8 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 	min := bigNum
 	var t float32
 	var parameter *Parameter
+	var zone int
+	var electromagneticStirringFactor float32
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		// 跳过为空的切片
 		if item[0][0] == -1 {
@@ -158,7 +160,9 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 		}
 		// 根据 z 来确定 parameter c.getParameter(z)
 		parameter = c.getParameter(z)
-		t = calculateTimeStepOfOneSlice(z, item, parameter)
+		zone = c.castingMachine.WhichZone(z)
+		electromagneticStirringFactor = c.castingMachine.GetElectromagneticStirringFactor(z)
+		t = calculateTimeStepOfOneSlice(z, item, parameter, zone, electromagneticStirringFactor)
 		if t < min {
 			min = t
 		}
@@ -174,8 +178,9 @@ func (c *calculatorWithArrDeque) calculateTimeStep() (float32, time.Duration) {
 func (c *calculatorWithArrDeque) calculateQOffline() {
 	start := time.Now()
 	if c.runningState == stateRunning {
+		averageTemp := (c.castingMachine.CoolerConfig.WideSurfaceIn + c.castingMachine.CoolerConfig.WideSurfaceOut) / 2
 		c.Field.Traverse(func(z int, item *model.ItemType) {
-			initialQ := 1 / (ROfWater() + ROfCu() + 1/2220.0) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+			initialQ := 1 / (ROfWater(3000.0, 0.005, float64(averageTemp)) + ROfCu() + 1/2220.0) * (item[Width/YStep-1][0] - averageTemp)
 			j := 0
 			for ; j < Length/XStep; j++ {
 				if item[Width/YStep-1][j] > c.steel1.LiquidPhaseTemperature {
@@ -208,8 +213,9 @@ func (c *calculatorWithArrDeque) calculateQOffline() {
 func (c *calculatorWithArrDeque) calculateWideSurfaceEnergy(wideSurfaceH float32) float32 {
 	var wideSurfaceEnergy float32
 	var initialQ float32
+	averageTemp := (c.castingMachine.CoolerConfig.WideSurfaceIn + c.castingMachine.CoolerConfig.WideSurfaceOut) / 2
 	c.Field.Traverse(func(z int, item *model.ItemType) {
-		initialQ = 1 / (ROfWater() + ROfCu() + 1/wideSurfaceH) * (item[Width/YStep-1][0] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+		initialQ = 1 / (ROfWater(3000.0, 0.005, float64(averageTemp)) + ROfCu() + 1/wideSurfaceH) * (item[Width/YStep-1][0] - averageTemp)
 		j := 0
 		for ; j < Length/XStep; j++ {
 			if item[0][j] > c.steel1.LiquidPhaseTemperature {
@@ -231,8 +237,9 @@ func (c *calculatorWithArrDeque) calculateWideSurfaceEnergy(wideSurfaceH float32
 func (c *calculatorWithArrDeque) calculateNarrowSurfaceEnergy(narrowSurfaceH float32) float32 {
 	var narrowSurfaceEnergy float32
 	var initialQ float32
+	averageTemp := (c.castingMachine.CoolerConfig.NarrowSurfaceIn + c.castingMachine.CoolerConfig.NarrowSurfaceOut) / 2
 	c.Field.Traverse(func(z int, item *model.ItemType) {
-		initialQ = 1 / (ROfWater() + ROfCu() + 1/narrowSurfaceH) * (item[0][Length/XStep-1] - c.castingMachine.CoolerConfig.NarrowSurfaceIn)
+		initialQ = 1 / (ROfWater(3000.0, 0.005, float64(averageTemp)) + ROfCu() + 1/narrowSurfaceH) * (item[0][Length/XStep-1] - averageTemp)
 		i := 0
 		for ; i < Width/YStep; i++ {
 			if item[i][0] > c.steel1.LiquidPhaseTemperature {
@@ -270,9 +277,9 @@ func (c *calculatorWithArrDeque) calculateQOnlineAtMd() {
 		energyScale = (float32(c.castingMachine.Coordinate.MdLength) - c.castingMachine.Coordinate.LevelHeight) / float32(c.castingMachine.Coordinate.MdLength)
 	}
 	fmt.Println("energyScale: ", energyScale)
-	left, right := float32(500.0), float32(5000.0) // 二分的上下界
+	left, right := float32(500.0), float32(3000.0) // 二分的上下界
 	var wideSurfaceH float32
-	err := float32(0.000001)
+	err := float32(0.0000001)
 	var calculateErr float32
 	targetWideSurfaceEnergy := c.castingMachine.CoolerConfig.WideWaterVolume / 1000 / 60 / 2 * densityOfWater * cOfWater * (c.castingMachine.CoolerConfig.WideSurfaceOut - c.castingMachine.CoolerConfig.WideSurfaceIn) * energyScale
 	for left < right {
@@ -323,12 +330,12 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 	// Tm 凝固温度，用液相线温度
 	// Tma 铸坯坯壳平均温度
 	// 宽面，窄面分开计算
+	start := time.Now()
 	wideItems := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg.WideItems
-	L := float32(c.castingMachine.Coordinate.Length) / 10 // 铸坯宽面尺寸
 	coolingZoneCfg := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.CoolingZoneCfg
 	cooingWaterCfg := c.castingMachine.CoolerConfig.SecondaryCoolingZoneCfg.SecondaryCoolingWaterCfg
 	var envTemp = 70.0
-	var AB, BC, CD, DE, Ds, sprayWidth, Hbr float32
+	var L, AB, BC, CD, DE, Ds, sprayWidth, Hbr float32
 	var Deformation, centerRollersDistance, v, Si_1, Tm, Tma, S, Volume, T, R0, Ts_ float64
 	var preDistance = float32(c.castingMachine.Coordinate.MdLength) - c.castingMachine.Coordinate.LevelHeight
 	var curDistance float32
@@ -340,6 +347,7 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		}
 		// step1. 计算平均综合换热系数
 		Ds = item.CenterSpraySection.Thickness // 喷淋厚度
+		L = item.RollerDistance
 		centerRollersDistance = float64(item.RollerDistance / 10.0)
 		AB = (L - Ds) / 2.0
 		v = float64(c.castingMachine.CoolerConfig.V) / 10.0 * 60.0                                             // 拉速 mm/s -> cm/min
@@ -352,7 +360,7 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		CD = AB - DE
 		sprayWidth = min(item.CenterSpraySection.RightLimit-item.CenterSpraySection.LeftLimit, float32(c.castingMachine.Coordinate.Length)) // 喷淋宽度
 		Ts_ = float64(c.calculateTs(preDistance, "Wide"))                                                                                   // 辊子对应铸坯表面平均温度
-		Hbr = calculateHbr(Ts_, envTemp)                                                                                                    // 计算空气换热系数
+		Hbr = calculateHbr(Ts_, envTemp, c.steel1.Parameter)                                                                                // 计算空气换热系数
 		S = float64(sprayWidth*Ds) / 1e6                                                                                                    // 喷淋面积
 		Volume = float64(cooingWaterCfg[item.CoolingZone-1].InnerArcWaterVolume / float32(coolingZoneCfg[item.CoolingZone-1].End-coolingZoneCfg[item.CoolingZone-1].Start+1) / 60.0)
 		R0 = float64(item.InnerDiameter) / 2.0 / 10.0         // 辊子半径
@@ -362,22 +370,39 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		startSliceIndex = int(preDistance / float32(ZStep))
 		endSliceIndex = int(curDistance / float32(ZStep))
 		preDistance = curDistance
+		hci := calculateHci(Hbr, calculateHsr(R0, float64(DE), Ts_), L, DE)
 		if cooingWaterCfg[item.CoolingZone-1].InnerArcWaterVolume == 0.0 {
 			for z := startSliceIndex; z < endSliceIndex; z++ {
 				for j := 0; j < Length/XStep; j++ {
-					c.steel1.Parameter.Heff[z][j] = Hbr
+					c.steel1.Parameter.Heff[z][j] = hci
 				}
 				continue
 			}
 		}
 		heff := calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr, item.Medium, S, Volume, T, float64(Ds), R0, Ts_) // 计算平均综合换热系数
-		//log.Info("平均综合换热系数：", heff)
+		Volume1 := float64(cooingWaterCfg[item.CoolingZone-1].Fuqie1Volume / float32(coolingZoneCfg[item.CoolingZone-1].End-coolingZoneCfg[item.CoolingZone-1].Start+1) / 60.0)
+		heff1 := calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr, item.Medium, S, Volume1, T, float64(Ds), R0, Ts_) // 计算幅切1平均综合换热系数
+		Volume2 := float64(cooingWaterCfg[item.CoolingZone-1].Fuqie2Volume / float32(coolingZoneCfg[item.CoolingZone-1].End-coolingZoneCfg[item.CoolingZone-1].Start+1) / 60.0)
+		heff2 := calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr, item.Medium, S, Volume2, T, float64(Ds), R0, Ts_)                         // 计算幅切2平均综合换热系数
+		sprayWidth1 := min(item.AlterSpraySection1.RightLimit-item.AlterSpraySection1.LeftLimit, float32(c.castingMachine.Coordinate.Length)) // 幅切1喷淋宽度
+		sprayWidth2 := min(item.AlterSpraySection2.RightLimit-item.AlterSpraySection2.LeftLimit, float32(c.castingMachine.Coordinate.Length)) // 幅切2喷淋宽度
+		log.Info("宽面平均综合换热系数：", heff, heff1, heff2, hci)
 		for z := startSliceIndex; z < endSliceIndex; z++ {
+			// 中心喷淋区
 			for j := 0; j < int(sprayWidth/2)/XStep; j++ {
 				c.steel1.Parameter.Heff[z][j] = heff
 			}
-			for j := int(sprayWidth/2) / XStep; j < Length/XStep; j++ {
-				c.steel1.Parameter.Heff[z][j] = Hbr
+			// 幅切1
+			for j := int(sprayWidth/2) / XStep; j < int(sprayWidth1/2)/XStep; j++ {
+				c.steel1.Parameter.Heff[z][j] = heff1
+			}
+			// 幅切2
+			for j := int(sprayWidth1/2) / XStep; j < int(sprayWidth2/2)/XStep; j++ {
+				c.steel1.Parameter.Heff[z][j] = heff2
+			}
+			// 自然冷却区
+			for j := int(sprayWidth2/2) / XStep; j < Length/XStep; j++ {
+				c.steel1.Parameter.Heff[z][j] = hci
 			}
 		}
 	}
@@ -387,7 +412,7 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 	if len(narrowItems) <= 0 {
 		return
 	}
-	W := float32(c.castingMachine.Coordinate.Width) / 10 // 铸坯宽面尺寸
+	var W float32
 	preDistance = float32(c.castingMachine.Coordinate.MdLength) - c.castingMachine.Coordinate.LevelHeight
 	startSliceIndex = 0
 	endSliceIndex = 0
@@ -397,6 +422,7 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		}
 		// step1. 计算平均综合换热系数
 		Ds = item.SpraySection1.Thickness // 喷淋厚度
+		W = item.RollerDistance
 		centerRollersDistance = float64(item.RollerDistance / 10.0)
 		AB = (W - Ds) / 2.0
 		v = float64(c.castingMachine.CoolerConfig.V) / 10.0 * 60.0                                                                 // 拉速 mm/s -> cm/min
@@ -409,7 +435,7 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		CD = AB - DE
 		sprayWidth = min(item.SpraySection1.Width, float32(c.castingMachine.Coordinate.Width)) // 喷淋宽度
 		Ts_ = float64(c.calculateTs(preDistance, "Narrow"))                                    // 辊子对应铸坯表面平均温度
-		Hbr = calculateHbr(Ts_, envTemp)                                                       // 计算空气换热系数
+		Hbr = calculateHbr(Ts_, envTemp, c.steel1.Parameter)                                   // 计算空气换热系数
 		S = float64(sprayWidth*Ds) / 1e6                                                       // 喷淋面积
 		Volume = float64(cooingWaterCfg[item.CoolingZone-1].NarrowSideWaterVolume / float32(len(narrowItems)) / 60.0)
 		R0 = float64(item.Diameter) / 2.0 / 10.0                                // 辊子半径
@@ -419,38 +445,43 @@ func (c *calculatorWithArrDeque) calculateHeffOnlineAtSecondaryCoolingZone() {
 		startSliceIndex = int(preDistance / float32(ZStep))
 		endSliceIndex = int(curDistance / float32(ZStep))
 		preDistance = curDistance
-		heff := calculateAverageHeffHelper(L, AB, BC, CD, DE, Hbr, Water, S, Volume, T, float64(Ds), R0, Ts_) // 计算平均综合换热系数
-		log.Info("平均综合换热系数：", heff, " sprayWidth: ", sprayWidth, " Width: ", Width)
+		heff := calculateAverageHeffHelper(W, AB, BC, CD, DE, Hbr, Water, S, Volume, T, float64(Ds), R0, Ts_) // 计算平均综合换热系数
+		hci := calculateHci(Hbr, calculateHsr(R0, float64(DE), Ts_), W, DE)
+		log.Info("窄面平均综合换热系数：", heff, hci)
 		for z := startSliceIndex; z <= endSliceIndex; z++ {
 			for i := 0; i < int(sprayWidth/2)/YStep; i++ {
 				c.steel1.Parameter.Heff[z][Length/XStep+i] = heff
 			}
-			//for i := int(sprayWidth/2) / YStep; i < Width/YStep; i++ {
-			//	c.steel1.Parameter.Heff[z][Length/XStep+i] = Hbr
-			//}
+			for i := int(sprayWidth/2) / YStep; i < Width/YStep; i++ {
+				c.steel1.Parameter.Heff[z][Length/XStep+i] = hci
+			}
 		}
 	}
 	startSliceIndex = int(preDistance / float32(ZStep))
 	endSliceIndex = c.Field.Size()
 	for z := startSliceIndex + 1; z < endSliceIndex; {
-		Ts_ = float64(c.calculateTs(preDistance, "Narrow")) // 辊子对应铸坯表面平均温度
-		Hbr = calculateHbr(Ts_, envTemp)                    // 计算空气换热系数
+		Ts_ = float64(c.calculateTs(preDistance, "Narrow"))  // 辊子对应铸坯表面平均温度
+		Hbr = calculateHbr(Ts_, envTemp, c.steel1.Parameter) // 计算空气换热系数
+		log.Info("窄面Hbr: ", Hbr, "Ts_:", Ts_)
 		for i := 0; i < Width/YStep; i++ {
 			c.steel1.Parameter.Heff[z][Length/XStep+i] = Hbr
 		}
 		z++
 		preDistance = float32(z * ZStep)
 	}
+	fmt.Println("计算二冷区的综合换热系数所需时间: ", time.Since(start).Milliseconds())
 }
 
 func (c *calculatorWithArrDeque) calculateQOnlineAtSecondaryCoolingZone() {
 	//start := time.Now()
+	wideAverageTemp := (c.castingMachine.CoolerConfig.WideSurfaceIn + c.castingMachine.CoolerConfig.WideSurfaceOut) / 2
+	narrowAverageTemp := (c.castingMachine.CoolerConfig.NarrowSurfaceIn + c.castingMachine.CoolerConfig.NarrowSurfaceOut) / 2
 	c.Field.Traverse(func(z int, item *model.ItemType) {
 		for j := 0; j < Length/XStep; j++ {
-			c.steel1.Parameter.Q[z][j] = c.steel1.Parameter.Heff[z][j] * (item[Width/YStep-1][j] - c.castingMachine.CoolerConfig.WideSurfaceIn)
+			c.steel1.Parameter.Q[z][j] = c.steel1.Parameter.Heff[z][j] * (item[Width/YStep-1][j] - wideAverageTemp)
 		}
 		for i := 0; i < Width/YStep; i++ {
-			c.steel1.Parameter.Q[z][Length/XStep+i] = c.steel1.Parameter.Heff[z][Length/XStep+i] * (item[i][Length/XStep-1] - c.castingMachine.CoolerConfig.NarrowSurfaceIn)
+			c.steel1.Parameter.Q[z][Length/XStep+i] = c.steel1.Parameter.Heff[z][Length/XStep+i] * (item[i][Length/XStep-1] - narrowAverageTemp)
 		}
 	}, (c.castingMachine.Coordinate.MdLength-int(c.castingMachine.Coordinate.LevelHeight))/ZStep, c.Field.Size())
 	//fmt.Println("计算综合换热系数所需时间：", time.Since(start).Milliseconds())
@@ -483,7 +514,7 @@ func (c *calculatorWithArrDeque) calculateTs(distance float32, pos string) float
 	var sum float32
 	if pos == "Wide" {
 		for i := 0; i < Length/XStep; i++ {
-			sum += slice[width/YStep-1][i]
+			sum += slice[Width/YStep-1][i]
 		}
 		return sum / float32(Length/XStep)
 	} else {
@@ -580,9 +611,9 @@ func (c *calculatorWithArrDeque) Run() {
 	var deltaT float32
 LOOP:
 	for {
-		if c.Field.Size() >= 85 {
-			return
-		}
+		//if c.Field.Size() >= 110 {
+		//	return
+		//}
 		select {
 		case <-c.calcHub.Stop:
 			c.runningState = stateSuspended
@@ -595,16 +626,10 @@ LOOP:
 				deltaT = float32(OneSliceDuration.Seconds())
 			} else {
 				c.calculateQAndHeffOnline()
-				//fmt.Println("Q: ", c.steel1.Parameter.Q[c.Field.Size()-1][:Length/XStep+Width/YStep])
-				//fmt.Println("Heff: ", c.steel1.Parameter.Heff[c.Field.Size()-1][:Length/XStep+Width/YStep])
-				//fmt.Println()
-				//for i := 0; i < c.Field.Size(); i++ {
-				//	fmt.Print(i, " ")
-				//	for j := 0; j < Length/XStep+Width/YStep; j++{
-				//		fmt.Print(c.steel1.Parameter.Heff[i][j], " ")
-				//	}
-				//	fmt.Println()
-				//}
+				fmt.Println("Q: ", c.steel1.Parameter.Q[c.Field.Size()-1][:Length/XStep])
+				fmt.Println("Q: ", c.steel1.Parameter.Q[c.Field.Size()-1][Length/XStep:Length/XStep+Width/YStep])
+				fmt.Println("Heff: ", c.steel1.Parameter.Heff[c.Field.Size()-1][:Length/XStep])
+				fmt.Println("Heff: ", c.steel1.Parameter.Heff[c.Field.Size()-1][Length/XStep:Length/XStep+Width/YStep])
 				deltaT, _ = c.calculateTimeStep()
 				calcDuration = c.e.dispatchTask(deltaT, 0, c.Field.Size()) // c.ThermalField.Field 最开始赋值为 ThermalField对应的指针
 				fmt.Println("计算单次时间：", calcDuration.Milliseconds(), "ms")
@@ -625,14 +650,14 @@ LOOP:
 			}
 
 			c.updateSliceInfo(time.Duration(int64(deltaT * 1e9)))
-			//if !c.Field.IsEmpty() {
-			//	for i := Width/YStep - 1; i >= 0; i-- {
-			//		for j := 0; j <= Length/XStep-1; j++ {
-			//			fmt.Printf("%.2f ", c.Field.Get(c.Field.Size()-1, i, j))
-			//		}
-			//		fmt.Println()
-			//	}
-			//}
+			if !c.Field.IsEmpty() {
+				for i := Width/YStep - 1; i >= 0; i-- {
+					for j := 0; j <= Length/XStep-1; j++ {
+						fmt.Printf("%.2f ", c.Field.Get(c.Field.Size()-1, i, j))
+					}
+					fmt.Println()
+				}
+			}
 			c.alternating = !c.alternating // 仅在这里修改
 			log.WithFields(log.Fields{"deltaT": deltaT, "cost": duration.Milliseconds()}).Info("计算一次")
 			if duration > time.Second*4 {
@@ -711,13 +736,13 @@ func (c *calculatorWithArrDeque) updateSliceInfo(calcDuration time.Duration) {
 }
 
 // 计算一个left top点的温度变化
-func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[Width/YStep-1][0]) - 1
 	var index1 = int(slice[Width/YStep-1][1]) - 1
 	var index2 = int(slice[Width/YStep-2][0]) - 1
 	// 求焓变
-	var deltaHlt = getLambda(index, index1, 0, Width/YStep-1, 1, Width/YStep-1, parameter)*(slice[Width/YStep-1][0]-slice[Width/YStep-1][1])/(stdXStep*(getEx(1)+getEx(0))) +
-		getLambda(index, index2, 0, Width/YStep-1, 0, Width/YStep-2, parameter)*(slice[Width/YStep-1][0]-slice[Width/YStep-2][0])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
+	var deltaHlt = getLambda(index, index1, 0, Width/YStep-1, 1, Width/YStep-1, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][0]-slice[Width/YStep-1][1])/(stdXStep*(getEx(1)+getEx(0))) +
+		getLambda(index, index2, 0, Width/YStep-1, 0, Width/YStep-2, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][0]-slice[Width/YStep-2][0])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
 		parameter.GetQ(0, Width/YStep-1, z)/(2*stdYStep)
 	deltaHlt = deltaHlt * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
@@ -737,15 +762,15 @@ func (c *calculatorWithArrDeque) calculatePointLT(deltaT float32, z int, slice *
 }
 
 // 计算上表面点温度变化
-func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[Width/YStep-1][x]) - 1
 	var index1 = int(slice[Width/YStep-1][x-1]) - 1
 	var index2 = int(slice[Width/YStep-1][x+1]) - 1
 	var index3 = int(slice[Width/YStep-2][x]) - 1
 
-	var deltaHta = getLambda(index, index1, x, Width/YStep-1, x-1, Width/YStep-1, parameter)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x-1])/(stdXStep*(getEx(x-1)+getEx(x))) +
-		getLambda(index, index2, x, Width/YStep-1, x+1, Width/YStep-1, parameter)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x+1])/(stdXStep*(getEx(x)+getEx(x+1))) +
-		getLambda(index, index3, x, Width/YStep-1, x, Width/YStep-2, parameter)*(slice[Width/YStep-1][x]-slice[Width/YStep-2][x])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
+	var deltaHta = getLambda(index, index1, x, Width/YStep-1, x-1, Width/YStep-1, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x-1])/(stdXStep*(getEx(x-1)+getEx(x))) +
+		getLambda(index, index2, x, Width/YStep-1, x+1, Width/YStep-1, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][x]-slice[Width/YStep-1][x+1])/(stdXStep*(getEx(x)+getEx(x+1))) +
+		getLambda(index, index3, x, Width/YStep-1, x, Width/YStep-2, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][x]-slice[Width/YStep-2][x])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
 		parameter.GetQ(x, Width/YStep-1, z)/(2*stdYStep)
 	deltaHta = deltaHta * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
@@ -766,13 +791,13 @@ func (c *calculatorWithArrDeque) calculatePointTA(deltaT float32, x, z int, slic
 }
 
 // 计算right top点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[Width/YStep-1][Length/XStep-1]) - 1
 	var index1 = int(slice[Width/YStep-1][Length/XStep-2]) - 1
 	var index2 = int(slice[Width/YStep-2][Length/XStep-1]) - 1
 
-	var deltaHrt = getLambda(index, index1, Length/XStep-1, Width/YStep-1, Length/XStep-2, Width/YStep-1, parameter)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-1][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, Width/YStep-1, Length/XStep-1, Width/YStep-2, parameter)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-2][Length/XStep-1])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
+	var deltaHrt = getLambda(index, index1, Length/XStep-1, Width/YStep-1, Length/XStep-2, Width/YStep-1, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-1][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
+		getLambda(index, index2, Length/XStep-1, Width/YStep-1, Length/XStep-1, Width/YStep-2, parameter, zone, electromagneticStirringFactor)*(slice[Width/YStep-1][Length/XStep-1]-slice[Width/YStep-2][Length/XStep-1])/(stdYStep*(getEy(Width/YStep-2)+getEy(Width/YStep-1))) +
 		parameter.GetQ(Length/XStep-1, Width/YStep, z)/(2*stdYStep) +
 		parameter.GetQ(Length/XStep-1, Width/YStep-1, z)/(2*stdXStep)
 	deltaHrt = deltaHrt * (2 * deltaT / parameter.Density[index])
@@ -792,15 +817,15 @@ func (c *calculatorWithArrDeque) calculatePointRT(deltaT float32, z int, slice *
 }
 
 // 计算右表面点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[y][Length/XStep-1]) - 1
 	var index1 = int(slice[y][Length/XStep-2]) - 1
 	var index2 = int(slice[y-1][Length/XStep-1]) - 1
 	var index3 = int(slice[y+1][Length/XStep-1]) - 1
 
-	var deltaHra = getLambda(index, index1, Length/XStep-1, y, Length/XStep-2, y, parameter)*(slice[y][Length/XStep-1]-slice[y][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, y, Length/XStep-1, y-1, parameter)*(slice[y][Length/XStep-1]-slice[y-1][Length/XStep-1])/(stdYStep*(getEy(y-1)+getEy(y))) +
-		getLambda(index, index3, Length/XStep-1, y, Length/XStep-1, y+1, parameter)*(slice[y][Length/XStep-1]-slice[y+1][Length/XStep-1])/(stdYStep*(getEy(y+1)+getEy(y))) +
+	var deltaHra = getLambda(index, index1, Length/XStep-1, y, Length/XStep-2, y, parameter, zone, electromagneticStirringFactor)*(slice[y][Length/XStep-1]-slice[y][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
+		getLambda(index, index2, Length/XStep-1, y, Length/XStep-1, y-1, parameter, zone, electromagneticStirringFactor)*(slice[y][Length/XStep-1]-slice[y-1][Length/XStep-1])/(stdYStep*(getEy(y-1)+getEy(y))) +
+		getLambda(index, index3, Length/XStep-1, y, Length/XStep-1, y+1, parameter, zone, electromagneticStirringFactor)*(slice[y][Length/XStep-1]-slice[y+1][Length/XStep-1])/(stdYStep*(getEy(y+1)+getEy(y))) +
 		parameter.GetQ(Length/XStep-1, y, z)/(2*stdXStep)
 	deltaHra = deltaHra * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
@@ -820,13 +845,13 @@ func (c *calculatorWithArrDeque) calculatePointRA(deltaT float32, y, z int, slic
 }
 
 // 计算right bottom点的温度变化
-func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[0][Length/XStep-1]) - 1
 	var index1 = int(slice[0][Length/XStep-2]) - 1
 	var index2 = int(slice[1][Length/XStep-1]) - 1
 
-	var deltaHrb = getLambda(index, index1, Length/XStep-1, 0, Length/XStep-2, 0, parameter)*(slice[0][Length/XStep-1]-slice[0][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
-		getLambda(index, index2, Length/XStep-1, 0, Length/XStep-1, 1, parameter)*(slice[0][Length/XStep-1]-slice[1][Length/XStep-1])/(stdYStep*(getEy(1)+getEy(0))) +
+	var deltaHrb = getLambda(index, index1, Length/XStep-1, 0, Length/XStep-2, 0, parameter, zone, electromagneticStirringFactor)*(slice[0][Length/XStep-1]-slice[0][Length/XStep-2])/(stdXStep*(getEx(Length/XStep-2)+getEx(Length/XStep-1))) +
+		getLambda(index, index2, Length/XStep-1, 0, Length/XStep-1, 1, parameter, zone, electromagneticStirringFactor)*(slice[0][Length/XStep-1]-slice[1][Length/XStep-1])/(stdYStep*(getEy(1)+getEy(0))) +
 		parameter.GetQ(Length/XStep-1, 0, z)/(2*stdXStep)
 	deltaHrb = deltaHrb * (2 * deltaT / parameter.Density[index])
 
@@ -846,14 +871,14 @@ func (c *calculatorWithArrDeque) calculatePointRB(deltaT float32, z int, slice *
 }
 
 // 计算下表面点的温度变化
-func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[0][x]) - 1
 	var index1 = int(slice[0][x-1]) - 1
 	var index2 = int(slice[0][x+1]) - 1
 	var index3 = int(slice[1][x]) - 1
-	var deltaHba = getLambda(index, index1, x, 0, x-1, 0, parameter)*(slice[0][x]-slice[0][x-1])/(stdXStep*(getEx(x-1)+getEx(x))) +
-		getLambda(index, index2, x, 0, x+1, 0, parameter)*(slice[0][x]-slice[0][x+1])/(stdXStep*(getEx(x+1)+getEx(x))) +
-		getLambda(index, index3, x, 0, x, 1, parameter)*(slice[0][x]-slice[1][x])/(stdYStep*(getEy(1)+getEy(0)))
+	var deltaHba = getLambda(index, index1, x, 0, x-1, 0, parameter, zone, electromagneticStirringFactor)*(slice[0][x]-slice[0][x-1])/(stdXStep*(getEx(x-1)+getEx(x))) +
+		getLambda(index, index2, x, 0, x+1, 0, parameter, zone, electromagneticStirringFactor)*(slice[0][x]-slice[0][x+1])/(stdXStep*(getEx(x+1)+getEx(x))) +
+		getLambda(index, index3, x, 0, x, 1, parameter, zone, electromagneticStirringFactor)*(slice[0][x]-slice[1][x])/(stdYStep*(getEy(1)+getEy(0)))
 	deltaHba = deltaHba * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
 	//	getLambda(index, index1, x, 0, x-1, 0, parameter)*(slice[0][x]-slice[0][x-1])/(stdXStep*(getEx(x-1)+getEx(x))),
@@ -871,12 +896,12 @@ func (c *calculatorWithArrDeque) calculatePointBA(deltaT float32, x, z int, slic
 }
 
 // 计算left bottom点的温度变化
-func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[0][0]) - 1
 	var index1 = int(slice[0][1]) - 1
 	var index2 = int(slice[1][0]) - 1
-	var deltaHlb = getLambda(index, index1, 1, 0, 0, 0, parameter)*(slice[0][0]-slice[0][1])/(stdXStep*(getEx(0)+getEx(1))) +
-		getLambda(index, index2, 0, 1, 0, 0, parameter)*(slice[0][0]-slice[1][0])/(stdYStep*(getEy(1)+getEy(0)))
+	var deltaHlb = getLambda(index, index1, 1, 0, 0, 0, parameter, zone, electromagneticStirringFactor)*(slice[0][0]-slice[0][1])/(stdXStep*(getEx(0)+getEx(1))) +
+		getLambda(index, index2, 0, 1, 0, 0, parameter, zone, electromagneticStirringFactor)*(slice[0][0]-slice[1][0])/(stdYStep*(getEy(1)+getEy(0)))
 	deltaHlb = deltaHlb * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
 	//	getLambda(index, index1, 1, 0, 0, 0, parameter)*(slice[0][0]-slice[0][1])/(stdXStep*(getEx(0)+getEx(1))),
@@ -893,14 +918,14 @@ func (c *calculatorWithArrDeque) calculatePointLB(deltaT float32, z int, slice *
 }
 
 // 计算左表面点温度的变化
-func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[y][0]) - 1
 	var index1 = int(slice[y][1]) - 1
 	var index2 = int(slice[y-1][0]) - 1
 	var index3 = int(slice[y+1][0]) - 1
-	var deltaHla = getLambda(index, index1, 1, y, 0, y, parameter)*(slice[y][0]-slice[y][1])/(stdXStep*(getEx(0)+getEx(1))) +
-		getLambda(index, index2, 0, y-1, 0, y, parameter)*(slice[y][0]-slice[y-1][0])/(stdYStep*(getEy(y)+getEy(y-1))) +
-		getLambda(index, index3, 0, y+1, 0, y, parameter)*(slice[y][0]-slice[y+1][0])/(stdYStep*(getEy(y)+getEy(y+1)))
+	var deltaHla = getLambda(index, index1, 1, y, 0, y, parameter, zone, electromagneticStirringFactor)*(slice[y][0]-slice[y][1])/(stdXStep*(getEx(0)+getEx(1))) +
+		getLambda(index, index2, 0, y-1, 0, y, parameter, zone, electromagneticStirringFactor)*(slice[y][0]-slice[y-1][0])/(stdYStep*(getEy(y)+getEy(y-1))) +
+		getLambda(index, index3, 0, y+1, 0, y, parameter, zone, electromagneticStirringFactor)*(slice[y][0]-slice[y+1][0])/(stdYStep*(getEy(y)+getEy(y+1)))
 	deltaHla = deltaHla * (2 * deltaT / parameter.Density[index])
 	//fmt.Println(
 	//	getLambda(index, index1, 1, y, 0, y, parameter)*(slice[y][0]-slice[y][1])/(stdXStep*(getEx(0)+getEx(1))),
@@ -918,16 +943,16 @@ func (c *calculatorWithArrDeque) calculatePointLA(deltaT float32, y, z int, slic
 }
 
 // 计算内部点的温度变化
-func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, slice *model.ItemType, parameter *Parameter) {
+func (c *calculatorWithArrDeque) calculatePointIN(deltaT float32, x, y, z int, slice *model.ItemType, parameter *Parameter, zone int, electromagneticStirringFactor float32) {
 	var index = int(slice[y][x]) - 1
 	var index1 = int(slice[y][x-1]) - 1
 	var index2 = int(slice[y][x+1]) - 1
 	var index3 = int(slice[y-1][x]) - 1
 	var index4 = int(slice[y+1][x]) - 1
-	var deltaHin = getLambda(index, index1, x-1, y, x, y, parameter)*(slice[y][x]-slice[y][x-1])/(stdXStep*(getEx(x)+getEx(x-1))) +
-		getLambda(index, index2, x+1, y, x, y, parameter)*(slice[y][x]-slice[y][x+1])/(stdXStep*(getEx(x)+getEx(x+1))) +
-		getLambda(index, index3, x, y-1, x, y, parameter)*(slice[y][x]-slice[y-1][x])/(stdYStep*(getEy(y)+getEy(y-1))) +
-		getLambda(index, index4, x, y+1, x, y, parameter)*(slice[y][x]-slice[y+1][x])/(stdYStep*(getEy(y)+getEy(y+1)))
+	var deltaHin = getLambda(index, index1, x-1, y, x, y, parameter, zone, electromagneticStirringFactor)*(slice[y][x]-slice[y][x-1])/(stdXStep*(getEx(x)+getEx(x-1))) +
+		getLambda(index, index2, x+1, y, x, y, parameter, zone, electromagneticStirringFactor)*(slice[y][x]-slice[y][x+1])/(stdXStep*(getEx(x)+getEx(x+1))) +
+		getLambda(index, index3, x, y-1, x, y, parameter, zone, electromagneticStirringFactor)*(slice[y][x]-slice[y-1][x])/(stdYStep*(getEy(y)+getEy(y-1))) +
+		getLambda(index, index4, x, y+1, x, y, parameter, zone, electromagneticStirringFactor)*(slice[y][x]-slice[y+1][x])/(stdYStep*(getEy(y)+getEy(y+1)))
 	deltaHin = deltaHin * (2 * deltaT / parameter.Density[index])
 	//fmt.Println("parameter.Enthalpy2Temp: ", parameter.Enthalpy2Temp, "deltaHrt:", deltaHin, "△t:", deltaHin*parameter.Enthalpy2Temp, "in")
 	targetTemp := parameter.Enthalpy2Temp(parameter.Temp2Enthalpy(slice[y][x]) - deltaHin)

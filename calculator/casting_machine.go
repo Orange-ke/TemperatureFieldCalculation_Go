@@ -145,3 +145,32 @@ func (c *CastingMachine) WhichZone(z int) int {
 	}
 	return -1
 }
+
+// 获取对应的电磁搅拌系数对换热修正系数的影响因子
+func (c *CastingMachine) GetElectromagneticStirringFactor(z int) float32 {
+	wideItems := c.CoolerConfig.SecondaryCoolingZoneCfg.NozzleCfg.WideItems
+	distance := float32(z * ZStep)
+	preDistance := float32(c.Coordinate.MdLength) - c.Coordinate.LevelHeight
+	if distance <= preDistance {
+		return 1.0
+	}
+	var curDistance float32
+	pre := float32(1.0)
+	var cur float32
+	for _, v := range wideItems {
+		cur = v.ElectromagneticStirringFactor
+		curDistance = v.Distance
+		if distance == preDistance {
+			return pre
+		}
+		if distance == curDistance {
+			return cur
+		}
+		if distance < curDistance && distance > preDistance {
+			return pre + (cur - pre) / (curDistance - preDistance) * (distance - preDistance)
+		}
+		pre = cur
+		preDistance = curDistance
+	}
+	return 1.0
+}

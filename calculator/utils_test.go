@@ -7,16 +7,28 @@ import (
 
 // 测试水的综合换热系数
 func TestHOfWater(t *testing.T) {
-	fmt.Println(1/ROfWater())
-	fmt.Println(1 / (ROfWater() + ROfCu() + 1/2000.0))
+	fmt.Println(1/ROfWater(3000.0, 0.005, 36.5))
 }
 
-// 测试直接喷淋区域的综合换热系数计算
+func TestHOfAll(t *testing.T) {
+	fmt.Println(1 / (ROfWater(3000.0, 0.005, 36.5) + ROfCu() + 1/2000.0))
+}
 
-// 测试AB，CD区域综合换热系数计算
+func TestCalculateVwt(t *testing.T) {
+	fmt.Println(CalculateVwt(3000.0, 0.005))
+}
 
-// 测试辊子直接接触区域换热系数计算
+// Hbr
+func TestCalculateHbr(t *testing.T) {
+	fmt.Println(calculateHbr_(1200, 70) * (1153 - 37))
+}
 
-// 测试空气换热系数计算
+// 辐射换热系数产生的热流密度
+func TestCalculateQar(t *testing.T) {
+	fmt.Println(calculateQar(800, 70))
+}
 
-// 测试加权平均值
+// 计算固相率
+func TestCalculateSolidFraction(t *testing.T) {
+	fmt.Println(calculateSolidFraction(1430.1, 1429.76,1499.1))
+}
